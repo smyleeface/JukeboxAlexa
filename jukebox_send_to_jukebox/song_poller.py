@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import boto3
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import json
 
@@ -38,7 +38,7 @@ while True:
             #
             # # init list with pin numbers
             #
-            # pinList = [2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 21, 20]
+            pinList = [2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 21, 20]
             #
             # # loop through pins and set mode and state to 'low'
             #
@@ -55,15 +55,23 @@ while True:
             def relay_zero():
                 print('sending number 0')
                 #     GPIO.output(2, GPIO.LOW)
+                GPIO.setup(2, GPIO.OUT)
+                GPIO.setup(2, GPIO.IN)
             def relay_one():
                 print('sending number 1')
                 #     GPIO.output(3, GPIO.LOW)
+                GPIO.setup(3, GPIO.OUT)
+                GPIO.setup(3, GPIO.IN)
             def relay_two():
                 print('sending number 2')
                 #     GPIO.output(4, GPIO.LOW)
+                GPIO.setup(4, GPIO.OUT)
+                GPIO.setup(4, GPIO.IN)
             def relay_three():
                 print('sending number 3')
                 #     GPIO.output(17, GPIO.LOW)
+                GPIO.setup(17, GPIO.OUT)
+                GPIO.setup(17, GPIO.IN)
             def relay_four():
                 print('sending number 4')
                 #     GPIO.output(27, GPIO.LOW)
