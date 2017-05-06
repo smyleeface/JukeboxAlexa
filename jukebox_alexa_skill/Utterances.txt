@@ -1,0 +1,7 @@
+GetSongRequested play {Song}
+GetSongRequested find {Song}
+GetSongIdRequested play song number {SongNumber}
+GetSongIdRequested play number {SongNumber}
+SkipSong skip
+SkipSong skip song
+SkipSong stop song
