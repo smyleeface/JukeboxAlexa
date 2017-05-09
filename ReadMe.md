@@ -10,37 +10,37 @@ Alexa skill to trigger numbers from a relay to the jukebox.
 * Install AWS CLI `sudo pip install awscli --ignore-installed six`
 * Configure AWS CLI with User keys `aws configure`
 
-##Setup Alexa Skill
+## Setup Alexa Skill
 On the [Alexa developer portal](https://developer.amazon.com):
 1. Create a new Alexa Skill called `jukebox`
 2. Use the `jukebox_alexa_skill/IntentSchema.json` and the `jukebox_alexa_skill/Utterances.txt` on the `Interaction Model` tab.
 3. Stop on the `Configuration` tab.
 4. Get the `Skill id`; it is needed during the `Setup AWS` section below.
 
-##Setup AWS
+## Setup AWS
 From the root directory of the project you can run the following commands:
 
-###Run install script
+### Run install script
 ```bash
 bash alexa-jukebox install-stacks
 ```
 
-###Update stack with the latest changes
+### Update stack with the latest changes
 ```bash
 bash alexa-jukebox update-stacks
 ```
 
-###Update songs in DyanmoDB
+### Update songs in DyanmoDB
 ```bash
 bash alexa-jukebox update-songs
 ```
 
-###Get information from the stacks
+### Get information from the stacks
 ```bash
 bash alexa-jukebox info
 ```
 
-###Delete stacks
+### Delete stacks
 ```bash
 bash alexa-jukebox delete-stacks
 ```
