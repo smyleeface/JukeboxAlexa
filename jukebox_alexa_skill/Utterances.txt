@@ -1,5 +1,5 @@
-GetSongRequested play {Song}
-GetSongRequested find {Song}
+GetSongRequested play song {Song}
+GetSongRequested find song {Song}
 GetSongIdRequested play song number {SongNumber}
 GetSongIdRequested play number {SongNumber}
 SkipSong skip

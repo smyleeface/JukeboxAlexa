@@ -1,7 +1,7 @@
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Alexa Jukebox Application for us-east-2
+Description: Alexa Jukebox Application for us-east-1
 
 Parameters:
   RequestQueueArn:
@@ -82,13 +82,40 @@ Resources:
       TableName: JukeboxSongs
       AttributeDefinitions:
         - AttributeName: disk_track_number
+          AttributeType: N
+        - AttributeName: song
+          AttributeType: S
+        - AttributeName: artist
           AttributeType: S
       KeySchema:
         - AttributeName: disk_track_number
           KeyType: HASH
+        - AttributeName: song
+          KeyType: RANGE
       ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+      LocalSecondaryIndexes:
+        - IndexName: artists_track
+          KeySchema:
+            - AttributeName: disk_track_number
+              KeyType: HASH
+            - AttributeName: artist
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      GlobalSecondaryIndexes:
+        - IndexName: track_sort
+          KeySchema:
+            - AttributeName: song
+              KeyType: HASH
+            - AttributeName: disk_track_number
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
 
 Outputs:
   JukeboxLambdaAlexaRole:
@@ -96,4 +123,10 @@ Outputs:
     Value:
       Fn::GetAtt:
         - JukeboxLambdaAlexaRole
+        - Arn
+  JukeboxLambdaAlexaArn:
+    Description: The ARN of the Alexa Lambda Function
+    Value:
+      Fn::GetAtt:
+        - JukeboxLambdaAlexa
         - Arn
