@@ -51,6 +51,26 @@ alexa_lambda_arn() {
     echo "${ALEXA_LAMBDA_ARN}"
 }
 
+queue_url() {
+    US_WEST_2_QUEUE_URL=$(aws cloudformation describe-stacks --region us-west-2 --stack-name ${STACK_NAME} | grep -A1 'QueueURL')
+    QUEUE_URL=$(echo ${US_WEST_2_QUEUE_URL} | sed -n 's/.*\(https\:\/\/sqs\.us-west-2\.amazonaws\.com\/[0-9]*\/jukebox_request_queue\.fifo\).*/\1/p')
+    echo ${QUEUE_URL}
+}
+
+deploy_lambda_code() {
+    QUEUE_URL1=$1
+    APP_ID1=$2
+    echo 'Updating Lambda function configs in N. Virginia Region (us-east-1)...'
+    aws lambda update-function-configuration --region us-east-1 --function-name ${LAMBDA_FUNCTION_NAME} --environment Variables="{SQS_QUEUE_URL=${QUEUE_URL1},APP_ID=${APP_ID1}}"
+    echo 'Zipping Lambda function...'
+    cd jukebox_alexa_lambda
+    zip -r jukebox_alexa_lambda.zip index.js node_modules
+    echo 'Deploying Lambda function in N. Virginia Region (us-east-1)...'
+    aws lambda update-function-code --region us-east-1 --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://jukebox_alexa_lambda.zip
+    echo 'Clean up...'
+    rm jukebox_alexa_lambda.zip
+    cd ..
+}
 if [[ -z "${ACTION}" ]]; then
 
     echo "Type one of the following:"
@@ -74,9 +94,7 @@ elif [[ "${ACTION}" == 'install-stacks' ]]; then
 
     # get the queue url from the output of cloudformation us-west-2
     echo 'Getting Queue URL...'
-    US_WEST_2_QUEUE_URL=$(aws cloudformation describe-stacks --region us-west-2 --stack-name ${STACK_NAME} | grep -A1 'QueueURL')
-    QUEUE_URL=$(echo ${US_WEST_2_QUEUE_URL} | sed -n 's/.*\(https\:\/\/sqs\.us-west-2\.amazonaws\.com\/[0-9]*\/jukebox_request_queue\.fifo\).*/\1/p')
-    echo ${QUEUE_URL}
+    QUEUE_URL=$(queue_url)
 
     echo 'Getting JukeboxRaspberryPi User AccessKey...'
     PI_ACCESS_KEY=$(pi_access_key)
@@ -94,16 +112,7 @@ elif [[ "${ACTION}" == 'install-stacks' ]]; then
     ALEXA_LAMBDA_ARN=$(alexa_lambda_arn)
 
     # Updating lambda function
-    echo 'Updating Lambda function configs in N. Virginia Region (us-east-1)...'
-    aws lambda update-function-configuration --region us-east-1 --function-name ${LAMBDA_FUNCTION_NAME} --environment Variables="{SQS_QUEUE_URL=${QUEUE_URL},APP_ID=${APP_ID}}"
-    echo 'Zipping Lambda function...'
-    cd jukebox_alexa_lambda
-    zip -r jukebox_alexa_lambda.zip index.js node_modules
-    echo 'Deploying Lambda function in N. Virginia Region (us-east-1)...'
-    aws lambda update-function-code --region us-east-1 --function-name ${LAMBDA_FUNCTION_NAME} --zip-file fileb://jukebox_alexa_lambda.zip
-    echo 'Clean up...'
-    rm jukebox_alexa_lambda.zip
-    cd ..
+    deploy_lambda_code ${QUEUE_URL} ${APP_ID}
 
     # Update the song list in dynamodb
     jukebox_songlist_update_songs
@@ -115,6 +124,17 @@ elif [[ "${ACTION}" == 'install-stacks' ]]; then
     echo ${PI_SECRET_KEY}
     echo 'Add this ARN to your alexa skill'
     echo ${ALEXA_LAMBDA_ARN}
+
+elif [[ "${ACTION}" == 'update-lambda' ]]; then
+
+    echo 'Getting Queue URL...'
+    QUEUE_URL=$(queue_url)
+
+    # get the appid
+    echo "Enter the Alexa Skill App ID, followed by [ENTER]:"
+    read APP_ID
+
+    deploy_lambda_code ${QUEUE_URL} ${APP_ID}
 
 elif [[ "${ACTION}" == 'update-songs' ]]; then
 

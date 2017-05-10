@@ -30,6 +30,11 @@ bash alexa-jukebox install-stacks
 bash alexa-jukebox update-stacks
 ```
 
+### Update lambda code only
+```bash
+bash alexa-jukebox update-lambda
+```
+
 ### Update songs in DyanmoDB
 ```bash
 bash alexa-jukebox update-songs
