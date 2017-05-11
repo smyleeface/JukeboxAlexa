@@ -2,6 +2,7 @@ notes
 notes/*
 *.iml
 .idea
+jukebox_song_poller/__pycache__
 
 # OS generated files #
 ######################
