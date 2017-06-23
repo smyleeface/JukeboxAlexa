@@ -1,6 +1,8 @@
+[![Build Status](https://travis-ci.org/smyleeface/smylee_jukebox.svg?branch=master)](https://travis-ci.org/smyleeface/smylee_jukebox)
+
 Alexa Jukebox
 =============
-Alexa skill to trigger numbers from a relay to the jukebox.
+Alexa skill that will play the song asked on the jukebox, by triggering a relay connected to a number keypad on a jukebox.
 
 ## Prerequisites
 * Setup AWS Account
