@@ -2,7 +2,7 @@ import json
 import time
 from datetime import datetime
 
-import relay_modules as relay
+from relay_modules import RelayModules
 
 
 class SongPoller(object):
@@ -12,12 +12,15 @@ class SongPoller(object):
         self.sqs_client = boto_session.client('sqs')
         self.gpio_pin_list = [2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 21, 20]
         self.gpio = gpio
+        self.speaker_on_status = True
         self.logger = logger
         self.queue_url = None
         self.request_type_function_mapping = {
             'GetSongRequested': self.get_song_requested,
-            'GetSongIdRequested': self.get_song_requested
+            'GetSongIdRequested': self.get_song_requested,
+            'SpeakerRequest': self.get_speaker_request
         }
+        relay = RelayModules(self.gpio, self.speaker_on_status, self.logger)
         self.options = {
             1: relay.one,
             2: relay.two,
@@ -27,7 +30,14 @@ class SongPoller(object):
             6: relay.six,
             7: relay.seven,
             8: relay.eight,
-            9: relay.nine
+            9: relay.nine,
+            10: relay.ten,
+            11: relay.eleven,
+            12: relay.twelve,
+            13: relay.thirteen,
+            14: relay.fourteen,
+            15: relay.fifteen,
+            16: relay.sixteen
         }
 
         self.gpio.setmode(self.gpio.BCM)
@@ -115,11 +125,23 @@ class SongPoller(object):
         except Exception as e:
             raise Exception('Issue with deleting the messages in {0} for receipt handle {1}: {2}'.format(queue_url, receipt_handle, e))
 
-    def get_song_requested(self, message_body, options):
+    def get_song_requested(self, message_body):
         """Parses the song id and sends each number individually.
         Sending the message body because different requests will parse differently
         """
         song_id = message_body['parameters']['key']
         list_of_numbers = [int(num) for num in str(song_id)]
         for individual_number in list_of_numbers:
-            options[individual_number](self.gpio, self.logger)
+            self.options[individual_number]()
+
+    def get_speaker_request(self, message_body):
+        """Gets the speaker request and processes"""
+        speaker_action = message_body['parameters']['key']
+        # TODO: Move this into relay_modules.py after finding out which relay controls the speakers
+        if speaker_action == 'on':
+            self.speaker_on_status = True
+            self.gpio.setup(13, self.gpio.OUT)
+            self.gpio.output(13, self.gpio.HIGH)
+        elif speaker_action == 'off':
+            self.speaker_on_status = False
+            self.gpio.setup(13, self.gpio.IN)
