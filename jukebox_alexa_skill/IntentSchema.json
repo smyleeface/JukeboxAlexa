@@ -19,6 +19,15 @@
       "intent": "GetSongIdRequested"
     },
     {
+      "slots": [
+        {
+          "name": "SpeakerRequestOptions",
+          "type": "SPEAKER_REQUEST_OPTIONS"
+        }
+      ],
+      "intent": "SpeakerRequest"
+    },
+    {
       "intent": "SkipSong"
     },
     {

@@ -516,7 +516,7 @@ var handlers = {
 
         var song_request = this.event.request.intent.slots.Song.value;
         var speechOutput = "Your song " + song_request + " was not found.";
-        var cardTitle = "Jukebox Request";
+        var cardTitle = "Jukebox - Song Request";
         var found_song = false;
         console.log("INTENT -> " + song_request);
 
@@ -527,9 +527,6 @@ var handlers = {
 
                 // Create speech output
                 speechOutput = "Sending song number " + key + ", " + song_request + ", to the jukebox.";
-
-                //Your song " + song_request + " is in the queue. ";
-                cardTitle = "Jukebox Request";
                 found_song = true;
                 final_song_key = key
             }
@@ -564,7 +561,7 @@ var handlers = {
 
         var song_request = this.event.request.intent.slots.SongNumber.value;
         var speechOutput = "Your song number " + song_request + " was not found.";
-        var cardTitle = "Jukebox Request";
+        var cardTitle = "Jukebox - Song Id Request";
         var found_song = false;
         console.log("INTENT -> " + song_request);
 
@@ -577,9 +574,6 @@ var handlers = {
                 // Create speech output
                 speechOutput = "Sending song number " + key + ", " + SONGS[key] + ", to the jukebox.";
                 final_song_key = key
-
-                //Your song " + song_request + " is in the queue. ";
-                cardTitle = "Jukebox Request";
                 found_song = true;
             }
           }
@@ -606,7 +600,29 @@ var handlers = {
         } else {
             _this.emit(':tellWithCard', speechOutput, cardTitle);
         }
-    }
+    },
+    'SpeakerRequest': function() {
+        console.log("intent " + this.event.request.intent.slots.Song.value);
+        var speaker_request = this.event.request.intent.slots.Song.value;
+        var speechOutput = "Turning speaker " + speaker_request;
+        var cardTitle = "Jukebox - Speaker Request";
+        console.log("INTENT -> " + speaker_request);
+        var _this = this;
+        sendQueueMessage({
+            request_type: 'SpeakerReqeust',
+            parameters: {
+              key: speaker_request,
+              message_body: speechOutput
+            }
+        }, function(error) {
+            if (error) {
+                console.log(error);
+                _this.emit(':tell', 'Sorry, something went wrong.');
+            } else {
+                _this.emit(':tellWithCard', speechOutput, cardTitle);
+            }
+        });
+    },
 
 }
 
