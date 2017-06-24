@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/smyleeface/smylee_jukebox.svg?branch=master)](https://travis-ci.org/smyleeface/smylee_jukebox)
+[![Build Status](https://travis-ci.org/smyleeface/smylee_jukebox.svg?branch=master)](https://travis-ci.org/smyleeface/smylee_jukebox)  [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/smyleeface/smylee-jukebox)
 
 Alexa Jukebox
 =============
