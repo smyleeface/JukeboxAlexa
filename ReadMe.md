@@ -59,10 +59,19 @@ bash alexa-jukebox delete-stacks
 
 ## Setup Pi Song Poller
 
-* On the Raspberry Pi, copy the files from the `jukebox_song_poller` directory to the root home directory.
+* On the Raspberry Pi, clone the repo in the root home directory.
+```
+git clone https://github.com/smyleeface/smylee_jukebox.git jukebox`
+```
+
+* Go into the `jukebox_song_poller` directory to the root home directory.
+```
+cd /root/home/jukebox/jukebox_song_poller`
+```
+
 * In the terminal, type
 ```
-pip install -r requirements -U
+pip install -r requirements.txt -U
 ```
 * Copy the `song_poller_service.sh` to the `/etc/init.d/` directory.
 ```
