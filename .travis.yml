@@ -4,6 +4,5 @@ python:
 install: pip install -r jukebox_song_poller/tests/requirements.txt
 script:
   - cd jukebox_song_poller
-  - pip install -r requirements.txt
-  - pip install -r tests/requirements.txt
+  - python setup.py install
   - python setup.py test
