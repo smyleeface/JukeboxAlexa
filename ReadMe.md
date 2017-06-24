@@ -7,10 +7,12 @@ Alexa skill that will play the song asked on the jukebox, by triggering a relay 
 ## Prerequisites
 * Setup AWS Account
 * Create a user, give permissions, and create user keys
-* Download and install [python3](https://www.python.org/downloads/)
-* Install virutal env (optional)
-* Install AWS CLI `sudo pip install awscli --ignore-installed six`
-* Configure AWS CLI with User keys `aws configure`
+* RaspberryPi with Raspbian installed and connected to a 16 port relay
+* On both local and RaspberryPi: 
+    * Download and install [python3](https://www.python.org/downloads/)
+    * Install virutal env (optional)
+    * Install AWS CLI `sudo pip install awscli`
+    * Configure AWS CLI with User keys `aws configure`
 
 ## Setup Alexa Skill
 On the [Alexa developer portal](https://developer.amazon.com):
