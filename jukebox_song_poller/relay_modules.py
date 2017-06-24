@@ -5,129 +5,145 @@ import time
 #################
 
 
-def one(GPIO):
-    print('sending number 1')
-    GPIO.setup(2, GPIO.OUT)
-    GPIO.output(2, GPIO.HIGH)
+def one(gpio, logger=None):
+    if logger:
+        logger.info('sending number 1')
+    gpio.setup(2, gpio.OUT)
+    gpio.output(2, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(2, GPIO.IN)
+    gpio.setup(2, gpio.IN)
 
 
-def two(GPIO):
-    print('sending number 2')
-    GPIO.setup(3, GPIO.OUT)
-    GPIO.output(3, GPIO.HIGH)
+def two(gpio, logger=None):
+    if logger:
+        logger.info('sending number 2')
+    gpio.setup(3, gpio.OUT)
+    gpio.output(3, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(3, GPIO.IN)
+    gpio.setup(3, gpio.IN)
 
 
-def three(GPIO):
-    print('sending number 3')
-    GPIO.setup(4, GPIO.OUT)
-    GPIO.output(4, GPIO.HIGH)
+def three(gpio, logger=None):
+    if logger:
+        logger.info('sending number 3')
+    gpio.setup(4, gpio.OUT)
+    gpio.output(4, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(4, GPIO.IN)
+    gpio.setup(4, gpio.IN)
 
 
-def four(GPIO):
-    print('sending number 4')
-    GPIO.setup(17, GPIO.OUT)
-    GPIO.output(17, GPIO.HIGH)
+def four(gpio, logger=None):
+    if logger:
+        logger.info('sending number 4')
+    gpio.setup(17, gpio.OUT)
+    gpio.output(17, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(17, GPIO.IN)
+    gpio.setup(17, gpio.IN)
 
 
-def five(GPIO):
-    print('sending number 5')
-    GPIO.setup(27, GPIO.OUT)
-    GPIO.output(27, GPIO.HIGH)
+def five(gpio, logger=None):
+    if logger:
+        logger.info('sending number 5')
+    gpio.setup(27, gpio.OUT)
+    gpio.output(27, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(27, GPIO.IN)
+    gpio.setup(27, gpio.IN)
 
 
-def six(GPIO):
-    print('sending number 6')
-    GPIO.setup(22, GPIO.OUT)
-    GPIO.output(22, GPIO.HIGH)
+def six(gpio, logger=None):
+    if logger:
+        logger.info('sending number 6')
+    gpio.setup(22, gpio.OUT)
+    gpio.output(22, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(22, GPIO.IN)
+    gpio.setup(22, gpio.IN)
 
 
-def seven(GPIO):
-    print('sending number 7')
-    GPIO.setup(10, GPIO.OUT)
-    GPIO.output(10, GPIO.HIGH)
+def seven(gpio, logger=None):
+    if logger:
+        logger.info('sending number 7')
+    gpio.setup(10, gpio.OUT)
+    gpio.output(10, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(10, GPIO.IN)
+    gpio.setup(10, gpio.IN)
 
 
-def eight(GPIO):
-    print('sending number 8')
-    GPIO.setup(9, GPIO.OUT)
-    GPIO.output(9, GPIO.HIGH)
+def eight(gpio, logger=None):
+    if logger:
+        logger.info('sending number 8')
+    gpio.setup(9, gpio.OUT)
+    gpio.output(9, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(9, GPIO.IN)
+    gpio.setup(9, gpio.IN)
 
 
-def nine(GPIO):
-    print('sending number 9')
-    GPIO.setup(11, GPIO.OUT)
-    GPIO.output(11, GPIO.HIGH)
+def nine(gpio, logger=None):
+    if logger:
+        logger.info('sending number 9')
+    gpio.setup(11, gpio.OUT)
+    gpio.output(11, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(11, GPIO.IN)
+    gpio.setup(11, gpio.IN)
 
 
-def ten(GPIO):
-    print('sending number 10')
-    GPIO.setup(5, GPIO.OUT)
-    GPIO.output(5, GPIO.HIGH)
+def ten(gpio, logger=None):
+    if logger:
+        logger.info('sending number 10')
+    gpio.setup(5, gpio.OUT)
+    gpio.output(5, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(5, GPIO.IN)
+    gpio.setup(5, gpio.IN)
 
 
-def eleven(GPIO):
-    print('sending number 11')
-    GPIO.setup(5, GPIO.OUT)
-    GPIO.output(6, GPIO.HIGH)
+def eleven(gpio, logger=None):
+    if logger:
+        logger.info('sending number 11')
+    gpio.setup(5, gpio.OUT)
+    gpio.output(6, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(6, GPIO.IN)
+    gpio.setup(6, gpio.IN)
 
 
-def twelve(GPIO):
-    print('sending number 12')
-    GPIO.setup(13, GPIO.OUT)
-    GPIO.output(13, GPIO.HIGH)
+def twelve(gpio, logger=None):
+    if logger:
+        logger.info('sending number 12')
+    gpio.setup(13, gpio.OUT)
+    gpio.output(13, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(13, GPIO.IN)
+    gpio.setup(13, gpio.IN)
 
 
-def thirteen(GPIO):
-    print('sending number 13')
-    GPIO.setup(19, GPIO.OUT)
-    GPIO.output(19, GPIO.HIGH)
+def thirteen(gpio, logger=None):
+    if logger:
+        logger.info('sending number 13')
+    gpio.setup(19, gpio.OUT)
+    gpio.output(19, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(19, GPIO.IN)
+    gpio.setup(19, gpio.IN)
 
 
-def fourteen(GPIO):
-    print('sending number 14')
-    GPIO.setup(26, GPIO.OUT)
-    GPIO.output(26, GPIO.HIGH)
+def fourteen(gpio, logger=None):
+    if logger:
+        logger.info('sending number 14')
+    gpio.setup(26, gpio.OUT)
+    gpio.output(26, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(26, GPIO.IN)
+    gpio.setup(26, gpio.IN)
 
 
-def fifteen(GPIO):
-    print('sending number 15')
-    GPIO.setup(21, GPIO.OUT)
-    GPIO.output(21, GPIO.HIGH)
+def fifteen(gpio, logger=None):
+    if logger:
+        logger.info('sending number 15')
+    gpio.setup(21, gpio.OUT)
+    gpio.output(21, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(21, GPIO.IN)
+    gpio.setup(21, gpio.IN)
 
 
-def sixteen(GPIO):
-    print('sending number 16')
-    GPIO.setup(20, GPIO.OUT)
-    GPIO.output(20, GPIO.HIGH)
+def sixteen(gpio, logger=None):
+    if logger:
+        logger.info('sending number 16')
+    gpio.setup(20, gpio.OUT)
+    gpio.output(20, gpio.HIGH)
     time.sleep(1)
-    GPIO.setup(20, GPIO.IN)
+    gpio.setup(20, gpio.IN)

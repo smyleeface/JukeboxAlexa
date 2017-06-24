@@ -1,16 +1,18 @@
 import json
 import time
+from datetime import datetime
 
 import relay_modules as relay
 
 
 class SongPoller(object):
-    def __init__(self, boto_session, gpio):
+    def __init__(self, boto_session, gpio, logger=None):
         self.queue_speed = 1
         self.queue_name_prefix = 'jukebox_request_queue.fifo'
         self.sqs_client = boto_session.client('sqs')
         self.gpio_pin_list = [2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 21, 20]
         self.gpio = gpio
+        self.logger = logger
         self.queue_url = None
         self.request_type_function_mapping = {
             'GetSongRequested': self.get_song_requested,
@@ -46,11 +48,15 @@ class SongPoller(object):
                         message_json = json.loads(message['Body'])
                         self.handle_message(message_json, receipt_handle)
 
-                print('No songs in queue.')
+                # It is June 24, 2017 08:06:35AM
+                right_now = datetime.now().strftime('It is %B %d, %Y %I:%m%p')
+                if self.logger:
+                    self.logger.info('{0}: No songs in queue.'.format(right_now))
                 time.sleep(self.queue_speed)
 
         except KeyboardInterrupt as e:
-            print("  Quit")
+            if self.logger:
+                self.logger.info('  Quit')
             self.gpio.cleanup()
 
     def handle_message(self, message_body, receipt_handle):
@@ -111,9 +117,9 @@ class SongPoller(object):
 
     def get_song_requested(self, message_body, options):
         """Parses the song id and sends each number individually.
-        Sending the message body because different requests will parse differntly
+        Sending the message body because different requests will parse differently
         """
         song_id = message_body['parameters']['key']
         list_of_numbers = [int(num) for num in str(song_id)]
         for individual_number in list_of_numbers:
-            options[individual_number](self.gpio)
+            options[individual_number](self.gpio, self.logger)
