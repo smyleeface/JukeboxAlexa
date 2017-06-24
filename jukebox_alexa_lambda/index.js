@@ -540,10 +540,10 @@ var handlers = {
         if (found_song) {
 
             sendQueueMessage({
-                type: 'song',
+                request_type: 'GetSongRequested',
                 parameters: {
                   key: final_song_key,
-                  MessageBody: speechOutput
+                  message_body: speechOutput
                 }
             }, function(error) {
                 if (error) {
@@ -590,10 +590,10 @@ var handlers = {
         if (found_song) {
 
             sendQueueMessage({
-                type: 'songid',
+                request_type: 'GetSongIdRequested',
                 parameters: {
                   key: final_song_key,
-                  MessageBody: speechOutput
+                  message_body: speechOutput
                 }
             }, function(error) {
                 if (error) {
