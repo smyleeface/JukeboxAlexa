@@ -5,7 +5,7 @@ from mock import call
 from mock import patch
 
 from song_poller import SongPoller
-import RPi.GPIO as GPIO
+import tests.RPi.GPIO as GPIO
 
 
 class JukeboxSongPollerTest(unittest.TestCase):
@@ -24,7 +24,7 @@ class JukeboxSongPollerTest(unittest.TestCase):
         return gpio
 
     def setUp(self):
-        with patch('RPi.GPIO') as rpi_library:
+        with patch('tests.RPi.GPIO') as rpi_library:
             gpio = rpi_library.return_value
             self.rpi_gpio_expected = gpio
             self.rpi_gpio_actual = gpio
