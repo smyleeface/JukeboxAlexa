@@ -1,0 +1,55 @@
+{
+  "intents": [
+    {
+      "slots": [
+        {
+          "name": "Song",
+          "type": "SONGS"
+        }
+      ],
+      "intent": "GetSongRequested"
+    },
+    {
+      "slots": [
+        {
+          "name": "SongNumber",
+          "type": "SONGNUMBER"
+        }
+      ],
+      "intent": "GetSongIdRequested"
+    },
+    {
+      "slots": [
+        {
+          "name": "SpeakerRequestOptions",
+          "type": "SPEAKER_REQUEST_OPTIONS"
+        }
+      ],
+      "intent": "SpeakerRequest"
+    },
+    {
+      "intent": "SkipSong"
+    },
+    {
+      "intent": "AMAZON.StartOverIntent"
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.YesIntent"
+    },
+    {
+      "intent": "AMAZON.NoIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
