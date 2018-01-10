@@ -116,3 +116,49 @@ class JukeboxSongPollerTest(unittest.TestCase):
         # Assert
         self.rpi_gpio_actual.output.assert_has_calls(output_calls)
         self.rpi_gpio_actual.setup.assert_has_calls(setup_calls)
+
+    def test_handle_speaker_request_on(self):
+
+        # Arrange
+        message_body = {
+            'request_type': 'SpeakerRequest',
+            'parameters': {
+                'key': 'on',
+                'message_body': "Turning jukebox speaker on."
+            }
+        }
+        output_calls = [
+            call(13, self.rpi_gpio_expected.HIGH)
+        ]
+        setup_calls = [
+            call(13, self.rpi_gpio_expected.OUT)
+        ]
+
+        # Act
+        self.song_poller.handle_message(message_body, "receipt_handle_foo_bar")
+
+        # Assert
+        self.rpi_gpio_actual.output.assert_has_calls(output_calls)
+        self.rpi_gpio_actual.setup.assert_has_calls(setup_calls)
+
+    def test_handle_speaker_request_off(self):
+
+        # Arrange
+        message_body = {
+            'request_type': 'SpeakerRequest',
+            'parameters': {
+                'key': 'off',
+                'message_body': "Turning jukebox speaker off."
+            }
+        }
+        output_calls = []
+        setup_calls = [
+            call(13, self.rpi_gpio_expected.IN)
+        ]
+
+        # Act
+        self.song_poller.handle_message(message_body, "receipt_handle_foo_bar")
+
+        # Assert
+        self.rpi_gpio_actual.output.assert_has_calls(output_calls)
+        self.rpi_gpio_actual.setup.assert_has_calls(setup_calls)

@@ -1,6 +1,0 @@
-setup.py
-jukebox_song_poller.egg-info/PKG-INFO
-jukebox_song_poller.egg-info/SOURCES.txt
-jukebox_song_poller.egg-info/dependency_links.txt
-jukebox_song_poller.egg-info/requires.txt
-jukebox_song_poller.egg-info/top_level.txt

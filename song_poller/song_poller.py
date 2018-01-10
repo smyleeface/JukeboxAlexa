@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from relay_modules import RelayModules
+from utility_modules import logger_output
 
 
 class SongPoller(object):
@@ -21,24 +22,23 @@ class SongPoller(object):
         }
         relay = RelayModules(gpio=self.gpio, speaker=True, logger=self.logger)
         self.relay_selections = {
-            1: relay.one,
-            2: relay.two,
-            3: relay.three,
-            4: relay.four,
-            5: relay.five,
-            6: relay.six,
-            7: relay.seven,
-            8: relay.eight,
-            9: relay.nine,
-            10: relay.ten,
-            11: relay.eleven,
-            12: relay.twelve,
-            13: relay.thirteen,
-            14: relay.fourteen,
-            15: relay.fifteen,
-            16: relay.sixteen
+            '1': relay.one,
+            '2': relay.two,
+            '3': relay.three,
+            '4': relay.four,
+            '5': relay.five,
+            '6': relay.six,
+            '7': relay.seven,
+            '8': relay.eight,
+            '9': relay.nine,
+            '10': relay.ten,
+            '11': relay.eleven,
+            '12': relay.twelve,
+            '13': relay.thirteen,
+            '14': relay.fourteen,
+            '15': relay.fifteen,
+            '16': relay.sixteen
         }
-
         self.gpio.setmode(self.gpio.BCM)
 
     def execute(self):
@@ -53,19 +53,15 @@ class SongPoller(object):
 
                     # loop through all the messages received
                     for message in messages['Messages']:
-                        receipt_handle = message['ReceiptHandle']
-                        message_json = json.loads(message['Body'])
-                        self.handle_message(message_json, receipt_handle)
+                        self.handle_message(json.loads(message.get('Body')), message.get('ReceiptHandle'))
 
                 # It is June 24, 2017 08:06:35AM
                 right_now = datetime.now().strftime('It is %B %d, %Y %I:%m%p')
-                if self.logger:
-                    self.logger.info('{0}: No songs in queue.'.format(right_now))
+                logger_output(self.logger, 'info', '{0}: No songs in queue.'.format(right_now))
                 time.sleep(self.queue_speed)
 
-        except KeyboardInterrupt as e:
-            if self.logger:
-                self.logger.info('  Quit')
+        except KeyboardInterrupt:
+            logger_output(self.logger, 'info', '  Quit')
             self.gpio.cleanup()
 
     def handle_message(self, message_body, receipt_handle):
@@ -128,18 +124,15 @@ class SongPoller(object):
         Sending the message body because different requests will parse differently
         """
         song_id = message_body['parameters']['key']
-        list_of_numbers = [int(num) for num in str(song_id)]
-        for individual_number in list_of_numbers:
+        for individual_number in song_id:
             self.relay_selections[individual_number]()
 
     def get_speaker_request(self, message_body):
         """Gets the speaker request and processes"""
         speaker_action = message_body['parameters']['key']
-        # TODO: Move this into relay_modules.py after finding out which relay controls the speakers
-        if speaker_action == 'on':
-            # self.relay_selections.speaker_on_status = True
-            self.gpio.setup(13, self.gpio.OUT)
-            self.gpio.output(13, self.gpio.HIGH)
-        elif speaker_action == 'off':
-            # self.relay_selections.speaker_on_status = False
-            self.gpio.setup(13, self.gpio.IN)
+        message_kargs = {
+            'speaker_action': speaker_action
+        }
+        self.relay_selections['13'](**message_kargs)
+
+
