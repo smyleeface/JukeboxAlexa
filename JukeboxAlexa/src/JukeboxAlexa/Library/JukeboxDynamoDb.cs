@@ -13,7 +13,6 @@ namespace JukeboxAlexa.Library
         //--- Fields ---
         private static AmazonDynamoDBClient _dynamoClient;
         private static string _tableName;
-        private static string _indexTrackNumber;
         private static string _indexSearchTitle;
         private static string _indexSearchTitleArtist;
 
@@ -22,7 +21,6 @@ namespace JukeboxAlexa.Library
         {
             _dynamoClient = new AmazonDynamoDBClient();
             _tableName = "JukeboxSongs";
-            _indexTrackNumber = "track_number-index";
             _indexSearchTitle = "search_title-index";
             _indexSearchTitleArtist = "search_title_artist-index";
         }
@@ -88,7 +86,6 @@ namespace JukeboxAlexa.Library
         {
             return new QueryRequest{
                 TableName = _tableName,
-                IndexName = _indexTrackNumber,
                 KeyConditionExpression = "track_number = :v_number",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
                     {":v_number", new AttributeValue { S = songNumber }}}

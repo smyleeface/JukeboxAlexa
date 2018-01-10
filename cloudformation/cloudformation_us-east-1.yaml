@@ -81,41 +81,55 @@ Resources:
     Properties:
       TableName: JukeboxSongs
       AttributeDefinitions:
-        - AttributeName: disk_track_number
-          AttributeType: N
-        - AttributeName: song
+        - AttributeName: track_number
           AttributeType: S
-        - AttributeName: artist
+        - AttributeName: search_artist
+          AttributeType: S
+        - AttributeName: search_title
           AttributeType: S
       KeySchema:
-        - AttributeName: disk_track_number
+        - AttributeName: track_number
           KeyType: HASH
-        - AttributeName: song
-          KeyType: RANGE
       ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-      LocalSecondaryIndexes:
-        - IndexName: artists_track
+      GlobalSecondaryIndexes:
+        - IndexName: search_title-index
           KeySchema:
-            - AttributeName: disk_track_number
+            - AttributeName: search_title
               KeyType: HASH
-            - AttributeName: artist
-              KeyType: RANGE
           Projection:
             ProjectionType: ALL
-      GlobalSecondaryIndexes:
-        - IndexName: track_sort
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: search_title_artist-index
           KeySchema:
-            - AttributeName: song
+            - AttributeName: search_title
               KeyType: HASH
-            - AttributeName: disk_track_number
+            - AttributeName: search_artist
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
+
+JukeboxCacheDynamodb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: JukeboxSongsCache
+      AttributeDefinitions:
+        - AttributeName: word
+          AttributeType: S
+        - AttributeName: songs
+          AttributeType: M
+      KeySchema:
+        - AttributeName: word
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 Outputs:
   JukeboxLambdaAlexaRole:
