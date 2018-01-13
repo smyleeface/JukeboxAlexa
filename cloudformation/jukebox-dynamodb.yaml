@@ -1,0 +1,69 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - DynamoDB Tables
+
+Resources:
+  JukeboxDynamodb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: JukeboxSongs
+      AttributeDefinitions:
+        - AttributeName: track_number
+          AttributeType: S
+        - AttributeName: search_artist
+          AttributeType: S
+        - AttributeName: search_title
+          AttributeType: S
+      KeySchema:
+        - AttributeName: track_number
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: search_title-index
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: search_title_artist-index
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+            - AttributeName: search_artist
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+  JukeboxCacheDynamodb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: JukeboxSongsCache
+      AttributeDefinitions:
+        - AttributeName: word
+          AttributeType: S
+      KeySchema:
+        - AttributeName: word
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+Outputs:
+  JukeboxDynamodb:
+    Description: The ARN of the Jukebox Song DB
+    Value: !GetAtt JukeboxDynamodb.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-JukeboxDynamoDbArn'
+  JukeboxCacheDynamodb:
+    Description: The ARN of the Jukebox Song Cache
+    Value: !GetAtt JukeboxCacheDynamodb.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-JukeboxCacheDynamoDbArn'

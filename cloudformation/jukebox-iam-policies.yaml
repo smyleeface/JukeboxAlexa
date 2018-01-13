@@ -1,0 +1,125 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - IAM Users, Roles, Policies
+
+Mappings:
+  Jukebox:
+    SongIndexLambdaPolicy:
+      Name: jukebox_song_index_lambda_policy
+    AlexaLambdaPolicy:
+      Name: jukebox_alexa_lambda_policy
+    RaspberryPiPolicy:
+      Name: jukebox_raspberrypi_policy
+
+Resources:
+
+  ####### JukeboxSongIndexLambdaRole
+  # policy
+  JukeboxSongIndexLambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - dynamodb:ListStreams
+            Resource: '*'
+          -
+            Effect: Allow
+            Action: dynamodb:*
+            Resource: !ImportValue jukebox-dynamodb-JukeboxCacheDynamoDbArn
+          -
+            Effect: Allow
+            Action:
+              - dynamodb:DescribeStream
+              - dynamodb:GetRecords
+              - dynamodb:GetShardIterator
+            Resource:
+              !Join
+                - ''
+                - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+                  - '/stream/*'
+          -
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      PolicyName: !FindInMap [Jukebox, SongIndexLambdaPolicy, Name]
+      Roles:
+        - !ImportValue jukebox-iam-roles-SongIndexLambdaRoleName
+
+  ####### JukeboxAlexaLambdaRole
+  # policy
+  JukeboxLambdaAlexaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - sqs:ListQueues
+            Resource: '*'
+          -
+            Effect: Allow
+            Action:
+              - sqs:SendMessage
+              - sqs:GetQueueUrl
+            Resource:
+              - !ImportValue jukebox-sqs-QueueArn
+          -
+            Effect: Allow
+            Action: dynamodb:*
+            # TODO (pattyr, 20180112): Put the index names in mappings
+            Resource:
+              - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+              - !ImportValue jukebox-dynamodb-JukeboxCacheDynamoDbArn
+              -
+                !Join
+                  - ''
+                  - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+                    - /index/track_number-index
+              -
+                !Join
+                  - ''
+                  - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+                    - /index/search_title-index
+              -
+                !Join
+                  - ''
+                  - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+                    - /index/search_title_artist-index
+          -
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      PolicyName: !FindInMap [Jukebox, AlexaLambdaPolicy, Name]
+      Roles:
+        - !ImportValue jukebox-iam-roles-AlexaLambdaRoleName
+
+  ####### JukeboxRaspberryPiUser
+  # policy
+  JukeboxRaspberryPiPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - sqs:ListQueues
+            Resource:
+              - !ImportValue jukebox-sqs-QueueArn
+      PolicyName: !FindInMap [Jukebox, RaspberryPiPolicy, Name]
+      Users:
+        - !ImportValue jukebox-iam-roles-RaspberryPiUserName

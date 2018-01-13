@@ -1,0 +1,116 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - IAM Users & Roles
+
+Mappings:
+  Jukebox:
+    SongIndexLambdaRole:
+      Name: jukebox_song_index_lambda_role
+    AlexaLambdaRole:
+      Name: jukebox_alexa_lambda_role
+    RaspberryPiUser:
+      Name: jukebox_raspberrypi_user
+
+Resources:
+
+  ####### JukeboxSongIndexLambdaRole
+  # role
+  JukeboxSongIndexLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !FindInMap [Jukebox, SongIndexLambdaRole, Name]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: jukeboxsongindexlambda
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+
+  ####### JukeboxAlexaLambdaRole
+  # role
+  JukeboxAlexaLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !FindInMap [Jukebox, AlexaLambdaRole, Name]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: jukeboxalexalambda
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+
+  ####### JukeboxRaspberryPiUser
+  # user
+  JukeboxRaspberryPiUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !FindInMap [Jukebox, RaspberryPiUser, Name]
+
+  # user access keys
+  JukeboxRaspberryPiUserAccessKey:
+    Type: AWS::IAM::AccessKey
+    DependsOn: JukeboxRaspberryPiUser
+    Properties:
+      UserName: !FindInMap [Jukebox, RaspberryPiUser, Name]
+
+Outputs:
+
+  # Role for the lambda function that maintains the cache
+  JukeboxSongIndexLambdaRoleName:
+    Description: The Name of the song index lambda role
+    Value: !Ref JukeboxSongIndexLambdaRole
+    Export:
+      Name: !Sub '${AWS::StackName}-SongIndexLambdaRoleName'
+  JukeboxSongIndexLambdaRoleArn:
+    Description: The ARN of the song index lambda role
+    Value:
+      Fn::GetAtt:
+        - JukeboxSongIndexLambdaRole
+        - Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-SongIndexLambdaRoleArn'
+
+  # Role for the alexa lambda skill
+  JukeboxAlexaLambdaRoleName:
+    Description: The name of the Alexa Lambda Role
+    Value: !Ref JukeboxAlexaLambdaRole
+    Export:
+      Name: !Sub '${AWS::StackName}-AlexaLambdaRoleName'
+  JukeboxAlexaLambdaRoleArn:
+    Description: The ARN of the Alexa Lambda Role
+    Value:
+      Fn::GetAtt:
+        - JukeboxAlexaLambdaRole
+        - Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-AlexaLambdaRoleArn'
+
+  # User Running on RaspberryPi
+  JukeboxRaspberryPiUserName:
+    Description: The name of the RaspberryPi User
+    Value: !Ref JukeboxRaspberryPiUser
+    Export:
+      Name: !Sub '${AWS::StackName}-RaspberryPiUserName'
+  JukeboxRaspberryPiUserArn:
+    Description: The ARN of the RaspberryPi User
+    Value:
+      Fn::GetAtt:
+        - JukeboxRaspberryPiUser
+        - Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-RaspberryPiUserArn'
+  JukeboxRaspberryPiUserAccessKey:
+    Description: The Access Key for the RaspberryPi User
+    Value:
+      !Ref JukeboxRaspberryPiUserAccessKey
+  JukeboxRaspberryPiUserSecretKey:
+    Description: The Secret Key for the RaspberryPi User
+    Value:
+      !GetAtt JukeboxRaspberryPiUserAccessKey.SecretAccessKey

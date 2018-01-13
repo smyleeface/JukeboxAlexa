@@ -1,0 +1,65 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - SQS
+
+Mappings:
+  Jukebox:
+    RequestQueue:
+      Name: jukebox_request_queue.fifo
+
+
+Resources:
+
+  # sqs
+  JukeboxRequestQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      FifoQueue: true
+      QueueName: !FindInMap [Jukebox, RequestQueue, Name]
+
+  #sqs policy
+  JukeboxRequestQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Id: jukebox_request_queue.fifo/SQSDefaultPolicy
+        Statement:
+          -
+            Sid: Sid1493541576892
+            Effect: Allow
+            Principal:
+              AWS: !ImportValue jukebox-iam-roles-RaspberryPiUserArn
+            Action:
+              - sqs:SendMessage
+              - sqs:ListQueues
+            Resource: !GetAtt JukeboxRequestQueue.Arn
+      Queues:
+        - Ref: JukeboxRequestQueue
+
+
+Outputs:
+
+  QueueURL:
+    Description: URL of SQS Queue
+    Value:
+      Ref: JukeboxRequestQueue
+    Export:
+      Name: jukebox-sqs-QueueUrl
+  QueueARN:
+    Description: ARN of SQS Queue
+    Value:
+      Fn::GetAtt:
+        - JukeboxRequestQueue
+        - Arn
+    Export:
+      Name: jukebox-sqs-QueueArn
+  QueueName:
+    Description: Name SQS Queue
+    Value:
+      Fn::GetAtt:
+        - JukeboxRequestQueue
+        - QueueName
+    Export:
+      Name: jukebox-sqs-QueueName
