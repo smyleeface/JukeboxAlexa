@@ -67,7 +67,7 @@ Outputs:
     Description: The Name of the song index lambda role
     Value: !Ref JukeboxSongIndexLambdaRole
     Export:
-      Name: !Sub '${AWS::StackName}-SongIndexLambdaRoleName'
+      Name: jukebox-iam-roles-SongIndexLambdaRoleName
   JukeboxSongIndexLambdaRoleArn:
     Description: The ARN of the song index lambda role
     Value:
@@ -75,14 +75,14 @@ Outputs:
         - JukeboxSongIndexLambdaRole
         - Arn
     Export:
-      Name: !Sub '${AWS::StackName}-SongIndexLambdaRoleArn'
+      Name: jukebox-iam-roles-SongIndexLambdaRoleArn
 
   # Role for the alexa lambda skill
   JukeboxAlexaLambdaRoleName:
     Description: The name of the Alexa Lambda Role
     Value: !Ref JukeboxAlexaLambdaRole
     Export:
-      Name: !Sub '${AWS::StackName}-AlexaLambdaRoleName'
+      Name: jukebox-iam-roles-AlexaLambdaRoleName
   JukeboxAlexaLambdaRoleArn:
     Description: The ARN of the Alexa Lambda Role
     Value:
@@ -90,14 +90,14 @@ Outputs:
         - JukeboxAlexaLambdaRole
         - Arn
     Export:
-      Name: !Sub '${AWS::StackName}-AlexaLambdaRoleArn'
+      Name: jukebox-iam-roles-AlexaLambdaRoleArn
 
   # User Running on RaspberryPi
   JukeboxRaspberryPiUserName:
     Description: The name of the RaspberryPi User
     Value: !Ref JukeboxRaspberryPiUser
     Export:
-      Name: !Sub '${AWS::StackName}-RaspberryPiUserName'
+      Name: jukebox-iam-roles-RaspberryPiUserName
   JukeboxRaspberryPiUserArn:
     Description: The ARN of the RaspberryPi User
     Value:
@@ -105,7 +105,7 @@ Outputs:
         - JukeboxRaspberryPiUser
         - Arn
     Export:
-      Name: !Sub '${AWS::StackName}-RaspberryPiUserArn'
+      Name: jukebox-iam-roles-RaspberryPiUserArn
   JukeboxRaspberryPiUserAccessKey:
     Description: The Access Key for the RaspberryPi User
     Value:

@@ -61,9 +61,9 @@ Outputs:
     Description: The ARN of the Jukebox Song DB
     Value: !GetAtt JukeboxDynamodb.Arn
     Export:
-      Name: !Sub '${AWS::StackName}-JukeboxDynamoDbArn'
+      Name: jukebox-dynamodb-JukeboxDynamoDbArn
   JukeboxCacheDynamodb:
     Description: The ARN of the Jukebox Song Cache
     Value: !GetAtt JukeboxCacheDynamodb.Arn
     Export:
-      Name: !Sub '${AWS::StackName}-JukeboxCacheDynamoDbArn'
+      Name: jukebox-dynamodb-JukeboxCacheDynamoDbArn

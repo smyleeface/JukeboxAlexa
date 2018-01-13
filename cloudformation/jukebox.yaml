@@ -1,0 +1,82 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - Main Stack
+
+Mappings:
+  Application:
+    Jukebox:
+      Name: "Jukebox Alexa"
+
+Resources:
+
+  JukeboxIamRoles:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-iam-roles.yaml
+
+  JukeboxDynamoDb:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn: JukeboxIamRoles
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-dynamodb.yaml
+
+  JukeboxSqs:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn: JukeboxDynamoDb
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-sqs.yaml
+
+  JukeboxLambdaFunctions:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn: JukeboxSqs
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-lambda.yaml
+
+  JukeboxIamPolicies:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn: JukeboxLambdaFunctions
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-iam-policies.yaml
+
+Outputs:
+  JukeboxIamRoles:
+    Value: JukeboxIamRoles.NestedStackOutputName
+    Export:
+      Name: jukebox-iam-roles
+  JukeboxDynamoDb:
+    Value: JukeboxDynamoDb.NestedStackOutputName
+    Export:
+      Name: jukebox-dynamodb
+  JukeboxSqs:
+    Value: JukeboxSqs.NestedStackOutputName
+    Export:
+      Name: jukebox-sqs
+  JukeboxLambdaFunctions:
+    Value: JukeboxLambdaFunctions.NestedStackOutputName
+    Export:
+      Name: jukebox-lambda-function
+  JukeboxIamPolicies:
+    Value: JukeboxIamPolicies. NestedStackOutputName
+    Export:
+      Name: jukebox-iam-policies
