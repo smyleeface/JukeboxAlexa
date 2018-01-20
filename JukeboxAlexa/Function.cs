@@ -109,6 +109,16 @@ namespace JukeboxAlexa
                         songLookup = playSongArtistRequest.ProcessRequest(titleRequested?.Value, artistRequested?.Value);
                         SendSongToJukeboxQueue(songLookup.SnsResponse, "PlaySongArtistRequest");
                         return JukeboxAlexaResponse.GenerateResponseCard(songLookup.SpeechText);
+
+                    case "SpeakerRequest":
+                        Console.WriteLine($"**** INFO **** Intent: SpeakerRequest");
+                        songLookup.SnsResponse = new SnsMessageBody.Response
+                        {
+                            RequestType = "SpeakerRequest"
+                        };
+//                        SendSongToJukeboxQueue(songLookup.SnsResponse, "PlaySongArtistRequest");
+                        //TODO implement this
+                        return JukeboxAlexaResponse.GenerateResponseCard(songLookup.SpeechText);
                         
                     case "FindSongRequested":
 
