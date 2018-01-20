@@ -3,3 +3,8 @@ phases:
   build:
     commands:
       - echo TEST
+      - dotnet publish
+      - cd /app/bin/Debug/netcoreapp2.0/publish
+      - zip -r jukeboxAlexa.zip .
+  artifacts:
+    files: /app/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
