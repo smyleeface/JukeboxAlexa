@@ -1,8 +1,0 @@
-GetSongRequested play song {Song}
-GetSongRequested find song {Song}
-GetSongIdRequested play song number {SongNumber}
-GetSongIdRequested play number {SongNumber}
-SpeakerRequest turn speaker {SpeakerRequestOptions}
-SkipSong skip
-SkipSong skip song
-SkipSong stop song
