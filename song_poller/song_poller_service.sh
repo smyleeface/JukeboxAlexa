@@ -29,6 +29,9 @@ case "$1" in
     cd /root/home/jukebox
     git fetch origin
     git reset --hard origin/master
+    cp /root/jukebox/song_poller/song_poller_service.sh /etc/init.d/
+    chmod u+x /etc/init.d/song_poller_service.sh
+    update-rc.d /etc/init.d/song_poller_service.sh defaults
     pip install -r requirements.txt -U
     python ${song_poller_script_path}
 # do something
