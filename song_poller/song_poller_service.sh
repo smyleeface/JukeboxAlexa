@@ -8,7 +8,6 @@
 # Short-Description: Grabs messages from an aws sqs queue
 ### END INIT INFO
 
-
 #cp song_poller_service.sh /etc/init.d/
 #chmod u+x /etc/init.d/song_poller_service.sh
 #update-rc.d /etc/init.d/song_poller_service.sh defaults
