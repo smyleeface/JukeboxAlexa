@@ -26,7 +26,7 @@ song_poller_script_path=/root/jukebox/song_poller/song_poller.py
 case "$1" in
   start)
     log_begin_msg "Starting Jukebox Song Poller Service"
-    cd /root/home/jukebox
+    cd /root/jukebox
     git fetch origin
     git reset --hard origin/master
     cp /root/jukebox/song_poller/song_poller_service.sh /etc/init.d/
