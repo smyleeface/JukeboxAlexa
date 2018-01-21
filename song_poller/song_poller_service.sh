@@ -32,7 +32,7 @@ case "$1" in
     chown pi:pi -R /home/pi/jukebox/song_poller/
     cp /home/pi/jukebox/song_poller/song_poller_service.sh /etc/init.d/
     chmod u+x /etc/init.d/song_poller_service.sh
-    update-rc.d /etc/init.d/song_poller_service.sh defaults
+    update-rc.d song_poller_service.sh defaults
     pip install -r requirements.txt -U
     python ${song_poller_script_path}
 # do something
