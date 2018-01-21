@@ -21,7 +21,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin
 . /lib/lsb/init-functions
 # If you need to source some other scripts, do it here
 
-song_poller_script_path=/home/pi/jukebox/song_poller/song_poller.py
+song_poller_script_path=/home/pi/jukebox/song_poller/__init__.py
 
 case "$1" in
   start)
