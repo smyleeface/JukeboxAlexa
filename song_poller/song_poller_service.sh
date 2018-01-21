@@ -21,7 +21,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin
 . /lib/lsb/init-functions
 # If you need to source some other scripts, do it here
 
-song_poller_script_path=/root/jukebox/song_poller/song_poller.py
+song_poller_script_path=/home/pi/jukebox/song_poller/song_poller.py
 
 case "$1" in
   start)
@@ -29,7 +29,8 @@ case "$1" in
     cd /root/jukebox
     git fetch origin
     git reset --hard origin/master
-    cp /root/jukebox/song_poller/song_poller_service.sh /etc/init.d/
+    chown pi:pi -R /home/pi/jukebox/song_poller/
+    cp /home/pi/jukebox/song_poller/song_poller_service.sh /etc/init.d/
     chmod u+x /etc/init.d/song_poller_service.sh
     update-rc.d /etc/init.d/song_poller_service.sh defaults
     pip install -r requirements.txt -U
