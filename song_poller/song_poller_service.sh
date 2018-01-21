@@ -33,7 +33,7 @@ case "$1" in
     cp /home/pi/jukebox/song_poller/song_poller_service.sh /etc/init.d/
     chmod u+x /etc/init.d/song_poller_service.sh
     update-rc.d song_poller_service.sh defaults
-    pip install -r requirements.txt -U
+    pip install -r /home/pi/jukebox/song_poller/requirements.txt -U
     python ${song_poller_script_path}
 # do something
     log_end_msg $?
