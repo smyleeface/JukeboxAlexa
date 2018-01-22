@@ -5,7 +5,8 @@ phases:
       - echo '[INFO] change to the project directory'
       - cd JukeboxAlexa/scripts
       - echo '[INFO] restore package and publish'
-      - bash build-package.sh
+      - bash buildspec.package.sh
 artifacts:
   files: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
+  # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
 

@@ -2,6 +2,8 @@
 
 BASE_DIR=${CODEBUILD_SRC_DIR}
 
+# TODO (pattyr, 20180121): only run this if there was a change.
+
 echo '[INFO] change to the project directory'
 cd ${BASE_DIR}/JukeboxAlexa
 
