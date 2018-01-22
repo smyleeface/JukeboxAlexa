@@ -12,3 +12,4 @@ phases:
       - zip -r jukeboxAlexa.zip .
 artifacts:
   files: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
+
