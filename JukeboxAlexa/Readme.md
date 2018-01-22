@@ -1,46 +1,24 @@
-# AWS Lambda Empty Function Project
+# JukeboxAlexa
 
-This starter project consists of:
-* Function.cs - class file containing a class with a single function handler method
-* aws-lambda-tools-defaults.json - default argument settings for use with Visual Studio and command line deployment tools for AWS
-* project.json - .NET Core project file with build and tool declarations for the Amazon.Lambda.Tools Nuget package
+Alexa skill used to send song requests to a jukebox.
 
-You may also have a test project depending on the options selected.
+## Build/Deploy
 
-The generated function handler is a simple method accepting a string argument that returns the uppercase equivalent of the input string. Replace the body of this method, and parameters, to suit your needs. 
+### CodeBuild
 
-## Here are some steps to follow from Visual Studio:
+* `buildspec.package.sh` used in CodeBuild's buildspec.yml when an update from Github triggers a build. 
+* CodeBuild uses the `Docker.build` image from ECR `jukebox_alexa_build` to build the files in this project then publish and zip them.
+* To update ECR `jukebox_alexa_build` image:
+    * make changes to `Dockerfile.build`
+    * locally run `dockerfile.build.sh` to build and push `Dockerfile.build` to ECR
+* CodeBuild packages files in *.zip to public bucket defined in [cloudformation](../cloudformation)
 
-To deploy your function to AWS Lambda, right click the project in Solution Explorer and select *Publish to AWS Lambda*.
+### Lambda Development
 
-To view your deployed function open its Function View window by double-clicking the function name shown beneath the AWS Lambda node in the AWS Explorer tree.
+Building and deploying lambda function locally.
 
-To perform testing against your deployed function use the Test Invoke tab in the opened Function View window.
-
-To configure event sources for your deployed function, for example to have your function invoked when an object is created in an Amazon S3 bucket, use the Event Sources tab in the opened Function View window.
-
-To update the runtime configuration of your deployed function use the Configuration tab in the opened Function View window.
-
-To view execution logs of invocations of your function use the Logs tab in the opened Function View window.
-
-## Here are some steps to follow to get started from the command line:
-
-Once you have edited your function you can use the following command lines to build, test and deploy your function to AWS Lambda from the command line (these examples assume the project name is *EmptyFunction*):
-
-Restore dependencies
-```
-    cd "JukeboxAlexa"
-    dotnet restore
-```
-
-Execute unit tests
-```
-    cd "JukeboxAlexa/test/JukeboxAlexa.Tests"
-    dotnet test
-```
-
-Deploy function to AWS Lambda
-```
-    cd "JukeboxAlexa/src/JukeboxAlexa"
-    dotnet lambda deploy-function
+```shell
+dotnet restore
+dotnet build
+dotnet lambda deploy-function jukebox_alexa --region us-west-2
 ```
