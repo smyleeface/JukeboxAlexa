@@ -2,9 +2,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo TEST
-      - echo $PWD
       - cd JukeboxAlexa
+      - dotnet restore
       - dotnet publish
       - cd bin/Debug/netcoreapp2.0/publish
       - zip -r jukeboxAlexa.zip .
