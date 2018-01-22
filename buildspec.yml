@@ -2,12 +2,12 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo "*** INFO: change to the project directory"
+      - echo *** INFO: change to the project directory
       - cd JukeboxAlexa
-      - echo "*** INFO: restore package and publish"
+      - echo *** INFO: restore package and publish
       - dotnet restore
       - dotnet publish
-      - echo "*** INFO: zip the compilied files"
+      - echo *** INFO: zip the compilied files
       - cd bin/Debug/netcoreapp2.0/publish
       - zip -r jukeboxAlexa.zip .
 artifacts:
