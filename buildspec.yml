@@ -6,8 +6,8 @@ phases:
       - echo $PWD
       - cd JukeboxAlexa
       - dotnet publish
-      - cd /bin/Debug/netcoreapp2.0/publish
+      - cd bin/Debug/netcoreapp2.0/publish
       - zip -r jukeboxAlexa.zip .
-      - ls -la /bin/Debug/netcoreapp2.0/publish
+      - ls -la .
 #artifacts:
 #  files: /app/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
