@@ -3,13 +3,9 @@ phases:
   build:
     commands:
       - echo '[INFO] change to the project directory'
-      - cd JukeboxAlexa
+      - cd JukeboxAlexa/scripts
       - echo '[INFO] restore package and publish'
-      - dotnet restore
-      - dotnet publish
-      - echo '[INFO] zip the compilied files'
-      - cd bin/Debug/netcoreapp2.0/publish
-      - zip -r jukeboxAlexa.zip .
+      - bash build-package.sh
 artifacts:
   files: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
 
