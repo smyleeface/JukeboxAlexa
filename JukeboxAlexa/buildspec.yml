@@ -2,8 +2,6 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo '[INFO] change to the project directory'
-      - cd JukeboxAlexa/scripts
       - echo '[INFO] restore package and publish'
       - bash buildspec.package.sh
 artifacts:
