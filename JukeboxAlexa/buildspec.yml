@@ -6,8 +6,6 @@ phases:
       - cd JukeboxAlexa
       - dotnet restore
       - dotnet publish
-      - cd bin/Debug/netcoreapp2.0/publish
-      - zip -r jukeboxAlexa.zip .
 artifacts:
   files:
     - '**/*'
