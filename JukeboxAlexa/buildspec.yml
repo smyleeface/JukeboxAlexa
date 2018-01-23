@@ -6,10 +6,15 @@ phases:
       - cd JukeboxAlexa
       - dotnet restore
       - dotnet publish
-artifacts:
-  files:
-    - '**/*'
-  base-directory: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish
-  discard-paths: yes
-  # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
+      - cd bin/Debug/netcoreapp2.0/publish
+      - zip -r jukeboxAlexa.zip .
+      - s3 cp jukeboxAlexa.zip s3://smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
+      # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
+
+# NOTE (patty, 20180122): artifacts feature is not used because codebuild encrypts the *.zip - i want it publicly accessible
+#artifacts:
+#  files:
+#    - '**/*'
+#  base-directory: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish
+#  discard-paths: yes
 
