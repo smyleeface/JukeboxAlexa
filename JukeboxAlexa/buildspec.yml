@@ -3,7 +3,11 @@ phases:
   build:
     commands:
       - echo '[INFO] restore package and publish'
-      - bash buildspec.package.sh
+      - cd JukeboxAlexa
+      - dotnet restore
+      - dotnet publish
+      - cd bin/Debug/netcoreapp2.0/publish
+      - zip -r jukeboxAlexa.zip .
 artifacts:
   files: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
   # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
