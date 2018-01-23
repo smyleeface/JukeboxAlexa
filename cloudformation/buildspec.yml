@@ -1,7 +1,5 @@
 version: 0.2
 
-phases:
-
 # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/cloudformation/*.yaml
 artifacts:
   files:

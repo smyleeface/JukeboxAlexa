@@ -6,4 +6,3 @@ artifacts:
     - lambda_function.py
   base-directory: songlist_index
   discard-paths: yes
-
