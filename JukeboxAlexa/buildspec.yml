@@ -9,6 +9,9 @@ phases:
       - cd bin/Debug/netcoreapp2.0/publish
       - zip -r jukeboxAlexa.zip .
 artifacts:
-  files: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish/jukeboxAlexa.zip
+  files:
+    - '**/*'
+  base-directory: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish
+  discard-paths: yes
   # publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
 
