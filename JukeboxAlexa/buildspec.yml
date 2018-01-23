@@ -8,7 +8,7 @@ phases:
       - dotnet publish
       - cd bin/Debug/netcoreapp2.0/publish
 
-# publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
+# publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/jukeboxAlexa.zip
 artifacts:
   files:
     - '**/*'
