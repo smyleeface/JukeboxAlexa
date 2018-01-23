@@ -17,7 +17,7 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-iam-roles.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-iam-roles.yaml
 
   JukeboxDynamoDb:
     Type: "AWS::CloudFormation::Stack"
@@ -27,7 +27,7 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-dynamodb.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-dynamodb.yaml
 
   JukeboxSqs:
     Type: "AWS::CloudFormation::Stack"
@@ -37,7 +37,7 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-sqs.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-sqs.yaml
 
   JukeboxLambdaFunctions:
     Type: "AWS::CloudFormation::Stack"
@@ -47,7 +47,7 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-lambda.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda.yaml
 
   JukeboxIamPolicies:
     Type: "AWS::CloudFormation::Stack"
@@ -57,7 +57,7 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleepar-cloudformation-templates/jukebox-iam-policies.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-iam-policies.yaml
 
 Outputs:
   JukeboxIamRoles:

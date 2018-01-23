@@ -3,11 +3,18 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Alexa Jukebox Application - DynamoDB Tables
 
+Mappings:
+  Jukebox:
+    SongTable:
+      Name: JukeboxSongs
+    SongCacheTable:
+      Name: JukeboxSongsCache
+
 Resources:
   JukeboxDynamodb:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: JukeboxSongs
+      TableName: !FindInMap [Jukebox, SongTable, Name]
       AttributeDefinitions:
         - AttributeName: track_number
           AttributeType: S
@@ -45,7 +52,7 @@ Resources:
   JukeboxCacheDynamodb:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: JukeboxSongsCache
+      TableName: !FindInMap [Jukebox, SongCacheTable, Name]
       AttributeDefinitions:
         - AttributeName: word
           AttributeType: S

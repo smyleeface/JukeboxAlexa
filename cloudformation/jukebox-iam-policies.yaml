@@ -1,7 +1,7 @@
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Alexa Jukebox Application - IAM Users, Roles, Policies
+Description: Alexa Jukebox Application - IAM Policies
 
 Mappings:
   Jukebox:

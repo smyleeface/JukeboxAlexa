@@ -17,7 +17,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/LambdaJukeboxAlexa/jukeboxAlexa.zip
+        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/jukeboxAlexa.zip
       FunctionName: !FindInMap [Jukebox, AlexaLambda, Name]
       Handler: JukeboxAlexa::JukeboxAlexa.Function::FunctionHandler
       Role: !ImportValue jukebox-iam-roles-AlexaLambdaRoleArn
@@ -29,11 +29,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        ZipFile: >
-          exports.handler = function(event, context, callback) {
-              console.log('started');
-              console.log(event);
-          }
+        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/songlist_index.zip
       FunctionName: !FindInMap [Jukebox, CacheIndexSongsLambda, Name]
       Handler: lambda_function.lambda_handler
       Role: !ImportValue jukebox-iam-roles-SongIndexLambdaRoleArn
