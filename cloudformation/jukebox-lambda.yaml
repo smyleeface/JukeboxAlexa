@@ -36,6 +36,20 @@ Resources:
       Runtime: python3.6
       Timeout: 30
 
+  JukeboxCacheIndexLambdaTrigger:
+    Type: "AWS::Lambda::EventSourceMapping"
+    Properties:
+      BatchSize: 5
+      Enabled: true
+      EventSourceArn:
+        !Join
+          - ''
+          - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+            - '/stream/*'
+      FunctionName:
+        Fn::GetAtt:
+          - JukeboxAlexaLambda
+          - Arn
 
 Outputs:
   JukeboxAlexaLambdaArn:
