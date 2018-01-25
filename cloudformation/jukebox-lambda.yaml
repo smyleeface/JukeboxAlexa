@@ -41,6 +41,7 @@ Resources:
     Properties:
       BatchSize: 5
       Enabled: true
+      StartingPosition: LATEST
       EventSourceArn:
         !Join
           - ''
