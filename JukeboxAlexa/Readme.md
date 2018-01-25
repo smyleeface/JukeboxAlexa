@@ -15,7 +15,7 @@ Alexa skill used to send song requests to a jukebox.
 
 ### Lambda Development
 
-Building and deploying lambda function locally.
+Local building and deploying the lambda function.
 
 ```shell
 dotnet restore
