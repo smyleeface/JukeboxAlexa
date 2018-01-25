@@ -18,7 +18,7 @@ class Song(object):
 
 
 class JukeboxSongs(object):
-    def __init__(self, path_to_file, region='us-west-2'):
+    def __init__(self, path_to_file, profile, region='us-west-2'):
         self.path_to_file = path_to_file
         self.new_songs = []
         self.existing_songs = []
@@ -26,7 +26,7 @@ class JukeboxSongs(object):
         self.added_songs = []
         self.delete_songs = []
         self.batch_dynamodb_values_list = []
-        session = boto3.session.Session(profile_name='default', region_name=region)
+        session = boto3.session.Session(profile_name=profile, region_name=region)
         self.dynamodb_client = session.client('dynamodb')
         self.logger = self.set_logger()
 
@@ -188,8 +188,9 @@ class JukeboxSongs(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Description')
-    parser.add_argument('path_to_file', type=str, help='Path to the file')
+    parser.add_argument('--profile', type=str, nargs='?', help='AWS profile to use', default='default')
+    parser.add_argument('file', type=str, help='Path to the file')
     args = parser.parse_args()
-    path_to_file = os.path.abspath(args.path_to_file)
-    jukebox_songs = JukeboxSongs(path_to_file)
+    path_to_file = os.path.abspath(args.file)
+    jukebox_songs = JukeboxSongs(path_to_file=path_to_file, profile=args.profile)
     jukebox_songs.run_update()
