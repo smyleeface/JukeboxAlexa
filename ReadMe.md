@@ -14,77 +14,30 @@ Alexa skill that will play the song asked on the jukebox, by triggering a relay 
     * Install AWS CLI `sudo pip install awscli`
     * Configure AWS CLI with User keys `aws configure`
 
-## Setup Alexa Skill
-On the [Alexa developer portal](https://developer.amazon.com):
-1. Create a new Alexa Skill called `jukebox`
-2. Use the `jukebox_alexa_skill/IntentSchema.json` and the `jukebox_alexa_skill/Utterances.txt` on the `Interaction Model` tab.
-3. Stop on the `Configuration` tab.
-4. Get the `Skill id`; it is needed during the `Setup AWS` section below.
+## alexa_skill_configuration
 
-## Setup AWS
-From the root directory of the project you can run the following commands:
+Information on how to setup the Alexa skill in the developer portal.
 
-### Run install script
-```bash
-bash alexa-jukebox install-stacks
-```
+## cloudformation
 
-### Update stack with the latest changes
-```bash
-bash alexa-jukebox update-stacks
-```
+CloudFormation templates to build the Jukebox infrastructure.
 
-### Update lambda code only
-```bash
-bash alexa-jukebox update-lambda
-```
+## files_decrypt
 
-### Update songs in DyanmoDB
-```bash
-bash alexa-jukebox update-songs
-```
+Helper function to decrypt files from CodeBuild.
 
-### Get information from the stacks
-```bash
-bash alexa-jukebox info
-```
+## JukeboxAlexa
 
-### Delete stacks
-```bash
-bash alexa-jukebox delete-stacks
-```
+C# Lambda function Alexa skill.
 
-## Setup Alexa Skill (continued)
+## song_poller
 
-3. Back on the `Configuration` tab, add the `Lambda ARN` outputted during the `Setup AWS` section.
-    1. Type `bash alexa-jukebox info` if this information is no longer on the screen.
+Python application running on the Raspberry Pi that polls for song in a queue. 
 
-## Setup Pi Song Poller
+## songlist_index
 
-* On the Raspberry Pi, clone the repo in the root home directory.
-```
-git clone https://github.com/smyleeface/smylee_jukebox.git jukebox`
-```
+Manages the cached words of the song titles in the database.
 
-* Go into the `jukebox_song_poller` directory to the root home directory.
-```
-cd /root/home/jukebox/jukebox_song_poller`
-```
+## update_songlist
 
-* In the terminal, type
-```
-pip install -r requirements.txt -U
-```
-* Copy the `song_poller_service.sh` to the `/etc/init.d/` directory.
-```
-cp song_poller_service.sh /etc/init.d/
-```
-* Change the permissions to the file.
-```
-chmod u+x /etc/init.d/song_poller_service.sh
-```
-* Add the file to local service start defaults
-```
-update-rc.local /etc/init.d/song_poller_service.sh defaults
-```
-* Restart pi
+Run locally to update the songs in the database.
