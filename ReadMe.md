@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/smyleeface/smylee_jukebox.svg?branch=master)](https://travis-ci.org/smyleeface/smylee_jukebox)  [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/smyleeface/smylee-jukebox)
-
 Alexa Jukebox
 =============
 Alexa skill that will play the song asked on the jukebox, by triggering a relay connected to a number keypad on a jukebox.
