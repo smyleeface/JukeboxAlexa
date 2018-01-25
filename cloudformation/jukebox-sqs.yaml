@@ -17,6 +17,7 @@ Resources:
     Properties:
       FifoQueue: true
       QueueName: !FindInMap [Jukebox, RequestQueue, Name]
+    ReceiveMessageWaitTimeSeconds: 20
 
   #sqs policy
   JukeboxRequestQueuePolicy:
@@ -35,7 +36,6 @@ Resources:
               - sqs:SendMessage
               - sqs:ListQueues
             Resource: !GetAtt JukeboxRequestQueue.Arn
-      ReceiveMessageWaitTimeSeconds: 20
       Queues:
         - Ref: JukeboxRequestQueue
 
