@@ -42,11 +42,7 @@ Resources:
       BatchSize: 5
       Enabled: true
       StartingPosition: LATEST
-      EventSourceArn:
-        !Join
-          - ''
-          - - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
-            - '/stream/*'
+      EventSourceArn: !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
       FunctionName:
         Fn::GetAtt:
           - JukeboxAlexaLambda
