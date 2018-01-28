@@ -39,9 +39,20 @@ Resources:
           Value: !FindInMap [Application, Jukebox, Name]
       TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-sqs.yaml
 
+  JukeboxS3:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3.yaml
+
   JukeboxLambdaFunctions:
     Type: "AWS::CloudFormation::Stack"
-    DependsOn: JukeboxSqs
+    DependsOn:
+      - JukeboxSqs
+      - JukeboxS3
     Properties:
       Tags:
         -
