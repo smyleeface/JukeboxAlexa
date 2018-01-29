@@ -19,7 +19,7 @@ Resources:
 
   ####### SongListUploadLambdaRole
   # role
-  SongListUploadLambdaRole:
+  JukeboxSongListUploadLambdaRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !FindInMap [Jukebox, SongListUploadLambdaRole, Name]
