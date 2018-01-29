@@ -70,7 +70,7 @@ Resources:
     DependsOn: JukeboxLambdaFunctions
     Properties:
       Parameters:
-        - S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
+        S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
       Tags:
         -
           Key: AppName
