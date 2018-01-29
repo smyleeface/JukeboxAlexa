@@ -3,6 +3,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Alexa Jukebox Application - Main Stack
 
+Parameters:
+  S3BucketJukeboxSongsCsv:
+    Type: String
+    Description: S3 Bucket the Jukebox Songs CSV are uploaded
+
 Mappings:
   Application:
     Jukebox:
@@ -88,6 +93,10 @@ Outputs:
     Export:
       Name: jukebox-lambda-function
   JukeboxIamPolicies:
-    Value: JukeboxIamPolicies. NestedStackOutputName
+    Value: JukeboxIamPolicies.NestedStackOutputName
     Export:
       Name: jukebox-iam-policies
+  S3BucketJukeboxSongsCsv:
+    Value: JukeboxS3Bucket.Name
+    Export:
+      Name: jukebox-s3-JukeboxSongsCsvName
