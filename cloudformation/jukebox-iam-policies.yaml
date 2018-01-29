@@ -5,6 +5,8 @@ Description: Alexa Jukebox Application - IAM Policies
 
 Mappings:
   Jukebox:
+    SongListUploadLambdaPolicy:
+      Name: jukebox_song_list_upload_lambda_policy
     SongIndexLambdaPolicy:
       Name: jukebox_song_index_lambda_policy
     AlexaLambdaPolicy:
@@ -14,7 +16,45 @@ Mappings:
 
 Resources:
 
-  ####### JukeboxSongIndexLambdaRole
+  ####### JukeboxSongListUploadLambdaPolicy
+  # policy
+  JukeboxSongListUploadLambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - dynamodb:BatchGetItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+              - dynamodb:DeleteItem
+              - dynamodb:Scan
+              - dynamodb:UpdateIte
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+              - !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
+              - !ImportValue jukebox-s3-JukeboxSongsCsvArn
+              -
+                !Join
+                  - ''
+                  - - !ImportValue jukebox-s3-JukeboxSongsCsvArn
+                    - '/*'
+          -
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      PolicyName: !FindInMap [Jukebox, SongListUploadLambdaPolicy, Name]
+      Roles:
+        - !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleName
+
+  ####### JukeboxSongIndexLambdaPolicy
   # policy
   JukeboxSongIndexLambdaPolicy:
     Type: AWS::IAM::Policy

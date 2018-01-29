@@ -5,6 +5,8 @@ Description: Alexa Jukebox Application - IAM Users & Roles
 
 Mappings:
   Jukebox:
+    SongListUploadLambdaRole:
+      Name: jukebox_song_list_upload_lambda_role
     SongIndexLambdaRole:
       Name: jukebox_song_index_lambda_role
     AlexaLambdaRole:
@@ -13,6 +15,23 @@ Mappings:
       Name: jukebox_raspberrypi_user
 
 Resources:
+
+
+  ####### SongListUploadLambdaRole
+  # role
+  SongListUploadLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !FindInMap [Jukebox, SongListUploadLambdaRole, Name]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: jukeboxsonglistuploadlambda
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
 
   ####### JukeboxSongIndexLambdaRole
   # role
@@ -61,6 +80,21 @@ Resources:
       UserName: !FindInMap [Jukebox, RaspberryPiUser, Name]
 
 Outputs:
+
+  # Role for the lambda function that maintains the song list
+  JukeboxSongListUploadLambdaRoleName:
+    Description: The Name of the song list upload lambda role
+    Value: !Ref JukeboxSongListUploadLambdaRole
+    Export:
+      Name: jukebox-iam-roles-SongListUploadLambdaRoleName
+  JukeboxSongListUploadLambdaRoleArn:
+    Description: The ARN of the song list upload lambda role
+    Value:
+      Fn::GetAtt:
+        - JukeboxSongListUploadLambdaRole
+        - Arn
+    Export:
+      Name: jukebox-iam-roles-SongListUploadLambdaRoleArn
 
   # Role for the lambda function that maintains the cache
   JukeboxSongIndexLambdaRoleName:
