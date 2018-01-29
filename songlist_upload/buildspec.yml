@@ -1,0 +1,10 @@
+version: 0.2
+
+# publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/songlist_upload.zip
+artifacts:
+  files:
+    - lambda_function.py
+    - jukebox_songs.py
+    - song.py
+  base-directory: songlist_upload
+  discard-paths: yes
