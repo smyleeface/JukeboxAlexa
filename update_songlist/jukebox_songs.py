@@ -1,33 +1,21 @@
-#########
-# update_songs.py ./JukeboxSongs.csv
-#########
-import argparse
-import boto3
 import csv
 import logging
-import os
 
-
-class Song(object):
-    def __init__(self, number, song, artist, search_title, search_artist):
-        self.number = number
-        self.song = song
-        self.artist = artist
-        self.search_title = search_title.lower()
-        self.search_artist = search_artist.lower()
+from song import Song
 
 
 class JukeboxSongs(object):
-    def __init__(self, path_to_file, profile, region='us-west-2'):
-        self.path_to_file = path_to_file
+    def __init__(self, session, bucket, key, region='us-west-2'):
+        self.bucket = bucket
+        self.key = key
         self.new_songs = []
         self.existing_songs = []
         self.matching_songs = []
         self.added_songs = []
         self.delete_songs = []
         self.batch_dynamodb_values_list = []
-        session = boto3.session.Session(profile_name=profile, region_name=region)
         self.dynamodb_client = session.client('dynamodb')
+        self.s3_client = session.client('s3')
         self.logger = self.set_logger()
 
     @staticmethod
@@ -55,9 +43,14 @@ class JukeboxSongs(object):
 
     def _read_uploaded_songs(self):
         """Read the songs from csv file"""
-        with open(self.path_to_file, 'r') as csvfile:
-            song_reader = csv.reader(csvfile, delimiter=',')
-            for song_info in song_reader:
+        s3_object = self.s3_client.get_object(
+            Bucket=self.bucket,
+            Key=self.key
+        )
+        song_data = s3_object["Body"].read().decode('utf-8').split('\n')
+        song_reader = csv.reader(song_data, delimiter=',')
+        for song_info in song_reader:
+            if len(song_info) > 0:
                 if song_info[0].isdigit() and len(song_info[0]) > 0 and len(song_info[2]) > 0:
                     song = Song(
                         song=song_info[2],
@@ -184,13 +177,3 @@ class JukeboxSongs(object):
         """Summary of the updates performed"""
         self.logger.info(' Added {0} Songs'.format(len(self.added_songs)))
         self.logger.info(' Deleted {0} Songs'.format(len(self.delete_songs)))
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Description')
-    parser.add_argument('--profile', type=str, nargs='?', help='AWS profile to use', default='default')
-    parser.add_argument('file', type=str, help='Path to the file')
-    args = parser.parse_args()
-    path_to_file = os.path.abspath(args.file)
-    jukebox_songs = JukeboxSongs(path_to_file=path_to_file, profile=args.profile)
-    jukebox_songs.run_update()
