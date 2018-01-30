@@ -9,22 +9,22 @@ Mappings:
       Name: jukebox_alexa
     CacheIndexSongsLambda:
       Name: jukebox_cache_index_songs
-    SonglistUploadLambda:
+    SongListUploadLambda:
       Name: jukebox_song_list_upload
 
 Resources:
 
-#  ##### Lambda triggered by update songlist file upload
-#  JukeboxSongListUploadLambda:
-#    Type: AWS::Lambda::Function
-#    Properties:
-#      Code:
-#        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/songlist_upload.zip
-#      FunctionName: !FindInMap [Jukebox, SonglistUploadLambda, Name]
-#      Handler: lambda_function.lambda_handler
-#      Role: !ImportValue jukebox-iam-roles-SonglistUploadLambdaRoleArn
-#      Runtime: python3.6
-#      Timeout: 30
+  ##### Lambda triggered by update songlist file upload
+  JukeboxSongListUploadLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/songlist_upload.zip
+      FunctionName: !FindInMap [Jukebox, SongListUploadLambda, Name]
+      Handler: lambda_function.lambda_handler
+      Role: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+      Runtime: python3.6
+      Timeout: 30
 
   ##### Lambda triggered by DynamoDb
   JukeboxCacheIndexLambda:
