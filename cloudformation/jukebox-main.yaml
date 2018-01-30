@@ -6,7 +6,6 @@ Description: Alexa Jukebox Application - Main Stack
 Parameters:
   S3BucketJukeboxSongsCsv:
     Type: String
-    Default: tremar-songlist-update
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
 
 Mappings:
@@ -48,6 +47,8 @@ Resources:
   JukeboxS3:
     Type: "AWS::CloudFormation::Stack"
     Properties:
+      Parameters:
+        S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
       Tags:
         -
           Key: AppName
@@ -70,8 +71,6 @@ Resources:
     Type: "AWS::CloudFormation::Stack"
     DependsOn: JukeboxLambdaFunctions
     Properties:
-      Parameters:
-        S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
       Tags:
         -
           Key: AppName
