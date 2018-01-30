@@ -13,15 +13,15 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
-#      NotificationConfiguration:
-#        LambdaConfigurations:
-#          - Event: "s3:ObjectCreated:*"
-#            Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: suffix
-#                    Value: xml
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: xml
 
 Outputs:
   S3JukeboxSongsCsv:
