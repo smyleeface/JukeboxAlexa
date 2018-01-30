@@ -6,6 +6,7 @@ Description: Alexa Jukebox Application - Main Stack
 Parameters:
   S3BucketJukeboxSongsCsv:
     Type: String
+    Default: tremar-songlist-update
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
 
 Mappings:
