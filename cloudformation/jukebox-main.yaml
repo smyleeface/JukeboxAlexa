@@ -70,7 +70,9 @@ Resources:
 
   JukeboxIamPolicies:
     Type: "AWS::CloudFormation::Stack"
-    DependsOn: JukeboxLambdaFunctions
+    DependsOn:
+      - JukeboxLambdaFunctions
+      - JukeboxS3
     Properties:
       Tags:
         -
