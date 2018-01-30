@@ -49,6 +49,8 @@ Resources:
           ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
   JukeboxCacheDynamodb:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -69,6 +71,11 @@ Outputs:
     Value: !GetAtt JukeboxDynamodb.Arn
     Export:
       Name: jukebox-dynamodb-JukeboxDynamoDbArn
+  JukeboxDynamodbStream:
+    Description: The Stream ARN of the Jukebox Song DB
+    Value: !GetAtt JukeboxDynamodb.StreamArn
+    Export:
+      Name: jukebox-dynamodb-JukeboxDynamoDbStreamArn
   JukeboxCacheDynamodb:
     Description: The ARN of the Jukebox Song Cache
     Value: !GetAtt JukeboxCacheDynamodb.Arn

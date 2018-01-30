@@ -1,0 +1,17 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - Lambda Triggers
+
+Resources:
+
+  ##### Lambda triggered by DynamoDb
+  JukeboxCacheIndexLambdaTrigger:
+    Type: "AWS::Lambda::EventSourceMapping"
+    Properties:
+      BatchSize: 5
+      Enabled: true
+      StartingPosition: LATEST
+      EventSourceArn: !ImportValue jukebox-dynamodb-JukeboxDynamoDbStreamArn
+      FunctionName: !ImportValue jukebox-lambda-cacheindexlambdaarn
+

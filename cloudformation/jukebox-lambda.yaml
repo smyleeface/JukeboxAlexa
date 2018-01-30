@@ -38,18 +38,6 @@ Resources:
       Runtime: python3.6
       Timeout: 30
 
-  JukeboxCacheIndexLambdaTrigger:
-    Type: "AWS::Lambda::EventSourceMapping"
-    Properties:
-      BatchSize: 5
-      Enabled: true
-      StartingPosition: LATEST
-      EventSourceArn: !ImportValue jukebox-dynamodb-JukeboxDynamoDbArn
-      FunctionName:
-        Fn::GetAtt:
-          - JukeboxAlexaLambda
-          - Arn
-
   ##### Lambda triggered by alexa
   JukeboxAlexaLambda:
     Type: AWS::Lambda::Function
@@ -69,17 +57,22 @@ Outputs:
       Fn::GetAtt:
         - JukeboxAlexaLambda
         - Arn
+  JukeboxCacheIndexLambdaName:
+    Description: The Name of the Cache Index Lambda Function
+    Value: !FindInMap [Jukebox, CacheIndexSongsLambda, Name]
+    Export:
+      Name: jukebox-lambda-cacheindexlambdaname
   JukeboxCacheIndexLambdaArn:
     Description: The ARN of the Cache Index Lambda Function
     Value:
       Fn::GetAtt:
         - JukeboxCacheIndexLambda
         - Arn
+    Export:
+      Name: jukebox-lambda-cacheindexlambdaarn
   JukeboxSongListUploadLambdaArn:
     Description: The ARN of the Song List Upload Lambda Function
     Value:
       Fn::GetAtt:
         - JukeboxSongListUploadLambda
         - Arn
-    Export:
-      Name: jukebox-lambda-songlistuploadarn

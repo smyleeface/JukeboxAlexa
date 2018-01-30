@@ -44,18 +44,6 @@ Resources:
           Value: !FindInMap [Application, Jukebox, Name]
       TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-sqs.yaml
 
-  JukeboxS3:
-    Type: "AWS::CloudFormation::Stack"
-    DependsOn: JukeboxLambdaFunctions
-    Properties:
-      Parameters:
-        S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
-      Tags:
-        -
-          Key: AppName
-          Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3.yaml
-
   JukeboxLambdaFunctions:
     Type: "AWS::CloudFormation::Stack"
     DependsOn:
@@ -68,6 +56,18 @@ Resources:
           Value: !FindInMap [Application, Jukebox, Name]
       TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda.yaml
 
+  JukeboxS3:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn: JukeboxLambdaFunctions
+    Properties:
+      Parameters:
+        S3BucketJukeboxSongsCsv: !Ref S3BucketJukeboxSongsCsv
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3.yaml
+
   JukeboxIamPolicies:
     Type: "AWS::CloudFormation::Stack"
     DependsOn: JukeboxLambdaFunctions
@@ -77,6 +77,18 @@ Resources:
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
       TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-iam-policies.yaml
+
+  JukeboxLambdaTriggers:
+    Type: "AWS::CloudFormation::Stack"
+    DependsOn:
+      - JukeboxLambdaFunctions
+      - JukeboxIamPolicies
+    Properties:
+      Tags:
+        -
+          Key: AppName
+          Value: !FindInMap [Application, Jukebox, Name]
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda-triggers.yaml
 
 Outputs:
   JukeboxIamRoles:
