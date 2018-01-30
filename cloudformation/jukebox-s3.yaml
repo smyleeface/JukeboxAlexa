@@ -17,11 +17,11 @@ Resources:
         LambdaConfigurations:
           - Event: "s3:ObjectCreated:*"
             Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: xml
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: suffix
+#                    Value: xml
 
 Outputs:
   S3JukeboxSongsCsv:
