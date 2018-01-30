@@ -81,20 +81,20 @@ Resources:
 
 Outputs:
 
-#  # Role for the lambda function that maintains the song list
-#  JukeboxSongListUploadLambdaRoleName:
-#    Description: The Name of the song list upload lambda role
-#    Value: !Ref JukeboxSongListUploadLambdaRole
-#    Export:
-#      Name: jukebox-iam-roles-SongListUploadLambdaRoleName
-#  JukeboxSongListUploadLambdaRoleArn:
-#    Description: The ARN of the song list upload lambda role
-#    Value:
-#      Fn::GetAtt:
-#        - JukeboxSongListUploadLambdaRole
-#        - Arn
-#    Export:
-#      Name: jukebox-iam-roles-SongListUploadLambdaRoleArn
+  # Role for the lambda function that maintains the song list
+  JukeboxSongListUploadLambdaRoleName:
+    Description: The Name of the song list upload lambda role
+    Value: !Ref JukeboxSongListUploadLambdaRole
+    Export:
+      Name: jukebox-iam-roles-SongListUploadLambdaRoleName
+  JukeboxSongListUploadLambdaRoleArn:
+    Description: The ARN of the song list upload lambda role
+    Value:
+      Fn::GetAtt:
+        - JukeboxSongListUploadLambdaRole
+        - Arn
+    Export:
+      Name: jukebox-iam-roles-SongListUploadLambdaRoleArn
 
   # Role for the lambda function that maintains the cache
   JukeboxSongIndexLambdaRoleName:
