@@ -13,6 +13,10 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
+
+      # NOTE (pattyr, 20180201) NotificationConfiguration below must be commented out on first deploy/creation of cloudformation
+      # After first deploy, uncomment and re-deploy to update cloudformation
+      # https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: "s3:ObjectCreated:*"
