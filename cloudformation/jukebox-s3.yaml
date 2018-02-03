@@ -14,18 +14,27 @@ Resources:
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
-      # NOTE (pattyr, 20180201) NotificationConfiguration below must be commented out on first deploy/creation of cloudformation
+      # NOTE (pattyr, 20180201): NotificationConfiguration below must be commented out on first deploy/creation of
+      #   CloudFormation to allow for permission to be added to the bucket before adding the lambda trigger.
       # After first deploy, uncomment and re-deploy to update cloudformation
       # https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
+      # https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
+#      NotificationConfiguration:
+#        LambdaConfigurations:
+#          - Event: "s3:ObjectCreated:*"
+#            Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
 #            Filter:
 #              S3Key:
 #                Rules:
 #                  - Name: suffix
 #                    Value: xml
+
+    BucketPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: 'lambda:InvokeFunction'
+        FunctionName: jukebox-iam-roles-SongListUploadLambdaRoleArn
+        Principal: s3.amazonaws.com
 
 Outputs:
   S3JukeboxSongsCsv:
