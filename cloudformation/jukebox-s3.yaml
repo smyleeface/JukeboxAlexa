@@ -29,14 +29,14 @@ Resources:
 #                  - Name: suffix
 #                    Value: xml
 
-#  BucketPermission:
-#    Type: AWS::Lambda::Permission
-#    Properties:
-#      Action: 'lambda:InvokeFunction'
-#      FunctionName: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
-#      Principal: s3.amazonaws.com
-#      SourceAccount: !Ref "AWS::AccountId"
-#      SourceArn: !ImportValue jukebox-s3-JukeboxSongsCsvArn
+  BucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !ImportValue jukebox-s3-JukeboxSongsCsvArn
 
 Outputs:
   S3JukeboxSongsCsv:
