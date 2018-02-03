@@ -22,12 +22,22 @@ Resources:
 #      NotificationConfiguration:
 #        LambdaConfigurations:
 #          - Event: "s3:ObjectCreated:*"
-#            Function: !ImportValue jukebox-lambda-cacheindexlambdaarn
+#            Function: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
 #            Filter:
 #              S3Key:
 #                Rules:
 #                  - Name: suffix
 #                    Value: xml
+
+  WaitHandle:
+    Type: "AWS::CloudFormation::WaitConditionHandle"
+  WaitCondition:
+    Type: "AWS::CloudFormation::WaitCondition"
+    DependsOn: "S3JukeboxSongsCsv"
+    Properties:
+      Handle:
+        Ref: "WaitHandle"
+      Timeout: "120"
 
 Outputs:
   S3JukeboxSongsCsv:
