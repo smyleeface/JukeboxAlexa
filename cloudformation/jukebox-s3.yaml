@@ -19,15 +19,15 @@ Resources:
       # After first deploy, uncomment and re-deploy to update cloudformation
       # https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
       # https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
-#      NotificationConfiguration:
-#        LambdaConfigurations:
-#          - Event: "s3:ObjectCreated:*"
-#            Function: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: suffix
-#                    Value: xml
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Function: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: xml
 
   BucketPermission:
     Type: AWS::Lambda::Permission
