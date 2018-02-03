@@ -82,7 +82,9 @@ Resources:
 
   JukeboxS3Permissions:
     Type: "AWS::CloudFormation::Stack"
-    DependsOn: JukeboxS3
+    DependsOn:
+      - JukeboxS3
+      - JukeboxLambdaFunctions
     Properties:
       Tags:
         -
