@@ -29,15 +29,15 @@ Resources:
 #                  - Name: suffix
 #                    Value: xml
 
-  WaitHandle:
-    Type: "AWS::CloudFormation::WaitConditionHandle"
-  WaitCondition:
-    Type: "AWS::CloudFormation::WaitCondition"
-    DependsOn: "S3JukeboxSongsCsv"
-    Properties:
-      Handle:
-        Ref: "WaitHandle"
-      Timeout: "120"
+#  WaitHandle:
+#    Type: "AWS::CloudFormation::WaitConditionHandle"
+#  WaitCondition:
+#    Type: "AWS::CloudFormation::WaitCondition"
+#    DependsOn: "S3JukeboxSongsCsv"
+#    Properties:
+#      Handle:
+#        Ref: "WaitHandle"
+#      Timeout: "60"
 
 Outputs:
   S3JukeboxSongsCsv:
