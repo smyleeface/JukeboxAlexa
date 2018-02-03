@@ -30,7 +30,9 @@ Resources:
             Sid: jukeboxsonglistuploadlambda
             Effect: Allow
             Principal:
-              Service: lambda.amazonaws.com
+              Service:
+                - lambda.amazonaws.com
+                - s3.amazonaws.com
             Action: sts:AssumeRole
 
   ####### JukeboxSongIndexLambdaRole
@@ -48,7 +50,6 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
-                - s3.amazonaws.com
             Action: sts:AssumeRole
 
   ####### JukeboxAlexaLambdaRole
