@@ -22,7 +22,7 @@ Resources:
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: "s3:ObjectCreated:*"
-            Function: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
             Filter:
               S3Key:
                 Rules:
