@@ -36,7 +36,7 @@ Resources:
       FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !Ref S3JukeboxSongsCsv
+      SourceArn: !Ref S3JukeboxSongsCsv.Arn
 
 Outputs:
   S3JukeboxSongsCsv:
