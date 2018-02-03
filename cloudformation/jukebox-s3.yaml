@@ -38,9 +38,9 @@ Resources:
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref S3JukeboxSongsCsv
 
-#Outputs:
-#  S3JukeboxSongsCsv:
-#    Description: The ARN of the Jukebox Song CSV Bucket
-#    Value: !GetAtt S3JukeboxSongsCsv.Arn
-#    Export:
-#      Name: jukebox-s3-JukeboxSongsCsvArn
+Outputs:
+  S3JukeboxSongsCsv:
+    Description: The ARN of the Jukebox Song CSV Bucket
+    Value: !GetAtt S3JukeboxSongsCsv.Arn
+    Export:
+      Name: jukebox-s3-JukeboxSongsCsvArn
