@@ -76,3 +76,5 @@ Outputs:
       Fn::GetAtt:
         - JukeboxSongListUploadLambda
         - Arn
+    Export:
+      Name: jukebox-lambda-songlistuploadlambdaarn

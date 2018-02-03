@@ -33,14 +33,14 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
-      FunctionName: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !ImportValue jukebox-s3-JukeboxSongsCsvArn
+      SourceArn: !Ref S3JukeboxSongsCsv
 
-Outputs:
-  S3JukeboxSongsCsv:
-    Description: The ARN of the Jukebox Song CSV Bucket
-    Value: !GetAtt S3JukeboxSongsCsv.Arn
-    Export:
-      Name: jukebox-s3-JukeboxSongsCsvArn
+#Outputs:
+#  S3JukeboxSongsCsv:
+#    Description: The ARN of the Jukebox Song CSV Bucket
+#    Value: !GetAtt S3JukeboxSongsCsv.Arn
+#    Export:
+#      Name: jukebox-s3-JukeboxSongsCsvArn
