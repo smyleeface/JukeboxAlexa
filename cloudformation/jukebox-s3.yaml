@@ -29,15 +29,14 @@ Resources:
 #                  - Name: suffix
 #                    Value: xml
 
-#  WaitHandle:
-#    Type: "AWS::CloudFormation::WaitConditionHandle"
-#  WaitCondition:
-#    Type: "AWS::CloudFormation::WaitCondition"
-#    DependsOn: "S3JukeboxSongsCsv"
+#  BucketPermission:
+#    Type: AWS::Lambda::Permission
 #    Properties:
-#      Handle:
-#        Ref: "WaitHandle"
-#      Timeout: "60"
+#      Action: 'lambda:InvokeFunction'
+#      FunctionName: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
+#      Principal: s3.amazonaws.com
+#      SourceAccount: !Ref "AWS::AccountId"
+#      SourceArn: !ImportValue jukebox-s3-JukeboxSongsCsvArn
 
 Outputs:
   S3JukeboxSongsCsv:
