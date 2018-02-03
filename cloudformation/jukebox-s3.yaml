@@ -33,7 +33,7 @@ Resources:
       Type: AWS::Lambda::Permission
       Properties:
         Action: 'lambda:InvokeFunction'
-        FunctionName: jukebox-iam-roles-SongListUploadLambdaRoleArn
+        FunctionName: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
         Principal: s3.amazonaws.com
 
 Outputs:
