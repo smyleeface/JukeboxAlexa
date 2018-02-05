@@ -15,29 +15,29 @@ Parameters:
 # https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
 Resources:
 
-#  BucketPermission:
-#    Type: AWS::Lambda::Permission
-#    Properties:
-#      Action: 'lambda:InvokeFunction'
-#      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-#      Principal: s3.amazonaws.com
-#      SourceAccount: !Ref "AWS::AccountId"
-#      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
+  BucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
 
   S3JukeboxSongsCsv:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
-#      NotificationConfiguration:
-#        LambdaConfigurations:
-#          - Event: "s3:ObjectCreated:*"
-#            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: suffix
-#                    Value: xml
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: xml
 
 Outputs:
   S3JukeboxSongsCsv:
