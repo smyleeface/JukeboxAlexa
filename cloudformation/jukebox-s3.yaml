@@ -41,7 +41,7 @@ Resources:
               S3Key:
                 Rules:
                   - Name: suffix
-                    Value: xml
+                    Value: csv
       # END Comment Block #2 REGION
 
 Outputs:
