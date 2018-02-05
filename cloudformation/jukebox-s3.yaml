@@ -8,35 +8,36 @@ Parameters:
     Type: String
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
 
+# NOTE (pattyr, 20180201): NotificationConfiguration below must be commented out on second deploy of
+#   CloudFormation to allow for permission to be added to the bucket before adding the lambda trigger.
+# After first deploy, uncomment and re-deploy to update cloudformation
+# https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
+# https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
 Resources:
+
+#  BucketPermission:
+#    Type: AWS::Lambda::Permission
+#    Properties:
+#      Action: 'lambda:InvokeFunction'
+#      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+#      Principal: s3.amazonaws.com
+#      SourceAccount: !Ref "AWS::AccountId"
+#      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
+
   S3JukeboxSongsCsv:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
-      # NOTE (pattyr, 20180201): NotificationConfiguration below must be commented out on first deploy/creation of
-      #   CloudFormation to allow for permission to be added to the bucket before adding the lambda trigger.
-      # After first deploy, uncomment and re-deploy to update cloudformation
-      # https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
-      # https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: xml
-
-  BucketPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-      Principal: s3.amazonaws.com
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
+#      NotificationConfiguration:
+#        LambdaConfigurations:
+#          - Event: "s3:ObjectCreated:*"
+#            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: suffix
+#                    Value: xml
 
 Outputs:
   S3JukeboxSongsCsv:
