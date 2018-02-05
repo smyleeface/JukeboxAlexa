@@ -25,7 +25,7 @@ Resources:
       Handler: index.lambda_handler
       Role: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
       Runtime: python3.6
-      Timeout: 30
+      Timeout: 60
 
   ##### Lambda triggered by DynamoDb
   JukeboxCacheIndexLambda:
@@ -38,7 +38,7 @@ Resources:
       Handler: index.lambda_handler
       Role: !ImportValue jukebox-iam-roles-SongIndexLambdaRoleArn
       Runtime: python3.6
-      Timeout: 30
+      Timeout: 60
 
   ##### Lambda triggered by alexa
   JukeboxAlexaLambda:
