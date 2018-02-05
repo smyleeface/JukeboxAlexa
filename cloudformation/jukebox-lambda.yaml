@@ -50,7 +50,7 @@ Resources:
       FunctionName: !FindInMap [Jukebox, AlexaLambda, Name]
       Handler: JukeboxAlexa::JukeboxAlexa.Function::FunctionHandler
       Role: !ImportValue jukebox-iam-roles-AlexaLambdaRoleArn
-      Runtime: python3.6
+      Runtime: dotnetcore2.0
       Timeout: 60
 
 Outputs:
