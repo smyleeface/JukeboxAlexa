@@ -8,13 +8,15 @@ Parameters:
     Type: String
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
 
-# NOTE (pattyr, 20180201): NotificationConfiguration below must be commented out on second deploy of
-#   CloudFormation to allow for permission to be added to the bucket before adding the lambda trigger.
-# After first deploy, uncomment and re-deploy to update cloudformation
+# NOTE (pattyr, 20180201): BucketPermission & NotificationConfiguration below must be commented out on initial deploy of
+# CloudFormation to allow for circular dependencies to be in place.
+# After initial deploy, uncomment `Comment Block #1` and re-deploy to add permission to the lambda function to the bucket
+# After second deploy, uncomment `Comment Block #2` and re-deploy to add event trigger to s3 bucket
 # https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
 # https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
 Resources:
 
+  # START Comment Block #1 REGION
   BucketPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -23,12 +25,14 @@ Resources:
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
+  # END Comment Block #1 REGION
 
   S3JukeboxSongsCsv:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
+      # START Comment Block #2 REGION
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: "s3:ObjectCreated:*"
@@ -38,6 +42,7 @@ Resources:
                 Rules:
                   - Name: suffix
                     Value: xml
+      # END Comment Block #2 REGION
 
 Outputs:
   S3JukeboxSongsCsv:
