@@ -17,14 +17,14 @@ Parameters:
 Resources:
 
   # START Comment Block #1 REGION
-#  BucketPermission:
-#    Type: AWS::Lambda::Permission
-#    Properties:
-#      Action: 'lambda:InvokeFunction'
-#      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-#      Principal: s3.amazonaws.com
-#      SourceAccount: !Ref "AWS::AccountId"
-#      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
+  BucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
   # END Comment Block #1 REGION
 
   S3JukeboxSongsCsv:
