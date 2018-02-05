@@ -16,8 +16,7 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !ImportValue jukebox-lambda-jukeboxalexalambdaarn
       Principal: "alexa-appkit.amazon.com"
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !Ref JukeboxSkillId
+      EventSourceToken: !Ref JukeboxSkillId
 
   SongListUploadEventPermission:
     Type: AWS::Lambda::Permission
