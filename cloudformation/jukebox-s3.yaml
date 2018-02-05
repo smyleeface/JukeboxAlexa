@@ -1,3 +1,4 @@
+# NOTE (pattyr, 20180201): After second deploy, uncomment `Comment Block #2` below and re-deploy to add event trigger to s3 bucket
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
@@ -8,24 +9,7 @@ Parameters:
     Type: String
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
 
-# NOTE (pattyr, 20180201): BucketPermission & NotificationConfiguration below must be commented out on initial deploy of
-# CloudFormation to allow for circular dependencies to be in place.
-# After initial deploy, uncomment `Comment Block #1` and re-deploy to add permission to the lambda function to the bucket
-# After second deploy, uncomment `Comment Block #2` and re-deploy to add event trigger to s3 bucket
-# https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
-# https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
 Resources:
-
-  # START Comment Block #1 REGION
-  BucketPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-      Principal: s3.amazonaws.com
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt S3JukeboxSongsCsv.Arn
-  # END Comment Block #1 REGION
 
   S3JukeboxSongsCsv:
     Type: "AWS::S3::Bucket"
@@ -33,15 +17,15 @@ Resources:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
       # START Comment Block #2 REGION
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: csv
+#      NotificationConfiguration:
+#        LambdaConfigurations:
+#          - Event: "s3:ObjectCreated:*"
+#            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: suffix
+#                    Value: csv
       # END Comment Block #2 REGION
 
 Outputs:

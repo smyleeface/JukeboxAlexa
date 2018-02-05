@@ -1,0 +1,30 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - Lambda Function Invoke Permissions
+
+Parameters:
+  Jukebox:
+    JukeboxSkillId:
+      Type: String
+      Description: Jukebox Skill Id this is installed on
+
+Resources:
+
+  JukeboxAlexaSkillPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !ImportValue jukebox-lambda-jukeboxalexalambdaarn
+      Principal: "alexa-appkit.amazon.com"
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !Ref JukeboxSkillId
+
+  SongListUploadEventPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !ImportValue jukebox-s3-JukeboxSongsCsvArn

@@ -81,3 +81,12 @@ Outputs:
         - Arn
     Export:
       Name: jukebox-lambda-songlistuploadlambdaarn
+
+  JukeboxAlexaLambdaArn:
+    Description: The ARN of the Jukebox Alexa Skill Lambda Function
+    Value:
+      Fn::GetAtt:
+        - JukeboxAlexaLambda
+        - Arn
+    Export:
+      Name: jukebox-lambda-jukeboxalexalambdaarn
