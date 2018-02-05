@@ -4,10 +4,9 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Alexa Jukebox Application - Lambda Function Invoke Permissions
 
 Parameters:
-  Jukebox:
-    JukeboxSkillId:
-      Type: String
-      Description: Jukebox Skill Id this is installed on
+  JukeboxSkillId:
+    Type: String
+    Description: Jukebox Skill Id this is installed on
 
 Resources:
 
