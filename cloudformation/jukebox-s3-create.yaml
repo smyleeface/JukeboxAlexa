@@ -1,0 +1,23 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Alexa Jukebox Application - S3 Buckets
+
+Parameters:
+  S3BucketJukeboxSongsCsv:
+    Type: String
+    Description: S3 Bucket the Jukebox Songs CSV are uploaded
+
+Resources:
+
+  S3JukeboxSongsCsv:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref S3BucketJukeboxSongsCsv
+
+Outputs:
+  S3JukeboxSongsCsv:
+    Description: The ARN of the Jukebox Song CSV Bucket
+    Value: !GetAtt S3JukeboxSongsCsv.Arn
+    Export:
+      Name: jukebox-s3-JukeboxSongsCsvArn

@@ -1,4 +1,3 @@
-# NOTE (pattyr, 20180201): After second deploy, uncomment `Comment Block #2` below and re-deploy to add event trigger to s3 bucket
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
@@ -16,17 +15,15 @@ Resources:
     Properties:
       BucketName: !Ref S3BucketJukeboxSongsCsv
 
-      # START Comment Block #2 REGION
-#      NotificationConfiguration:
-#        LambdaConfigurations:
-#          - Event: "s3:ObjectCreated:*"
-#            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: suffix
-#                    Value: csv
-      # END Comment Block #2 REGION
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Function: !ImportValue jukebox-lambda-songlistuploadlambdaarn
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: csv
 
 Outputs:
   S3JukeboxSongsCsv:

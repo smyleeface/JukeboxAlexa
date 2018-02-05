@@ -1,4 +1,5 @@
-# After initial deploy, uncomment `Comment Block #1` in `jukebox-lambda-main.yaml` and re-deploy to add permission to the lambda function to the bucket
+# After initial deploy, uncomment `Comment Block #1` in `jukebox-lambda-main.yaml` and re-deploy to add invoke permission to the lambda function
+# After second deploy, swap the `TemplateURL` in `Comment Block #2` below and re-deploy to add event trigger to s3 bucket
 
 ---
 AWSTemplateFormatVersion: 2010-09-09
@@ -82,7 +83,10 @@ Resources:
         -
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3.yaml
+      # START Comment Block #2 REGION
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-create.yaml
+#      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-update.yaml
+      # START Comment Block #2 REGION
 
   JukeboxLambdaTriggers:
     Type: "AWS::CloudFormation::Stack"
