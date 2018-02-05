@@ -45,7 +45,8 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Code:
-        ZipFile: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/jukeboxAlexa.zip
+        S3Bucket: smyleeface-public
+        S3Key: JukeboxAlexa/jukeboxAlexa.zip
       FunctionName: !FindInMap [Jukebox, AlexaLambda, Name]
       Handler: JukeboxAlexa::JukeboxAlexa.Function::FunctionHandler
       Role: !ImportValue jukebox-iam-roles-AlexaLambdaRoleArn
