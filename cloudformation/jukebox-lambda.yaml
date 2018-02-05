@@ -22,7 +22,7 @@ Resources:
         S3Bucket: smyleeface-public
         S3Key: JukeboxAlexa/songlist_upload.zip
       FunctionName: !FindInMap [Jukebox, SongListUploadLambda, Name]
-      Handler: lambda_function.lambda_handler
+      Handler: index.lambda_handler
       Role: !ImportValue jukebox-iam-roles-SongListUploadLambdaRoleArn
       Runtime: python3.6
       Timeout: 30
