@@ -8,8 +8,16 @@ Update Songlist
     1. Comma delimited
     1. Song Titles or Artists with a comma need to be in double quotes
     1. Including a heading is ok and optional
-    1. Format: `Disc,Track#,Song,Artist` (i.e. `3,19,Animals,Neon Trees`)
-    1. Extra data after the artist will be ignored as long as a comma is after the `Artist` (i.e. `3,19,Animals,Neon Trees,3,19,,,,,,`)
+    1. Format: 
+        ```
+        Disc,Track#,Song,Artist
+        3,19,Animals,Neon Trees
+        ```
+    1. Extra data after the artist will be ignored as long as a comma is after the `Artist`
+        ```
+        Disc,Track#,Song,Artist
+        3,19,Animals,Neon Trees,3,19,,,,,,
+        ```
 1. The upload will trigger the update process and should take no more than one minute.
 
 ## Troubleshooting
