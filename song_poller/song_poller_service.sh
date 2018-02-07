@@ -26,17 +26,28 @@ song_poller_script_path=/home/pi/jukebox/song_poller/__init__.py
 case "$1" in
   start)
     log_begin_msg "Starting Jukebox Song Poller Service"
+
+    # wait for wifi to load
     sleep 60
     cd /home/pi/jukebox
+
+    # fetch latest from github
     git fetch origin
     git reset --hard origin/master
+
+    # change the owner of the script
     chown pi:pi -R /home/pi/jukebox/song_poller/
+
+    # update python requirements
+    pip install -r /home/pi/jukebox/song_poller/requirements.txt -U
+
+    # update song_poller service
     cp /home/pi/jukebox/song_poller/song_poller_service.sh /etc/init.d/
     chmod u+x /etc/init.d/song_poller_service.sh
     update-rc.d song_poller_service.sh defaults
-    pip install -r /home/pi/jukebox/song_poller/requirements.txt -U
+
+    # start script
     python ${song_poller_script_path}
-# do something
     log_end_msg $?
     exit 0
     ;;
@@ -51,5 +62,3 @@ case "$1" in
     exit 1
     ;;
 esac
-
-# Fix cloudformation policy for sqs queue
