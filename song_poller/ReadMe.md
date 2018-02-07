@@ -5,12 +5,10 @@ Song Poller
 ```
 git clone https://github.com/smyleeface/smylee_jukebox.git jukebox`
 ```
-
 * Go into the `song_poller` directory to the root home directory.
 ```
 cd /home/pi/jukebox/song_poller`
 ```
-
 * In the terminal, type
 ```
 pip install -r requirements.txt -U
@@ -27,4 +25,8 @@ chmod u+x /etc/init.d/song_poller_service.sh
 ```
 update-rc.local song_poller_service.sh defaults
 ```
-* Restart pi
+* Restart pi - On boot it will:
+
+   * update the polling script
+   * update the service script
+   * start the polling service

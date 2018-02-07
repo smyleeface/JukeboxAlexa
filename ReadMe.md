@@ -16,6 +16,8 @@ Alexa skill that will play the song asked on the jukebox, by triggering a relay 
     * Alexa Skill (Lambda Function)
     * DynamoDB
     * [See list of services and supported regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/)
+* Start a new Alexa Skill - see steps in [alexa_skill_configuration ReadMe](alexa_skill_configuration/ReadMe.md)
+
 
 ## CloudFormation
 
@@ -28,10 +30,6 @@ Upload a file to an AWS S3 bucket to trigger an update to the songlist.
 ## alexa_skill_configuration
 
 Information on how to setup the Alexa skill in the developer portal.
-
-## files_decrypt
-
-Helper function to decrypt files from CodeBuild.
 
 ## JukeboxAlexa
 

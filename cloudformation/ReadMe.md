@@ -15,11 +15,21 @@ Solution:
 
 Deploy CloudFormation three times with different settings for s3. `AWS::Lambda::Permission` & S3 `NotificationConfiguration` must be commented out on initial deploy, and uncomment in subsequent deploys to allow for circular dependencies to be in place.
 
-- Deploy with `Comment Block #1` [in the main CloudFormation file](jukebox-main.yaml)  & `Comment Block #2` [in the CloudFormation S3 file](jukebox-s3.yaml)
+Steps:
 
-- After initial deploy, uncomment `Comment Block #1` [in the main CloudFormation file](jukebox-main.yaml) and re-deploy
+- Deploy with `Comment Block #1` and one `TemplateUrl` in `Comment Block #2` [in the main CloudFormation file](jukebox-main.yaml)
 
-- After second deploy, uncomment `Comment Block #2` [in the CloudFormation S3 file](jukebox-s3.yaml) and re-deploy
+- After initial deploy, uncomment `Comment Block #1` in `jukebox-lambda-main.yaml` and re-deploy to add invoke permission to the lambda function
+
+- After second deploy, swap the `TemplateURL` in `Comment Block #2` below and re-deploy to add event trigger to s3 bucket
 
 https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-destination-s3/
 https://stackoverflow.com/questions/36338890/enable-lambda-function-to-an-s3-bucket-using-cloudformation
+
+
+
+Issue: Update lambda function's code
+
+Solution:
+To update a Lambda function whose source code is in an Amazon S3 bucket, you must trigger an update by updating the S3Bucket, S3Key, or S3ObjectVersion property. Updating the source code alone doesn't update the function.
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-code.html
