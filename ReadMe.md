@@ -2,6 +2,8 @@ Alexa Jukebox
 =============
 Alexa skill that will play the song asked on the jukebox, by triggering a relay connected to a number keypad on a jukebox.
 
+![Alexa Jukebox workflow diagram](images/jukebox_diagram.png "Alexa Jukebox workflow diagram")
+
 ## Prerequisites
 * Setup AWS Account
 * Create a user, give permissions, and create user keys
