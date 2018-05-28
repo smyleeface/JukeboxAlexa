@@ -3,18 +3,23 @@ phases:
   install:
     commands:
       - cd songlist_upload
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt -t .
   pre_build:
     commands:
         - python setup.py test
+  build:
+    commands:
+        - zip -r songlist_upload.zip .
+  post_build:
+    commands:
+        - s3 cp aws s3 cp songlist_upload.zip s3://pattylol-lambda-code-us-west-2/jukebox_alexa/cp songlist_upload.zip
 
-## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/jukeboxAlexa.zip
 #artifacts:
 #  files:
-#    - '**/*'
-#  base-directory: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish
+#    - 'songlist_upload.zip'
+#  base-directory: songlist_upload
 #  discard-paths: yes
-
+k
 # docker build -t jukebox-python -f Dockerfile-python .
 # docker tag jukebox-python:latest 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
 # docker push 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
