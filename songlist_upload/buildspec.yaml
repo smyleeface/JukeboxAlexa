@@ -12,6 +12,7 @@ phases:
         - zip -r songlist_upload.zip .
   post_build:
     commands:
+        - ls -la
         - aws s3 cp ./songlist_upload.zip s3://pattylol-lambda-code-us-west-2/jukebox_alexa/cp songlist_upload.zip
 
 #artifacts:
