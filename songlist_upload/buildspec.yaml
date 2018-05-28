@@ -19,7 +19,7 @@ phases:
 #    - 'songlist_upload.zip'
 #  base-directory: songlist_upload
 #  discard-paths: yes
-k
+
 # docker build -t jukebox-python -f Dockerfile-python .
 # docker tag jukebox-python:latest 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
 # docker push 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
