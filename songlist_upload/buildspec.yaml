@@ -13,7 +13,7 @@ phases:
         - zip -r songlist_upload.zip .
   post_build:
     commands:
-        - aws s3 cp songlist_upload.zip s3://pattylol-lambda-code-us-west-2/jukebox_alexa/songlist_upload.zip
+        - aws s3 cp songlist_upload.zip s3://smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/songlist_upload.zip
 
 ## Use artifacts for standalone CodeBuild
 ## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/songlist_upload.zip
