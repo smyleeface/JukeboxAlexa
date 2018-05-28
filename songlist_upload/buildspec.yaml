@@ -16,7 +16,7 @@ phases:
         - aws s3 cp songlist_upload.zip s3://smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
 
 ## Use artifacts for standalone CodeBuild
-## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/songlist_upload.zip
+## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
 #artifacts:
 #  files:
 #    - **/*
