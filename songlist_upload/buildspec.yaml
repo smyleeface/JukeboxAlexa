@@ -13,7 +13,7 @@ phases:
   post_build:
     commands:
         - ls -la
-        - aws s3 cp ./songlist_upload.zip s3://pattylol-lambda-code-us-west-2/jukebox_alexa/cp songlist_upload.zip
+        - aws s3 cp songlist_upload.zip s3://pattylol-lambda-code-us-west-2/jukebox_alexa/songlist_upload.zip
 
 #artifacts:
 #  files:
