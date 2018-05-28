@@ -1,11 +1,12 @@
 import csv
 import logging
+import boto3
 
 from song import Song
 
 
 class JukeboxSongs(object):
-    def __init__(self, session, bucket, key, region='us-west-2'):
+    def __init__(self, dynamo_client: boto3.session.Session.client, s3_client: boto3.session.Session.client, bucket: str, key: str, region: str ='us-west-2', logger: logging = None):
         self.bucket = bucket
         self.key = key
         self.new_songs = []
@@ -14,21 +15,17 @@ class JukeboxSongs(object):
         self.added_songs = []
         self.delete_songs = []
         self.batch_dynamodb_values_list = []
-        self.dynamodb_client = session.client('dynamodb')
-        self.s3_client = session.client('s3')
-        self.logger = self.set_logger()
+        self.dynamodb_client = dynamo_client
+        self.s3_client = s3_client
+        self.logger = logger
 
-    @staticmethod
-    def set_logger():
+    def log(self, message: str, type: str = 'info'):
         """Setup a logger
 
         :return logging
         """
-        logging.basicConfig()
-        logging.Logger('jukebox_song_update')
-        logger = logging.getLogger('jukebox_song_update')
-        logger.setLevel(logging.INFO)
-        return logger
+        if self.logger:
+            self.logger.info(message)
 
     def run_update(self):
         """Run the commands to update the songs in the database"""
@@ -51,13 +48,13 @@ class JukeboxSongs(object):
         song_reader = csv.reader(song_data, delimiter=',')
         for song_info in song_reader:
             if len(song_info) > 0:
-                if song_info[0].isdigit() and len(song_info[0]) > 0 and len(song_info[2]) > 0:
+                if song_info[0].isdigit() and len(song_info[0]) > 0 and len(song_info[3]) > 0:
                     song = Song(
-                        song=song_info[2],
-                        artist=song_info[3],
+                        song=song_info[3],
+                        artist=song_info[4],
                         number=song_info[0] + song_info[1],
-                        search_title=song_info[2],
-                        search_artist=song_info[3]
+                        search_title=song_info[3],
+                        search_artist=song_info[4]
                     )
                     self.new_songs.append(song)
 
@@ -175,5 +172,5 @@ class JukeboxSongs(object):
 
     def _update_summary(self):
         """Summary of the updates performed"""
-        self.logger.info(' Added {0} Songs'.format(len(self.added_songs)))
-        self.logger.info(' Deleted {0} Songs'.format(len(self.delete_songs)))
+        self.log(' Added {0} Songs'.format(len(self.added_songs)))
+        self.log(' Deleted {0} Songs'.format(len(self.delete_songs)))

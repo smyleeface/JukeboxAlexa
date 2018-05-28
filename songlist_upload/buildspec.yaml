@@ -1,0 +1,24 @@
+version: 0.2
+phases:
+  build:
+  install:
+    commands:
+      - echo "hello world"
+      - ls -la
+#      - command
+#    commands:
+#      - echo '[INFO] restore package and publish'
+#      - cd JukeboxAlexa
+#      - dotnet restore
+#      - dotnet publish
+#      - cd bin/Debug/netcoreapp2.0/publish
+#
+## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/jukeboxAlexa.zip
+#artifacts:
+#  files:
+#    - '**/*'
+#  base-directory: JukeboxAlexa/bin/Debug/netcoreapp2.0/publish
+#  discard-paths: yes
+
+
+# docker run -it -v /var/run/docker.sock:/var/run/docker.sock -e "IMAGE_NAME=songlist_upload" -e "ARTIFACTS=/Users/pattyr/Projects/MOMDAD/jukebox_alexa/songlist_upload/tmp" -e "SOURCE/Users/pattyr/Projects/MOMDAD/jukebox_alexa/songlist_upload" amazon/aws-codebuild-local
