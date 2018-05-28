@@ -1,0 +1,105 @@
+
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description:  CICD - CodeBuild
+
+Parameters:
+  CloudformationS3BucketUrl:
+    Type: String
+    Description: Public URL to where all nested files are located. Do not include slash at the end.
+  Environment:
+    Type: String
+    Description: The name of the environment this is deployed to. Will be used to prefix parameter names.
+  CodeBuildServiceName:
+    Type: String
+    Description: The service name used in to identify codebuild
+  CodeBuildGitHubUrl:
+    Type: String
+    Description: The GitHub Repository URL that CodeBuild will pull files from
+  CodeBuildServiceRoleName:
+    Type: String
+    Description: The service role used in codebuild
+  CodeBuildArtifactsLocation:
+    Type: String
+    Description: S3 Bucket of where artifacts uploaded specified in the build spec
+  CodeBuildArtifactsName:
+    Type: String
+    Description: The filename of the compressed artifacts
+  CodeBuildArtifactsPath:
+    Type: String
+    Description: The path in the s3 the file will be stored
+  CodeBuildBuildSpecPath:
+    Type: String
+    Description: The path from the repo root to the CodeBuild buildspec.yml
+  CodeBuildEcrContianer:
+    Type: String
+    Description: The ECR container for CodeBuild
+  CodeBuildProjectDescription:
+    Type: String
+    Description: CodeBuild Description
+
+
+Resources:
+
+  CodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceRoleName ] ]
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: trust
+            Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action: sts:AssumeRole
+
+  # NOTE: Before this can be created, authorize Region specific CodeBuild OAUTH access in GitHub
+  # https://docs.aws.amazon.com/codebuild/latest/APIReference/API_ProjectSource.html#CodeBuild-Type-ProjectSource-location
+  CodeBuildProject:
+    Type: "AWS::CodeBuild::Project"
+    Properties:
+      Name: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceName ] ]
+      Description: !Ref CodeBuildProjectDescription
+      ServiceRole: !GetAtt CodeBuildServiceRole.Arn
+      Artifacts:
+        Location: !Ref CodeBuildArtifactsLocation
+        Name: !Ref CodeBuildArtifactsName
+        Path: !Ref CodeBuildArtifactsPath
+        Packaging: NONE
+        Type: S3
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: !Ref CodeBuildEcrContianer
+        Type: LINUX_CONTAINER
+      Source:
+        Auth:
+          Type: OAUTH
+          Resource: GITHUB
+        BuildSpec: !Ref CodeBuildBuildSpecPath
+        Location: !Ref CodeBuildGitHubUrl
+        Type: GITHUB
+
+Outputs:
+  CodeBuildServiceRoleName:
+    Description: The name of the service role
+    Value: !Ref CodeBuildServiceRole
+    Export:
+      Name: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceName, "codebuild-service-role-name" ] ]
+  CodeBuildServiceRoleArn:
+    Description: The ARN of the service role
+    Value: !GetAtt CodeBuildServiceRole.Arn
+    Export:
+      Name: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceName, "codebuild-service-role-arn" ] ]
+  CodeBuildProjectId:
+    Description: CodeBuildProject Id
+    Value: !Ref CodeBuildProject
+    Export:
+      Name: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceName, 'codebuild-id' ] ]
+  CodeBuildProjectArn:
+    Description: CodeBuildProject Arn
+    Value: !GetAtt CodeBuildProject.Arn
+    Export:
+      Name: !Join ['-', [ !Ref Environment, !Ref CodeBuildServiceName, 'codebuild-arn' ] ]
