@@ -52,22 +52,6 @@ Resources:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
 
-  ####### JukeboxAlexaLambdaRole
-  # role
-  JukeboxAlexaLambdaRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !FindInMap [Jukebox, AlexaLambdaRole, Name]
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          -
-            Sid: jukeboxalexalambda
-            Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-
   ####### JukeboxRaspberryPiUser
   # user
   JukeboxRaspberryPiUser:
@@ -113,21 +97,6 @@ Outputs:
         - Arn
     Export:
       Name: jukebox-iam-roles-SongIndexLambdaRoleArn
-
-  # Role for the alexa lambda skill
-  JukeboxAlexaLambdaRoleName:
-    Description: The name of the Alexa Lambda Role
-    Value: !Ref JukeboxAlexaLambdaRole
-    Export:
-      Name: jukebox-iam-roles-AlexaLambdaRoleName
-  JukeboxAlexaLambdaRoleArn:
-    Description: The ARN of the Alexa Lambda Role
-    Value:
-      Fn::GetAtt:
-        - JukeboxAlexaLambdaRole
-        - Arn
-    Export:
-      Name: jukebox-iam-roles-AlexaLambdaRoleArn
 
   # User Running on RaspberryPi
   JukeboxRaspberryPiUserName:

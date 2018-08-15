@@ -3,20 +3,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Alexa Jukebox Application - Lambda Function Invoke Permissions
 
-Parameters:
-  JukeboxSkillId:
-    Type: String
-    Description: Jukebox Skill Id this is installed on
-
 Resources:
-
-  JukeboxAlexaSkillPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !ImportValue jukebox-lambda-jukeboxalexalambdaarn
-      Principal: "alexa-appkit.amazon.com"
-      EventSourceToken: !Ref JukeboxSkillId
 
   SongListUploadEventPermission:
     Type: AWS::Lambda::Permission

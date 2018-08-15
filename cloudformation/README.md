@@ -1,6 +1,8 @@
 CloudFormation Templates
 ========================
 
+[![Launch Jukebox Alexa CloudFormation Code Pipeline Template](../images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=devel-jukeboxAlexa&templateURL=https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-main.yaml)
+
 Run `jukebox-main.yaml` in CloudFormation.
 
 Nested CloudFormation templates are hosted in [an public S3 bucket](https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-main.yaml).

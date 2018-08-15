@@ -1,8 +1,6 @@
 version: 0.2
 
-# publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/CodeBuildArtifacts/cloudformation/*.yaml
-artifacts:
-  files:
-    - '*.yaml'
-  base-directory: cloudformation
-  discard-paths: no
+phases:
+  build:
+    commands:
+      - bash ${CODEBUILD_SRC_DIR}/cloudformation/infrastructure/buildspec-deploy.sh

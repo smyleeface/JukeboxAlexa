@@ -5,8 +5,7 @@ Description: Alexa Jukebox Application - Lambda Functions
 
 Mappings:
   Jukebox:
-    AlexaLambda:
-      Name: jukebox_alexa
+
     CacheIndexSongsLambda:
       Name: jukebox_cache_index_songs
     SongListUploadLambda:
@@ -40,26 +39,7 @@ Resources:
       Runtime: python3.6
       Timeout: 60
 
-  ##### Lambda triggered by alexa
-  JukeboxAlexaLambda:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        S3Bucket: smyleeface-public
-        S3Key: JukeboxAlexa/jukeboxAlexa.zip
-      FunctionName: !FindInMap [Jukebox, AlexaLambda, Name]
-      Handler: JukeboxAlexa::JukeboxAlexa.Function::FunctionHandler
-      Role: !ImportValue jukebox-iam-roles-AlexaLambdaRoleArn
-      Runtime: dotnetcore2.0
-      Timeout: 60
-
 Outputs:
-  JukeboxAlexaLambdaArn:
-    Description: The ARN of the Alexa Lambda Function
-    Value:
-      Fn::GetAtt:
-        - JukeboxAlexaLambda
-        - Arn
   JukeboxCacheIndexLambdaName:
     Description: The Name of the Cache Index Lambda Function
     Value: !FindInMap [Jukebox, CacheIndexSongsLambda, Name]
@@ -81,12 +61,3 @@ Outputs:
         - Arn
     Export:
       Name: jukebox-lambda-songlistuploadlambdaarn
-
-  JukeboxAlexaLambdaArn:
-    Description: The ARN of the Jukebox Alexa Skill Lambda Function
-    Value:
-      Fn::GetAtt:
-        - JukeboxAlexaLambda
-        - Arn
-    Export:
-      Name: jukebox-lambda-jukeboxalexalambdaarn
