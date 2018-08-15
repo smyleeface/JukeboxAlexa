@@ -12,8 +12,8 @@ Alexa Skill Configuration
 - Run the commands below in `terminal` using `bash`.
 
 ```bash
-cd alexa_skill_configuration
-docker run --rm -it -v $PWD:/app python:3.6.4-slim python /app/generate_skill.py
+    cd alexa_skill_configuration
+    docker run --rm -it -v $PWD:/project jukebox_alexa_python python /project/generate_skill.py
 ```
 - The `alexa_skill_configuration` directory will contain a new file called `skill.json`.
 

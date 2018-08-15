@@ -9,10 +9,8 @@ class GenerateSkillJson(object):
         self.current_path = path.dirname(path.abspath(__file__))
         self.new_filename = f'{self.current_path}/skill.json'
         self.field_type_value_template = {
-            "id": None,
             "name": {
-                "value": "",
-                "synonyms": []
+                "value": ""
             }
         }
         self.skill_template = self.load_skill_template()
@@ -65,9 +63,9 @@ class GenerateSkillJson(object):
         return json_output
 
     def _add_to_skill_template(self, json_data, intent_type):
-        for index, model_type in enumerate(self.skill_template["languageModel"]["types"]):
+        for index, model_type in enumerate(self.skill_template["interactionModel"]["languageModel"]["types"]):
             if model_type["name"] == intent_type:
-                self.skill_template["languageModel"]["types"][index]["values"] = json_data
+                self.skill_template["interactionModel"]["languageModel"]["types"][index]["values"] = json_data
                 break
 
     def _write_to_file(self):

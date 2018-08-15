@@ -1,152 +1,151 @@
 {
-  "languageModel": {
-    "types": [
-      {
-        "name": "ARTISTS",
-        "values": []
-      },
-      {
-        "name": "TRACKNUMBER",
-        "values": []
-      },
-      {
-        "name": "SONGTITLE",
-        "values": []
-      },
-      {
-        "name": "SPEAKER_REQUEST_OPTIONS",
-        "values": []
-      }
-    ],
-    "intents": [
-      {
-        "name": "AMAZON.CancelIntent",
-        "samples": []
-      },
-      {
-        "name": "AMAZON.HelpIntent",
-        "samples": []
-      },
-      {
-        "name": "AMAZON.RepeatIntent",
-        "samples": []
-      },
-      {
-        "name": "AMAZON.StartOverIntent",
-        "samples": []
-      },
-      {
-        "name": "AMAZON.StopIntent",
-        "samples": []
-      },
-      {
-        "name": "FindSongRequested",
-        "samples": [
-          "find song {Title}"
-        ],
-        "slots": [
-          {
-            "name": "Title",
-            "type": "SONGTITLE"
-          },
-          {
-            "name": "TrackNumber",
-            "type": "TRACKNUMBER",
-            "samples": [
-              "play song number {TrackNumber}"
-            ]
-          }
-        ]
-      },
-      {
-        "name": "PlaySongArtistRequest",
-        "samples": [
-          "play song {Title} by {ArtistName}"
-        ],
-        "slots": [
-          {
-            "name": "Title",
-            "type": "SONGTITLE"
-          },
-          {
-            "name": "ArtistName",
-            "type": "ARTISTS"
-          }
-        ]
-      },
-      {
-        "name": "PlaySongNumberRequest",
-        "samples": [
-          "play song number {TrackNumber}",
-          "play number {TrackNumber}"
-        ],
-        "slots": [
-          {
-            "name": "TrackNumber",
-            "type": "TRACKNUMBER"
-          }
-        ]
-      },
-      {
-        "name": "PlaySongRequest",
-        "samples": [
-          "play song {Title}"
-        ],
-        "slots": [
-          {
-            "name": "Title",
-            "type": "SONGTITLE"
-          }
-        ]
-      },
-      {
-        "name": "SpeakerRequest",
-        "samples": [
-          "turn speaker {SpeakerRequestOptions}"
-        ],
-        "slots": [
-          {
-            "name": "SpeakerRequestOptions",
-            "type": "SPEAKER_REQUEST_OPTIONS"
-          }
-        ]
-      }
-    ],
-    "invocationName": "jukebox"
-  },
-  "prompts": [
-    {
-      "id": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber",
-      "variations": [
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "jukebox",
+      "intents": [
         {
-          "type": "PlainText",
-          "value": "Please choose a song number"
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "FindSongTitleRequested",
+          "slots": [
+            {
+              "name": "Title",
+              "type": "SONGTITLE"
+            },
+            {
+              "name": "TrackNumber",
+              "type": "TRACKNUMBER"
+            }
+          ],
+          "samples": [
+            "find song {Title}"
+          ]
+        },
+        {
+          "name": "PlaySongTitleArtistRequest",
+          "slots": [
+            {
+              "name": "Title",
+              "type": "SONGTITLE"
+            },
+            {
+              "name": "ArtistName",
+              "type": "ARTISTS"
+            }
+          ],
+          "samples": [
+            "play song {Title} by {ArtistName}"
+          ]
+        },
+        {
+          "name": "PlaySongNumberRequest",
+          "slots": [
+            {
+              "name": "TrackNumber",
+              "type": "TRACKNUMBER"
+            }
+          ],
+          "samples": [
+            "send track number {TrackNumber}",
+            "send number {TrackNumber}"
+          ]
+        },
+        {
+          "name": "PlaySongTitleRequest",
+          "slots": [
+            {
+              "name": "Title",
+              "type": "SONGTITLE"
+            }
+          ],
+          "samples": [
+            "play song {Title}"
+          ]
+        },
+        {
+          "name": "SpeakerRequest",
+          "slots": [
+            {
+              "name": "Options",
+              "type": "SPEAKER_REQUEST_OPTIONS"
+            }
+          ],
+          "samples": [
+            "turn speaker {Options}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "ARTISTS",
+          "values": []
+        },
+        {
+          "name": "TRACKNUMBER",
+          "values": []
+        },
+        {
+          "name": "SONGTITLE",
+          "values": []
+        },
+        {
+          "name": "SPEAKER_REQUEST_OPTIONS",
+          "values": []
         }
       ]
-    }
-  ],
-  "dialog": {
-    "intents": [
-      {
-        "name": "FindSongRequested",
-        "confirmationRequired": false,
-        "prompts": {},
-        "slots": [
-          {
-            "name": "Title",
-            "type": "SONGTITLE",
-            "elicitationRequired": false,
-            "confirmationRequired": false,
-            "prompts": {}
-          },
-          {
-            "name": "TrackNumber",
-            "type": "TRACKNUMBER",
-            "elicitationRequired": true,
-            "confirmationRequired": false,
-            "prompts": {
-              "elicitation": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber"
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "FindSongTitleRequested",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "Title",
+              "type": "SONGTITLE",
+              "confirmationRequired": false,
+              "elicitationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "TrackNumber",
+              "type": "TRACKNUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber"
+              }
             }
+          ]
+        }
+      ]
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Please choose a song number"
           }
         ]
       }
