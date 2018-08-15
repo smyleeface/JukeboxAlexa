@@ -1,19 +1,8 @@
 version: 0.2
 phases:
-  install:
-    commands:
-      - cd songlist_upload
-      - pip install -r requirements.txt -t .
-  pre_build:
-    commands:
-        - python setup.py test
-  # Use build/post_build when using in CodePipeline
   build:
     commands:
-        - zip -r songlist_upload.zip .
-  post_build:
-    commands:
-        - aws s3 cp songlist_upload.zip s3://smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
+      - bash ${CODEBUILD_SRC_DIR}/songlist_upload/buildspec-deploy.sh
 
 ## Use artifacts for standalone CodeBuild
 ## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
