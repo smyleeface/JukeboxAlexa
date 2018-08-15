@@ -20,6 +20,22 @@ Alexa skill that will play the song asked on the jukebox, by triggering a relay 
     * [See list of services and supported regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/)
 * Start a new Alexa Skill - see steps in [alexa_skill_configuration ReadMe](alexa_skill_configuration/ReadMe.md)
 
+## Dockerfiles
+
+* `Dockerfile-python` - contains environments for python projects
+    ```bash
+    docker build -t jukebox_alexa_python -f Dockerfile-python .
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python /bin/bash
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python songlist_upload
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python songlist_index 
+    ```
+
+* `Dockerfile-dotnet` - contains environments for dotnet projects
+    ```bash
+    docker build -t jukebox_alexa_dotnet -f Dockerfile-dotnet .
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_dotnet /bin/bash
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_dotnet TODO
+    ```
 
 ## CloudFormation
 
