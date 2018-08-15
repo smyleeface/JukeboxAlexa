@@ -10,27 +10,17 @@ WORKDIR /project
 
 RUN pip install awscli
 
-#
-##############################
-# songlist_index
-##############################
-#
-COPY songlist_index/requirements.txt /project/songlist_index/requirements.txt
-RUN pip install -r /project/songlist_index/requirements.txt -U
+COPY songlist_index/ /project/songlist_index/
+RUN python /project/songlist_index/setup.py install
 
-##
-################################
-## songlist_upload
-################################
-##
-COPY songlist_upload/requirements.txt /project/songlist_upload/requirements.txt
-RUN pip install -r /project/songlist_upload/requirements.txt -U
-#
-##
-################################
-## entrypoint
-################################
-##
+COPY songlist_index/ /project/songlist_upload/
+RUN python /project/songlist_upload/setup.py install
+
+COPY songlist_index/ /project/song_poller/
+RUN python /project/song_poller/setup.py install
+
+RUN rm -fdr /project/*
+
 COPY entrypoint.sh /usr/local/bin/entrypoint
 RUN chmod +x /usr/local/bin/entrypoint
 ENTRYPOINT ["entrypoint"]

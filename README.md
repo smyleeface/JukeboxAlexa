@@ -27,7 +27,9 @@ Alexa skill that will play the song asked on the jukebox, by triggering a relay 
     docker build -t jukebox_alexa_python -f Dockerfile-python .
     docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python /bin/bash
     docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python songlist_upload
-    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python songlist_index 
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python songlist_index
+    docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python song_poller
+    docker run --rm -it -v $PWD:/project jukebox_alexa_python python /project/generate_skill.py
     ```
 
 * `Dockerfile-dotnet` - contains environments for dotnet projects
