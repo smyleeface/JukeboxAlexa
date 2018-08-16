@@ -2,11 +2,11 @@
 
 # creates the docker image used in codebuild to publish updated zip file
 REPO=952671759649.dkr.ecr.us-west-2.amazonaws.com
-REPO_NAME=jukebox_songlist_index_build
+REPO_NAME="jukebox-python"
 
 LOGIN=$(aws ecr get-login --no-include-email --region us-west-2)
 $LOGIN
 
-docker build -t ${REPO_NAME} .
+docker build -t ${REPO_NAME} -f docker/python/Dockerfile-python .
 docker tag ${REPO_NAME}:latest ${REPO}/${REPO_NAME}:latest
 docker push ${REPO}/${REPO_NAME}:latest
