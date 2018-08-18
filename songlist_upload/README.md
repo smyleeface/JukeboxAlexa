@@ -31,19 +31,19 @@ Container
 
 ```bash
 cd jukebox_alexa
-docker build -t jukebox-python -f Dockerfile-python .
+docker build -t jukebox_alexa_python -f docker/Dockerfile-python .
 ```
 
 ## Run Tests
 
 ```bash
-docker run -it --rm --name songlist_upload -v $HOME/.aws:/root/.aws -v $PWD/songlist_upload:/project jukebox-python entrypoint tests
+docker run --rm -it -v $HOME/.aws:/root/.aws -v ${PWD}:/project jukebox_alexa_python /bin/bash /project/songlist_upload/buildspec-deploy.sh
 ```
 
 ## Debugging
 
 ```bash
-docker run -it --rm --name songlist_upload -v $HOME/.aws:/root/.aws -v $PWD/songlist_upload:/project jukebox-python
+docker run -it --rm --name songlistdocker -v $HOME/.aws:/root/.aws -v $PWD:/project jukebox_alexa_python /bin/bash
 ```
 
 Troubleshooting

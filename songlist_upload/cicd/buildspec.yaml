@@ -1,8 +1,18 @@
 version: 0.2
 phases:
+
+  # using external files to make conditionals easier
+  install:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-install.sh
+
   build:
     commands:
-      - bash ${CODEBUILD_SRC_DIR}/songlist_upload/buildspec-deploy.sh
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-build.sh
+
+  post_build:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-post-build.sh
 
 ## Use artifacts for standalone CodeBuild
 ## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
