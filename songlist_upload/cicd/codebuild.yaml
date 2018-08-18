@@ -7,12 +7,12 @@ Outputs:
   CodeBuildProjectId:
     Description: CodeBuildProject Id
     Value: !Ref 'CodeBuildProject'
-  CodeBuildServiceRoleArn:
+  CodeBuildServiceRoleSonglistUploadArn:
     Description: The ARN of the service role
-    Value: !GetAtt 'CodeBuildServiceRole.Arn'
-  CodeBuildServiceRoleName:
+    Value: !GetAtt 'CodeBuildServiceRoleSonglistUpload.Arn'
+  CodeBuildServiceRoleSonglistUploadName:
     Description: The name of the service role
-    Value: !Ref 'CodeBuildServiceRole'
+    Value: !Ref 'CodeBuildServiceRoleSonglistUpload'
 Parameters:
   ArtifactName:
     Description: filename for the artifact
@@ -31,17 +31,17 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: !Ref 'EcrPythonContainerPath'
         Type: LINUX_CONTAINER
-      Name: jukebox_songlist_upload_build
-      ServiceRole: !Ref 'CodeBuildServiceRole'
+      Name: JukeboxAlexa-SonglistUpload
+      ServiceRole: !Ref 'CodeBuildServiceRoleSonglistUpload'
       Source:
         Auth:
           Resource: GITHUB
           Type: OAUTH
-        BuildSpec: songlist_upload/buildspec.yaml
+        BuildSpec: songlist_upload/cicd/buildspec.yaml
         Location: https://github.com/smyleeface/jukebox_alexa
         Type: GITHUB
     Type: AWS::CodeBuild::Project
-  CodeBuildServicePolicy:
+  CodeBuildServicePolicySonglistUpload:
     Properties:
       PolicyDocument:
         Statement:
@@ -76,9 +76,9 @@ Resources:
         Version: '2012-10-17'
       PolicyName: cicd-codebuild-jukebox-songlist-upload-policy
       Roles:
-        - !Ref 'CodeBuildServiceRole'
+        - !Ref 'CodeBuildServiceRoleSonglistUpload'
     Type: AWS::IAM::Policy
-  CodeBuildServiceRole:
+  CodeBuildServiceRoleSonglistUpload:
     Properties:
       AssumeRolePolicyDocument:
         Statement:

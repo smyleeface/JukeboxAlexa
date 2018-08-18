@@ -95,7 +95,7 @@ t.add_resource(PolicyType(
 ################
 # CodeBuild
 ################
-codebuild_artifact_path = 'JukeboxAlexa/CodeBuildArtifacts'
+codebuild_artifact_path = 'songlist_upload/CodeBuildArtifacts'
 codebuild_build_spec_path = 'songlist_upload/cicd/buildspec.yaml'
 codebuild_github_url = 'https://github.com/smyleeface/jukebox_alexa'
 t.add_resource(Project(

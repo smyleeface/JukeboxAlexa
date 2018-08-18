@@ -2,6 +2,13 @@
 
 set -e
 
+ls
+pwd
+ls /
+ls /root
+ls /home/
+git --version
+
 GITDIFF_FILES=$(git diff $(git log --pretty=format:%H -n 2) --name-only)
 
 if [[ ${GITDIFF_FILES} != *"/songlist_upload/"* ]]; then
