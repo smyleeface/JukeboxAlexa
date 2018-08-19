@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
@@ -49,6 +50,13 @@ namespace JukeboxAlexa.Library {
             LambdaLogger.Log($"*** INFO: queryResponse `{JsonConvert.SerializeObject(queryResponse)}`");
             var parsedSongList = ParseSongsFromDatabaseResponse(queryResponse);
             return parsedSongList; 
+        }
+
+        public async Task<ScanResponse> ScanAsync() {
+            var scanRequest = new ScanRequest {
+                TableName = _tableName
+            };
+            return await _dynamoClient.ScanAsync(scanRequest);
         }
         
         public QueryRequest QueryRequestTitleArtist(string title, string artist) {
@@ -106,6 +114,14 @@ namespace JukeboxAlexa.Library {
             }
             LambdaLogger.Log($"*** INFO: {JsonConvert.SerializeObject(parsedSongList)}");
             return parsedSongList;
+        }
+
+        public async Task<BatchWriteItemResponse> BatchWriteItemAsync(IEnumerable<WriteRequest> writeRequests) {
+            return await _dynamoClient.BatchWriteItemAsync(new BatchWriteItemRequest {
+                RequestItems = new Dictionary<string, List<WriteRequest>> {
+                    { _tableName, writeRequests.ToList() }
+                }
+            });
         }
     }
 }
