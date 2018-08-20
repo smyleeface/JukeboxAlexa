@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Amazon.S3.Model;
 
 namespace JukeboxAlexa.SonglistUpload {
     public interface IS3DependencyProvider {

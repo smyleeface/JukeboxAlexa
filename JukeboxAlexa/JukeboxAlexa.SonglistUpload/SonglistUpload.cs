@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.SQS;
 using Castle.Core.Internal;
-using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
 using Newtonsoft.Json;
 
@@ -39,6 +31,7 @@ namespace JukeboxAlexa.SonglistUpload {
         public async Task HandleRequest(string s3BucketName, string s3KeyName) {
             bucketName = s3BucketName;
             keyName = s3KeyName;
+            LambdaLogger.Log($"***INFO: bucket: {s3BucketName}; key: {keyName}");
             await ReadNewSongs();
             await ReadOldSongs();
             FilterSongsToAdd();
@@ -52,47 +45,51 @@ namespace JukeboxAlexa.SonglistUpload {
             var theseNewSongs = new List<SongCsvModel>();
             var getObjectResponse = await s3Provider.GetSongsFromS3UploadAsync(bucketName, keyName);
             var songRows = getObjectResponse.Split('\n');
+            LambdaLogger.Log($"***INFO: new songs from file (songRows): {JsonConvert.SerializeObject(songRows)}");
             foreach (var songRow in songRows) {
                 if (songRow.IsNullOrEmpty()) continue;
                 var columns = songRow.Split(',');
                 var parseResult = Int32.TryParse(columns[0], out var songNumber);
-                if (!parseResult || columns[0].Length <= 0 || columns[3].Length <= 0) continue;
+                if (!parseResult || columns[0].Length <= 0 || columns[2].Length <= 0) continue;
                 var song = new SongCsvModel {
                     Artist = columns[4],
-                    Number = $"{columns[0]}{columns[1]}",
+                    SongNumber = $"{columns[0]}{columns[1]}",
                     Title = columns[3],
                     SearchArtist = columns[4].ToLower(),
                     SearchTitle = columns[3].ToLower()
                 };
                 theseNewSongs.Add(song);
             }
+            LambdaLogger.Log($"***INFO: new songs filtered (theseNewSongs): {JsonConvert.SerializeObject(theseNewSongs)}");
             newSongs = theseNewSongs;
         }
 
         public async Task ReadOldSongs() {
             var theseExsitingSongs = new List<SongCsvModel>();
             var rows = await dynamodbProvider.DynamoDbScanAsync();
+            LambdaLogger.Log($"***INFO: old songs from database (rows.Items): {JsonConvert.SerializeObject(rows.Items)}");
             foreach (var item in rows.Items) {
-                if (item.TryGetValue("Artist", out var artist) && item.TryGetValue("Number", out var number) && item.TryGetValue("Title", out var title) && item.TryGetValue("SearchTitle", out var searchTitle) && item.TryGetValue("SearchArtist", out var searchArtist)) {
+                if (item.TryGetValue("artist", out var artist) && item.TryGetValue("song_number", out var number) && item.TryGetValue("title", out var title) && item.TryGetValue("search_title", out var searchTitle) && item.TryGetValue("search_artist", out var searchArtist)) {
                     var song = new SongCsvModel {
                         Artist = artist.S,
-                        Number = number.S,
+                        SongNumber = number.S,
                         SearchArtist = searchArtist.S,
                         SearchTitle = searchTitle.S,
                         Title = title.S
                     };
                     theseExsitingSongs.Add(song);
                 }
-                oldSongs = theseExsitingSongs;
             }
+            LambdaLogger.Log($"***INFO: old songs filtered (theseExsitingSongs): {JsonConvert.SerializeObject(theseExsitingSongs)}");
+            oldSongs = theseExsitingSongs;
         }
 
         public void FilterSongsToAdd() {
             var newSongsToAdd = new List<SongCsvModel>();
-            foreach (var newSong in newSongs.ToList()) {
+            foreach (var newSong in newSongs) {
                 var found = false;
-                foreach (var oldSong in oldSongs.ToList()) {
-                    if (newSong.Number == oldSong.Number && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
+                foreach (var oldSong in oldSongs) {
+                    if (newSong.SongNumber == oldSong.SongNumber && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
                         found = true;
                     }
                 }
@@ -100,6 +97,7 @@ namespace JukeboxAlexa.SonglistUpload {
                     newSongsToAdd.Add(newSong);
                 }
             }
+            LambdaLogger.Log($"***INFO: new songs marked for adding to database (newSongsToAdd): {JsonConvert.SerializeObject(newSongsToAdd)}");
             songsToAdd = newSongsToAdd;
         }
 
@@ -108,7 +106,7 @@ namespace JukeboxAlexa.SonglistUpload {
             foreach (var oldSong in oldSongs) {
                 var found = false;
                 foreach (var newSong in newSongs) {
-                    if (newSong.Number == oldSong.Number && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
+                    if (newSong.SongNumber == oldSong.SongNumber && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
                         found = true;
                     }
                 }
@@ -116,6 +114,7 @@ namespace JukeboxAlexa.SonglistUpload {
                     oldSongsToDelete.Add(oldSong);
                 }
             }
+            LambdaLogger.Log($"***INFO: old songs marked for deleting from database (oldSongsToDelete): {JsonConvert.SerializeObject(oldSongsToDelete)}");
             songsToDelete = oldSongsToDelete;
         }
 
@@ -127,22 +126,21 @@ namespace JukeboxAlexa.SonglistUpload {
                 var dbRecord = new WriteRequest {
                     DeleteRequest = new DeleteRequest {
                         Key = new Dictionary<string, AttributeValue> {
-                            { "title", new AttributeValue {
-                                S = deleteSong.Title
-                            }},
-                            { "artist", new AttributeValue {
-                                S = deleteSong.Artist
+                            { "song_number", new AttributeValue {
+                                S = deleteSong.SongNumber
                             }}
                         }
                     }
                 };
                 dynamodbValues.Add(dbRecord);
                 batchCounter += 1;
-                if (batchCounter % 25 == 0 || batchCounter == songsToDelete.Count())
-                    batchDynamodbList.Add(dynamodbValues);
+                if (batchCounter % 25 == 0 || batchCounter == songsToDelete.Count()) {
+                    batchDynamodbList.Add(dynamodbValues);       
                     dynamodbValues = new List<WriteRequest>();
+                }
             }
             foreach (var dynamodbList in batchDynamodbList) {
+                LambdaLogger.Log($"***INFO: writing to delete from database (dynamodbList): {JsonConvert.SerializeObject(dynamodbList)}");
                 await dynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
             }
         }
@@ -152,34 +150,41 @@ namespace JukeboxAlexa.SonglistUpload {
             var dynamodbValues = new List<WriteRequest>();
             var batchCounter = 0;
             foreach (var addSong in songsToAdd) {
-                var dbRecord = new WriteRequest {
-                    PutRequest = new PutRequest {
-                        Item = new Dictionary<string, AttributeValue> {
-                            { "title", new AttributeValue {
+                var putRequest = new PutRequest {
+                    Item = new Dictionary<string, AttributeValue> {
+                        {
+                            "title", new AttributeValue {
                                 S = addSong.Title
-                            }},
-                            { "artist", new AttributeValue {
+                            }
+                        }, {
+                            "artist", new AttributeValue {
                                 S = addSong.Artist
-                            }},
-                            { "number", new AttributeValue {
-                                S = addSong.Number
-                            }},
-                            { "search_title", new AttributeValue {
+                            }
+                        }, {
+                            "song_number", new AttributeValue {
+                                S = addSong.SongNumber
+                            }
+                        }, {
+                            "search_title", new AttributeValue {
                                 S = addSong.SearchTitle
-                            }},
-                            { "search_artist", new AttributeValue {
+                            }
+                        }, {
+                            "search_artist", new AttributeValue {
                                 S = addSong.SearchTitle
-                            }}
+                            }
                         }
                     }
                 };
-                dynamodbValues.Add(dbRecord);
+                dynamodbValues.Add(new WriteRequest{ PutRequest = putRequest });
                 batchCounter += 1;
-                if (batchCounter % 25 == 0 || batchCounter == songsToAdd.Count())
-                    batchDynamodbList.Add(dynamodbValues);
-                dynamodbValues = new List<WriteRequest>();
+                if (batchCounter % 25 == 0 || batchCounter == songsToAdd.Count()) {
+                    batchDynamodbList.Add(new List<WriteRequest>(dynamodbValues));
+                    LambdaLogger.Log($"***INFO: added to batchDynamodbList: {JsonConvert.SerializeObject(batchDynamodbList)}");
+                    dynamodbValues = new List<WriteRequest>();
+                }
             }
             foreach (var dynamodbList in batchDynamodbList) {
+                LambdaLogger.Log($"***INFO: writing to add to database (dynamodbList): {JsonConvert.SerializeObject(dynamodbList)}");
                 await dynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
             }
         }

@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
-using Amazon.S3;
-using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
 using Moq;
@@ -31,7 +29,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             // Assert
             Assert.Contains(songlistUpload.newSongs, x => x.Artist == "Neon Trees");
             Assert.Contains(songlistUpload.newSongs, x => x.SearchArtist == "neon trees");
-            Assert.Contains(songlistUpload.newSongs, x => x.Number == "319");
+            Assert.Contains(songlistUpload.newSongs, x => x.SongNumber == "319");
         }
 
         [Fact]
@@ -62,11 +60,11 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             var scanResults = new ScanResponse {
                 Items = new List<Dictionary<string, AttributeValue>> {
                     new Dictionary<string, AttributeValue> {
-                        { "Artist", new AttributeValue { S = "Foo-Artist" }},
-                        { "SearchArtist", new AttributeValue { S = "foo-artist" }},
-                        { "Number", new AttributeValue { S = "123" }},
-                        { "Title", new AttributeValue { S = "Foo-Title" }},
-                        { "SearchTitle", new AttributeValue { S = "foo-title" }}
+                        { "artist", new AttributeValue { S = "Foo-Artist" }},
+                        { "search_artist", new AttributeValue { S = "foo-artist" }},
+                        { "song_number", new AttributeValue { S = "123" }},
+                        { "title", new AttributeValue { S = "Foo-Title" }},
+                        { "search_title", new AttributeValue { S = "foo-title" }}
                     }
                 }
             };
@@ -85,7 +83,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             // Assert
             Assert.Contains(songlistUpload.oldSongs, x => x.Artist == "Foo-Artist");
             Assert.Contains(songlistUpload.oldSongs, x => x.SearchArtist == "foo-artist");
-            Assert.Contains(songlistUpload.oldSongs, x => x.Number == "123");
+            Assert.Contains(songlistUpload.oldSongs, x => x.SongNumber == "123");
         }
 
         [Fact]
@@ -127,7 +125,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist",
                         SearchArtist = "foo-artist",
-                        Number = "123",
+                        SongNumber = "123",
                         Title = "Foo-Title",
                         SearchTitle = "foo-title"
                     }
@@ -136,7 +134,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "124",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -149,7 +147,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             // Assert
             Assert.Contains(songlistUpload.songsToAdd, x => x.Artist == "Foo-Artist");
             Assert.Contains(songlistUpload.songsToAdd, x => x.SearchArtist == "foo-artist");
-            Assert.Contains(songlistUpload.songsToAdd, x => x.Number == "123");
+            Assert.Contains(songlistUpload.songsToAdd, x => x.SongNumber == "123");
         }
 
 
@@ -167,7 +165,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "123",
+                        SongNumber = "123",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -176,7 +174,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "123",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -204,7 +202,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist",
                         SearchArtist = "foo-artist",
-                        Number = "123",
+                        SongNumber = "123",
                         Title = "Foo-Title",
                         SearchTitle = "foo-title"
                     }
@@ -213,7 +211,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "124",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -226,7 +224,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             // Assert
             Assert.Contains(songlistUpload.songsToDelete, x => x.Artist == "Foo-Artist2");
             Assert.Contains(songlistUpload.songsToDelete, x => x.SearchArtist == "foo-artist2");
-            Assert.Contains(songlistUpload.songsToDelete, x => x.Number == "124");
+            Assert.Contains(songlistUpload.songsToDelete, x => x.SongNumber == "124");
         }
 
         [Fact]
@@ -243,7 +241,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "124",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -252,7 +250,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "124",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
@@ -270,11 +268,24 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         public async Task Songlist_upload__delete_song_from_database() {
 
             // Arrange
-            Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
+            var dynamodbValues = new List<WriteRequest>();
+            var dbRecord = new WriteRequest {
+                DeleteRequest = new DeleteRequest {
+                    Key = new Dictionary<string, AttributeValue> {
+                        { "song_number", new AttributeValue {
+                            S = "124"
+                        }}
+                    }
+                }
+            };
+            dynamodbValues.Add(dbRecord);
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             dynamodbProvider.Setup(x => x.DynamoDbBatchWriteItemAsync(It.Is<List<WriteRequest>>(y => 
                 y.FirstOrDefault().DeleteRequest.Key.ToList()[0].Value.S == "Foo-Title2" && 
                 y.FirstOrDefault().DeleteRequest.Key.ToList()[1].Value.S == "Foo-Artist2"
+                ))).Returns(Task.FromResult(new BatchWriteItemResponse()));
+            dynamodbProvider.Setup(x => x.DynamoDbBatchWriteItemAsync(It.Is<List<WriteRequest>>(y => 
+                y.FirstOrDefault().DeleteRequest.Key.GetValueOrDefault("song_number").S == "124"
                 ))).Returns(Task.FromResult(new BatchWriteItemResponse()));
             Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
             var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object) {
@@ -284,7 +295,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
                     new SongCsvModel {
                         Artist = "Foo-Artist2",
                         SearchArtist = "foo-artist2",
-                        Number = "124",
+                        SongNumber = "124",
                         Title = "Foo-Title2",
                         SearchTitle = "foo-title2"
                     }
