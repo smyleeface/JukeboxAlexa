@@ -1,6 +1,0 @@
-version: 0.2
-phases:
-  build:
-    commands:
-      - bash ${CODEBUILD_SRC_DIR}/songlist_upload/buildspec-deploy.sh
-
