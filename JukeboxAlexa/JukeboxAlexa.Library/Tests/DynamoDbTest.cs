@@ -16,7 +16,7 @@ namespace JukeboxAlexa.Library.Tests {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             var items = new List<Dictionary<string, AttributeValue>> {
                 {
                     new Dictionary<string, AttributeValue> {
@@ -35,7 +35,7 @@ namespace JukeboxAlexa.Library.Tests {
 
             // Assert
             Assert.Equal("Lionel Ritche", parsedSongsList.FirstOrDefault().Artist);
-            Assert.Equal("123", parsedSongsList.FirstOrDefault().Number);
+            Assert.Equal("123", parsedSongsList.FirstOrDefault().SongNumber);
             Assert.Equal("Hello", parsedSongsList.FirstOrDefault().Title);
         }
 
@@ -44,7 +44,7 @@ namespace JukeboxAlexa.Library.Tests {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             var items = new List<Dictionary<string, AttributeValue>> {};
             var quesryResponse = new QueryResponse {
                 Items = items
@@ -62,7 +62,7 @@ namespace JukeboxAlexa.Library.Tests {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             var items = new List<Dictionary<string, AttributeValue>> {
                 songFixtures.songAttribute2,
                 songFixtures.songAttribute3

@@ -28,7 +28,8 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
             var tableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBSONGS");
             var indexNameSearchTitle = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE");
             var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE_ARTIST");
-            _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist);
+            var indexTableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBTITLEWORDCACHE");
+            _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _playSongRequest = new PlaySongTitleRequest(this, new AmazonSQSClient(), _queueName, this);
         }
 

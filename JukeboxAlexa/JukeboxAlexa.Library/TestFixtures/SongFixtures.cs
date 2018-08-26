@@ -11,7 +11,7 @@ namespace JukeboxAlexa.Library.TestFixture {
         public string indexNameSearchTitleArtist = "search_title_artist-index";
 
         public SongModel.Song song1 = new SongModel.Song {
-            Number = "328",
+            SongNumber = "328",
             Artist = "Mumford & Sons",
             Title = "I Will Wait"
         };
@@ -25,7 +25,7 @@ namespace JukeboxAlexa.Library.TestFixture {
         };
         
         public SongModel.Song song2 = new SongModel.Song {
-            Number = "123",
+            SongNumber = "123",
             Artist = "Lionel Ritche",
             Title = "Hello"
         };
@@ -39,7 +39,7 @@ namespace JukeboxAlexa.Library.TestFixture {
         };        
         
         public SongModel.Song song3 = new SongModel.Song {
-            Number = "456",
+            SongNumber = "456",
             Artist = "Lionel Ritche",
             Title = "I Just Called"
         };
@@ -53,7 +53,7 @@ namespace JukeboxAlexa.Library.TestFixture {
         };        
 
         public SongModel.Song song4 = new SongModel.Song {
-            Number = "789",
+            SongNumber = "789",
             Artist = "Adele",
             Title = "Hello"
         };

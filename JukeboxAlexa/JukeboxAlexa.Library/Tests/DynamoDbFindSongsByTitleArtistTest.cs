@@ -27,14 +27,14 @@ namespace JukeboxAlexa.Library.Tests {
             };
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
             dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == songFixtures.tableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             
             // Act
             var parsedSongsList = (await jukeboxDynamoDb.FindSongsByTitleArtistAsync("i will wait", "mumford & sons")).ToList();
 
             // Assert
             Assert.Equal("Lionel Ritche", parsedSongsList.FirstOrDefault().Artist);
-            Assert.Equal("123", parsedSongsList.FirstOrDefault().Number);
+            Assert.Equal("123", parsedSongsList.FirstOrDefault().SongNumber);
             Assert.Equal("Hello", parsedSongsList.FirstOrDefault().Title);
         }
         
@@ -47,7 +47,7 @@ namespace JukeboxAlexa.Library.Tests {
             };
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
             dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == songFixtures.tableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             
             // Act
             var parsedSongsList = await jukeboxDynamoDb.FindSongsByTitleArtistAsync("foo-bar", "foo-bar");
@@ -61,7 +61,7 @@ namespace JukeboxAlexa.Library.Tests {
            
             // Setup
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
             
             // Act
             var query = jukeboxDynamoDb.QueryRequestTitleArtist("foo-bar", "bar-baz");

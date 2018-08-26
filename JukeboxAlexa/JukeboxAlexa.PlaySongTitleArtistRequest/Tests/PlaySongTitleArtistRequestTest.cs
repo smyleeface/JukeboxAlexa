@@ -146,7 +146,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             // Assert
             Assert.Equal("Mumford & Sons", playSongArtistRequest.SongRequested.Artist);
             Assert.Equal("I Will Wait", playSongArtistRequest.SongRequested.Title);
-            Assert.Null(playSongArtistRequest.SongRequested.Number);
+            Assert.Null(playSongArtistRequest.SongRequested.SongNumber);
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             // Assert
             Assert.Equal("I Will Wait", playSongArtistRequest.SongRequested.Title);
             Assert.Null(playSongArtistRequest.SongRequested.Artist);
-            Assert.Null(playSongArtistRequest.SongRequested.Number);
+            Assert.Null(playSongArtistRequest.SongRequested.SongNumber);
         }
         
         [Fact]
@@ -197,7 +197,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             // Assert
             Assert.Equal("I Will Wait", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Title);
             Assert.Equal("Mumford & Sons", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Artist);
-            Assert.Equal("328", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Number);
+            Assert.Equal("328", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().SongNumber);
         }
         
         [Fact]
@@ -223,7 +223,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             // Assert
             Assert.Equal("I Will Wait", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Title);
             Assert.Equal("Mumford & Sons", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Artist);
-            Assert.Equal("328", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Number);
+            Assert.Equal("328", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().SongNumber);
         }
 
         [Fact]

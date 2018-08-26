@@ -50,7 +50,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest.Tests {
             var playSongRequest = new PlaySongNumberRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
             playSongRequest.SongRequested = tempSongFixtures.song1;
             playSongRequest.SongRequested.Artist = "";
-            playSongRequest.SongRequested.Number = "";
+            playSongRequest.SongRequested.SongNumber = "";
 
             // Act
             var response = playSongRequest.IsValidRequest();
@@ -141,7 +141,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest.Tests {
             playSongRequest.GetSongInfoRequested(intentSlots);
 
             // Assert
-            Assert.Equal("328", playSongRequest.SongRequested.Number);
+            Assert.Equal("328", playSongRequest.SongRequested.SongNumber);
             Assert.Null(playSongRequest.SongRequested.Artist);
             Assert.Null(playSongRequest.SongRequested.Title);
         }
@@ -170,7 +170,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest.Tests {
             // Assert
             Assert.Null(playSongRequest.SongRequested.Title);
             Assert.Null(playSongRequest.SongRequested.Artist);
-            Assert.Null(playSongRequest.SongRequested.Number);
+            Assert.Null(playSongRequest.SongRequested.SongNumber);
         }
         
         [Fact]
@@ -194,7 +194,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest.Tests {
             // Assert
             Assert.Equal("I Will Wait", playSongRequest.FoundSongs.ToList().FirstOrDefault().Title);
             Assert.Equal("Mumford & Sons", playSongRequest.FoundSongs.ToList().FirstOrDefault().Artist);
-            Assert.Equal("328", playSongRequest.FoundSongs.ToList().FirstOrDefault().Number);
+            Assert.Equal("328", playSongRequest.FoundSongs.ToList().FirstOrDefault().SongNumber);
         }
         
         [Fact]
@@ -220,7 +220,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest.Tests {
             // Assert
             Assert.Equal("I Will Wait", playSongRequest.FoundSongs.ToList().FirstOrDefault().Title);
             Assert.Equal("Mumford & Sons", playSongRequest.FoundSongs.ToList().FirstOrDefault().Artist);
-            Assert.Equal("328", playSongRequest.FoundSongs.ToList().FirstOrDefault().Number);
+            Assert.Equal("328", playSongRequest.FoundSongs.ToList().FirstOrDefault().SongNumber);
         }
 
         [Fact]

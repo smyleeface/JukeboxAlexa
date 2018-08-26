@@ -7,8 +7,8 @@ namespace JukeboxAlexa.Library.Model
     {
         public class Song
         {
-            [JsonProperty("track_number")]
-            public string Number { get; set; }
+            [JsonProperty("song_number")]
+            public string SongNumber { get; set; }
         
             [JsonProperty("title")]
             public string Title { get; set; }

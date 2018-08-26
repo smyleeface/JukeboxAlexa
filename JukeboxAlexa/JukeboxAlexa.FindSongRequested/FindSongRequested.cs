@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using Castle.Core.Internal;
-using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
+using JukeboxAlexa.Library;
 using Newtonsoft.Json;
 
-namespace JukeboxAlexa.PlaySongNumberRequest {
-    public class PlaySongNumberRequest : AIntentRequest {
+namespace JukeboxAlexa.FindSongRequested {
+    public class FindSongRequested : AIntentRequest {
 
         //--- Fields ---
         public readonly IDynamodbDependencyProvider dynamodbProvider;
@@ -21,7 +20,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
         public IEnumerable<SongModel.Song> FoundSongs;
 
         //--- Constructor ---
-        public PlaySongNumberRequest(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, string queueUrl, IDynamodbDependencyProvider awsDynmodbProvider) : base(provider, awsSqsClient, queueUrl) {
+        public FindSongRequested(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, IDynamodbDependencyProvider awsDynmodbProvider) : base(provider, awsSqsClient) {
             SongRequested = new SongModel.Song();
             FoundSongs = new List<SongModel.Song>();
             CommonProvider = provider;
@@ -29,9 +28,9 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
         }
 
         //--- Methods ---
-        public override async Task<CustomSkillResponse> HandleRequest(CustomSkillRequest customSkillRequest) {
-            var intentSlots = customSkillRequest.Intent.Slots;
-            var intentName = customSkillRequest.Intent.Name;
+        public override SkillResponse HandleRequest(IntentRequest intentRequest) {
+            var intentSlots = intentRequest.Intent.Slots;
+            var intentName = intentRequest.Intent.Name;
             
             // lookup song title and artist
             GetSongInfoRequested(intentSlots);
@@ -41,21 +40,25 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
 
             // generate sqs body and send to the queue
             var generatedMessage = GenerateMessage();
-            var sqsReuqest = GenerateJukeboxSqsRequest(intentName, generatedMessage, "");
-            await SendSqsRequest(sqsReuqest, intentName);
+            var sqsReuqest = GenerateJukeboxSqsRequest(intentName, generatedMessage, "hello");
+            SendSqsRequest(sqsReuqest, intentName);
 
             // generate alexa response
-            var customSkillResponse = new CustomSkillResponse {
-                Message = generatedMessage
+            var finalResponse = GenerateAlexaResponse("tell", generatedMessage);
+            
+            // build the speech response 
+            var speech = new SsmlOutputSpeech {
+                Ssml = generatedMessage
             };
-            LambdaLogger.Log($"*** INFO: Alexa response to user: {JsonConvert.SerializeObject(customSkillResponse)}");
-            return customSkillResponse;
+            var reprompt = new Reprompt {
+                OutputSpeech = speech
+            };
+            LambdaLogger.Log($"*** INFO: Alexa response to user: {JsonConvert.SerializeObject(finalResponse)}");
+            return finalResponse;
         }
         
         public override bool IsValidRequest() {
-            var isValid = !SongRequested.SongNumber.IsNullOrEmpty();
-            LambdaLogger.Log(isValid ? "*** INFO: Valid request" : "*** INFO: Invalid request");
-            return isValid;
+            return !SongRequested.Number.IsNullOrEmpty();
         }
 
         public override string GenerateMessage() {
@@ -63,36 +66,37 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
 
             // Handle no song returned.
             if (FoundSongs.IsNullOrEmpty()) {
-                message = $"No song found for {SongRequested.SongNumber}";
+                message = $"No song found for {SongRequested.Number}";
                 LambdaLogger.Log($"*** WARNING: {message}");
             }
 
             // Handle more than one song returned. (i.e. same song title different artist.)
             if (FoundSongs.ToList().Count > 1) {
-                message = $"More than one song found for {SongRequested.SongNumber}";
+                message = $"More than one song found for {SongRequested.Number}";
                 LambdaLogger.Log($"*** WARNING: {message}");
             }
             if (FoundSongs.ToList().Count != 1) return message;
             
             // found one song
-            message = $"Sending song number {FoundSongs.ToList().FirstOrDefault().SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
+            message = $"Sending song number {FoundSongs.ToList().FirstOrDefault().Number}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
             LambdaLogger.Log($"*** INFO: {message}");
 
             return message;
         }
 
         public override void GetSongInfoRequested(Dictionary<string, Slot> intentSlots) {
+            
+            // get the song name
             var trackFound = intentSlots.TryGetValue("TrackNumber", out Slot trackRequested);
             if (trackFound) {
-                SongRequested.SongNumber = trackRequested.Value;
+                SongRequested.Number = trackRequested.Value;
                 LambdaLogger.Log($"*** INFO: TrackNumber {trackRequested.Value}");
             }
         }
 
         public async void FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
-            var foundDbSongs = (await dynamodbProvider.DynamoDbFindSongsByNumberAsync(SongRequested.SongNumber)).ToList();
-            LambdaLogger.Log($"*** INFO: Dynamodb Response: {JsonConvert.SerializeObject(foundDbSongs)}");
+            var foundDbSongs = (await dynamodbProvider.DynamoDbFindSongsByNumberAsync(SongRequested.Number)).ToList();
             if (foundDbSongs.Count < 1) return;
             foreach (var foundSong in foundDbSongs) {
                 foundSongs.Add(foundSong);
