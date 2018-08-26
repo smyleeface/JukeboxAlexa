@@ -1,9 +1,0 @@
-# docker build -t jukebox_songlist_index_build -f Dockerfile.build .
-
-FROM alpine:3.7
-RUN apk update && \
-    apk add bash zip && \
-    apk add --no-cache python3
-RUN pip3 install awscli
-
-ENTRYPOINT [ "bash" ]
