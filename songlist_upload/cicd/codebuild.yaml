@@ -1,0 +1,94 @@
+Description: Packages and publishes the code for the lambda function that updatesthe
+  song list when csv is uploaded to s3
+Outputs:
+  CodeBuildProjectArn:
+    Description: CodeBuildProject Arn
+    Value: !GetAtt 'CodeBuildProject.Arn'
+  CodeBuildProjectId:
+    Description: CodeBuildProject Id
+    Value: !Ref 'CodeBuildProject'
+  CodeBuildServiceRoleSonglistUploadArn:
+    Description: The ARN of the service role
+    Value: !GetAtt 'CodeBuildServiceRoleSonglistUpload.Arn'
+  CodeBuildServiceRoleSonglistUploadName:
+    Description: The name of the service role
+    Value: !Ref 'CodeBuildServiceRoleSonglistUpload'
+Parameters:
+  ArtifactName:
+    Description: filename for the artifact
+    Type: String
+  EcrPythonContainerPath:
+    Description: path to the container where the buildspec will run
+    Type: String
+Resources:
+  CodeBuildProject:
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      BadgeEnabled: 'true'
+      Description: Tests and deploys songlist_upload
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: !Ref 'EcrPythonContainerPath'
+        Type: LINUX_CONTAINER
+      Name: JukeboxAlexa-SonglistUpload
+      ServiceRole: !Ref 'CodeBuildServiceRoleSonglistUpload'
+      Source:
+        Auth:
+          Resource: GITHUB
+          Type: OAUTH
+        BuildSpec: songlist_upload/cicd/buildspec.yaml
+        Location: https://github.com/smyleeface/jukebox_alexa
+        Type: GITHUB
+    Type: AWS::CodeBuild::Project
+  CodeBuildServicePolicySonglistUpload:
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - !Join
+                - ''
+                - - 'arn:aws:logs:'
+                  - !Sub '${AWS::Region}'
+                  - ':'
+                  - !Sub '${AWS::AccountId}'
+                  - :log-group:/aws/codebuild/
+                  - !Ref 'CodeBuildProject'
+              - !Join
+                - ''
+                - - 'arn:aws:logs:'
+                  - !Sub '${AWS::Region}'
+                  - ':'
+                  - !Sub '${AWS::AccountId}'
+                  - :log-group:/aws/codebuild/
+                  - !Ref 'CodeBuildProject'
+                  - :*
+          - Action:
+              - s3:PutObject
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::smyleeface-public/*
+        Version: '2012-10-17'
+      PolicyName: cicd-codebuild-jukebox-songlist-upload-policy
+      Roles:
+        - !Ref 'CodeBuildServiceRoleSonglistUpload'
+    Type: AWS::IAM::Policy
+  CodeBuildServiceRoleSonglistUpload:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Sid: listobjectslambda
+        Version: '2012-10-17'
+      RoleName: cicd-codebuild-jukebox-songlist-upload-service-role
+    Type: AWS::IAM::Role
+

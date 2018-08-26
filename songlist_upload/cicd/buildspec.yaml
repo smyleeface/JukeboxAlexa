@@ -1,0 +1,28 @@
+version: 0.2
+phases:
+
+  # using external files to make conditionals easier
+  install:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-install.sh
+
+  build:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-build.sh
+
+  post_build:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/songlist_upload/cicd/bs-post-build.sh
+
+## Use artifacts for standalone CodeBuild
+## publishes to: https://s3-us-west-2.amazonaws.com/smyleeface-public/jukebox_alexa/CodeBuildArtifacts/songlist_upload.zip
+#artifacts:
+#  files:
+#    - **/*
+#  base-directory: songlist_upload
+#  discard-paths: yes
+
+# docker build -t jukebox-python -f Dockerfile-python .
+# docker tag jukebox-python:latest 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
+# docker push 892750500233.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest
+# docker run -it --rm --name songlist_upload -v $HOME/.aws:/root/.aws -v $PWD:/project jukebox-python

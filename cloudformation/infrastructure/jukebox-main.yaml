@@ -1,4 +1,4 @@
-# After initial deploy, uncomment `Comment Block #1` in `jukebox-lambda-main.yaml` and re-deploy to add invoke permission to the lambda function
+# After initial deploy, uncomment `Comment Block #1` in `jukebox-lambda-permissions.yaml` and re-deploy to add invoke permission to the lambda function
 # After second deploy, swap the `TemplateURL` in `Comment Block #2` below and re-deploy to add event trigger to s3 bucket
 
 ---
@@ -9,9 +9,6 @@ Parameters:
   S3BucketJukeboxSongsCsv:
     Type: String
     Description: S3 Bucket the Jukebox Songs CSV are uploaded
-  JukeboxSkillId:
-    Type: String
-    Description: Jukebox Skill Id this is installed on
 
 Mappings:
   Application:
@@ -84,8 +81,8 @@ Resources:
           Key: AppName
           Value: !FindInMap [Application, Jukebox, Name]
       # START Comment Block #2 REGION
-      #TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-create.yaml
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-update.yaml
+      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-create.yaml
+#      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-s3-update.yaml
       # START Comment Block #2 REGION
 
   JukeboxLambdaTriggers:
@@ -101,19 +98,19 @@ Resources:
       TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda-triggers.yaml
 
   # START Comment Block #1 REGION
-  JukeboxLambdaPermissions:
-    Type: "AWS::CloudFormation::Stack"
-    DependsOn:
-      - JukeboxLambdaFunctions
-      - JukeboxS3
-    Properties:
-      Parameters:
-        JukeboxSkillId: !Ref JukeboxSkillId
-      Tags:
-        -
-          Key: AppName
-          Value: !FindInMap [Application, Jukebox, Name]
-      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda-permissions.yaml
+#  JukeboxLambdaPermissions:
+#    Type: "AWS::CloudFormation::Stack"
+#    DependsOn:
+#      - JukeboxLambdaFunctions
+#      - JukeboxS3
+#    Properties:
+#      Parameters:
+#        JukeboxSkillId: !Ref JukeboxSkillId
+#      Tags:
+#        -
+#          Key: AppName
+#          Value: !FindInMap [Application, Jukebox, Name]
+#      TemplateURL: https://s3-us-west-2.amazonaws.com/smyleeface-public/JukeboxAlexa/cloudformation/jukebox-lambda-permissions.yaml
   # END Comment Block #1 REGION
 
 Outputs:

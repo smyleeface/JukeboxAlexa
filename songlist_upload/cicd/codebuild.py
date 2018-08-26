@@ -1,4 +1,4 @@
-from troposphere import Ref, Template, Output, GetAtt, Join, Sub
+from troposphere import Ref, Template, Output, GetAtt, Join, Sub, Parameter
 from troposphere.iam import Role, PolicyType
 from troposphere.codebuild import Project, Artifacts, Environment, Source, SourceAuth
 from awacs.aws import Action, Allow, Policy, Statement
@@ -13,13 +13,30 @@ t.add_description("Packages and publishes the code for the lambda function that 
 
 cloudformation_s3_bucket_name = 'smyleeface-public'
 project_name = 'jukebox_alexa'
-codebuild_service_name = 'jukebox_songlist_upload_build'
+codebuild_service_name = 'JukeboxAlexa-SonglistUpload'
 CodeBuildProject = 'CodeBuildProject'
+
+##############################
+# Stack parameters
+#############################
+codebuild_artifact_name = Parameter(
+    "ArtifactName",
+    Description="filename for the artifact",
+    Type="String"
+)
+t.add_parameter(codebuild_artifact_name)
+
+codebuild_ecr_contianer = Parameter(
+    "EcrPythonContainerPath",
+    Description="path to the container where the buildspec will run",
+    Type="String"
+)
+t.add_parameter(codebuild_ecr_contianer)
 
 ##############################
 # Role songlist_upload
 #############################
-CodeBuildServiceRole = 'CodeBuildServiceRole'
+CodeBuildServiceRoleSonglistUpload = 'CodeBuildServiceRoleSonglistUpload'
 service_role_name = 'cicd-codebuild-jukebox-songlist-upload-service-role'
 codebuild_assume_role_policy = {
     'Version': '2012-10-17',
@@ -35,13 +52,13 @@ codebuild_assume_role_policy = {
     ]
 }
 t.add_resource(Role(
-    title=CodeBuildServiceRole,
+    title=CodeBuildServiceRoleSonglistUpload,
     RoleName=service_role_name,
     AssumeRolePolicyDocument=codebuild_assume_role_policy
 ))
 
 
-cloudformation_title = 'CodeBuildServicePolicy'
+cloudformation_title = 'CodeBuildServicePolicySonglistUpload'
 policy_name = 'cicd-codebuild-jukebox-songlist-upload-policy'
 t.add_resource(PolicyType(
     title=cloudformation_title,
@@ -72,35 +89,29 @@ t.add_resource(PolicyType(
         Version='2012-10-17'
     ),
     PolicyName=policy_name,
-    Roles=[Ref(CodeBuildServiceRole)]
+    Roles=[Ref(CodeBuildServiceRoleSonglistUpload)]
 ))
 
 ################
 # CodeBuild
 ################
-codebuild_artifact_name = 'songlist_upload.zip'
-codebuild_artifact_path = 'JukeboxAlexa/CodeBuildArtifacts'
-codebuild_ecr_contianer = '952671759649.dkr.ecr.us-west-2.amazonaws.com/jukebox-python:latest'
-codebuild_build_spec_path = 'songlist_upload/buildspec.yaml'
+codebuild_artifact_path = 'songlist_upload/CodeBuildArtifacts'
+codebuild_build_spec_path = 'songlist_upload/cicd/buildspec.yaml'
 codebuild_github_url = 'https://github.com/smyleeface/jukebox_alexa'
 t.add_resource(Project(
     title=CodeBuildProject,
     Name=codebuild_service_name,
     Artifacts=Artifacts(
-        Location=cloudformation_s3_bucket_name,
-        Name=codebuild_artifact_name,
-        Path=codebuild_artifact_path,
-        Packaging='NONE',
-        Type='S3'
+        Type='NO_ARTIFACTS'
     ),
     BadgeEnabled=True,
     Description='Tests and deploys songlist_upload',
     Environment=Environment(
         ComputeType='BUILD_GENERAL1_SMALL',
-        Image=codebuild_ecr_contianer,
+        Image=Ref(codebuild_ecr_contianer),
         Type='LINUX_CONTAINER'
     ),
-    ServiceRole=Ref(CodeBuildServiceRole),
+    ServiceRole=Ref(CodeBuildServiceRoleSonglistUpload),
     Source=Source(
         Auth=SourceAuth(
             Resource='GITHUB',
@@ -115,14 +126,14 @@ t.add_resource(Project(
 
 t.add_output([
     Output(
-        "CodeBuildServiceRoleName",
+        "CodeBuildServiceRoleSonglistUploadName",
         Description="The name of the service role",
-        Value=Ref(CodeBuildServiceRole)
+        Value=Ref(CodeBuildServiceRoleSonglistUpload)
     ),
     Output(
-        'CodeBuildServiceRoleArn',
+        'CodeBuildServiceRoleSonglistUploadArn',
         Description='The ARN of the service role',
-        Value=GetAtt(CodeBuildServiceRole, 'Arn')
+        Value=GetAtt(CodeBuildServiceRoleSonglistUpload, 'Arn')
     ),
     Output(
         'CodeBuildProjectId',

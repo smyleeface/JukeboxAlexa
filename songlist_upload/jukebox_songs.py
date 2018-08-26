@@ -19,13 +19,18 @@ class JukeboxSongs(object):
         self.s3_client = s3_client
         self.logger = logger
 
-    def log(self, message: str, type: str = 'info'):
+    def log(self, message: str, log_type: str = 'info'):
         """Setup a logger
 
         :return logging
         """
         if self.logger:
-            self.logger.info(message)
+            if log_type.lower() == 'error':
+                self.logger.error(message)
+            elif log_type.lower() == 'warn':
+                self.logger.warn(message)
+            else:
+                self.logger.info(message)
 
     def run_update(self):
         """Run the commands to update the songs in the database"""

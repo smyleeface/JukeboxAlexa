@@ -6,7 +6,7 @@ Aerosmith
 Air Supply
 Al Stewart
 Alannah Myles
-Alice Copper
+Alice Cooper
 Alicia Keys
 Ambrosia
 American Authors
@@ -17,7 +17,6 @@ Anna Kendrick
 Atlantic Starr
 Avicii
 Bachman-Turner Overdrive
-Bad Company
 Barry Manilow
 Bastille
 Beach Boys, The
@@ -35,13 +34,13 @@ Billy Squier
 Blondie
 Blue Swede
 Bob Seger & The Silver Bullet Band
-Bobby McFerrin
 Bon Jovi
 Bonnie Raitt
 Boston
 Boyz II Men
 Boz Scaggs
 Bread
+Britney Spears
 Brownsville Station
 Bruno Mars
 Bryan Adams
@@ -49,7 +48,6 @@ Capital Cities
 Carly Rae Jepson
 Carly Simon
 Carpenters
-Carrie Underwood
 Celine Dion
 Cheap Trick
 Chicago
@@ -59,7 +57,6 @@ Christina Perri
 Christopher Cross
 Colbie Caillat
 Counting Crows
-Crowded House
 Cutting Crew
 Cyndi Lauper
 Daft Punk
@@ -67,10 +64,8 @@ Dan Hill
 Daryl Hall & John Oates
 Daughtry
 David Guetta
-Def Leppard
 Deniece Williams
 Depeche Mode
-Dionne Warwick
 Dixie Chicks
 Don Henley
 Don McLean
@@ -82,7 +77,8 @@ Ed Sheeran
 Eddie Rabbitt
 Edgar Winter Group
 Edwin McCain
-Electric Light Ochestra
+Electric Light Orchestra
+Ellie Goulding
 Ellis Goulding
 Elton John
 Elvin Bishop
@@ -115,7 +111,7 @@ Helen St John
 Hoobastank
 Idina Menzel
 Imagine Dragons
-Imelda Papin
+Imelda PapinEagles
 Ingrid Michaelson
 Irene Cara
 James Blunt
@@ -124,7 +120,6 @@ Jason Mraz
 Jethro Tull
 Jewel
 Jim Croce
-Jimmy Eat World
 Jody Watley
 Joe Cocker
 Joe Walsh
@@ -140,7 +135,6 @@ Kansas
 Katy Perry
 Kelly Clarkson
 Kenny G
-Kenny Loggins
 Kid Rock
 Kim Wilde
 King of Leon
@@ -162,6 +156,7 @@ Los Lobos
 Louis Armstrong
 Luther Vandross
 Madonna
+Mandisa
 Mariah Carey
 Mark Ronson
 Maroon 5
@@ -169,7 +164,6 @@ Martina McBride
 Matchbox 20
 Meghan Trainor
 Men at Work
-Michael Bolton
 Michael Buble
 Michael Damian
 Michael Jackson
@@ -190,13 +184,11 @@ Olivia Newton-John
 One Direction
 OneRepublic
 Passenger
-Patsy Cline
 Patti Austin
 Patti LaBelle
 Paul McCartney & Wings
 Paula Abdul
 Peabo Bryson
-Pet Shop Boys
 Peter Cetera
 Peter Frampton
 Peter Gabriel
@@ -211,13 +203,13 @@ Player
 Poison
 Police
 Pretenders
+Prince
 Procol Harum
 Queen
 Rachel Platten
 Rascal Flatts
-Ready For The World
+Ready For The Worlnwood
 REO Speedwagon
-Richard Clayderman
 Richard Marx
 Rick Derringer
 Rick Springfield
@@ -235,7 +227,6 @@ Sarah McLachlan
 Seals & Crofts
 Sheryl Crow
 Shocking Blue
-Simple Minds
 Simply Red
 Spandau Ballet
 Steve Miller Band
@@ -266,7 +257,6 @@ The Guess Who
 The Hollies
 The Jeff Healy Band
 The Knack
-The Lumineers
 The Neighbourhood
 The New Radicals
 The Rolling Stones

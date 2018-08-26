@@ -1,0 +1,264 @@
+Version: 0.2.1
+
+Name: JukeboxAlexa
+
+Description: JukeboxAlexa Project
+
+Variables:
+  DynamoDbTableName: JukeboxSongs
+  DynamoDbTableCacheName: JukeboxSongWordCache
+  DynamoDbIndexNameSearchTitleName: indexNameSearchTitle
+  DynamoDbIndexNameSearchTitleArtistName: indexNameSearchTitleArtist
+
+Parameters:
+  #
+  ##########################
+  # S3 CSV Song file upload
+  ##########################
+  #
+  - Name: S3JukeboxSongsCsv
+    Resource:
+      Type: "AWS::S3::Bucket"
+      Allow: ReadWrite
+  #
+  ##########################
+  # DynamoDB Index Permissions
+  ##########################
+  #
+  - Name: DynamoDbSongsTitleIndexPermission
+    Value: "arn:aws:dynamodb:{{AwsRegion}}:{{AwsAccountId}}:table/{{DynamoDbTableName}}/index/{{DynamoDbIndexNameSearchTitleName}}"
+    Resource:
+      Type: AWS::DynamoDB::Table
+      Allow: ReadOnly
+
+  - Name: DynamoDbSongsTitleArtistIndexPermission
+    Value: "arn:aws:dynamodb:{{AwsRegion}}:{{AwsAccountId}}:table/{{DynamoDbTableName}}/index/{{DynamoDbIndexNameSearchTitleArtistName}}"
+    Resource:
+      Type: AWS::DynamoDB::Table
+      Allow: ReadOnly
+  #
+  ##########################
+  # DynamoDB Table - Songs
+  ##########################
+  #
+  - Name: DynamoDbSongs
+    Description: DynamoDb table for storing songs
+    Resource:
+      Type: AWS::DynamoDB::Table
+      Allow: ReadWrite
+      Properties:
+        TableName: "{{DynamoDbTableName}}"
+        AttributeDefinitions:
+          - AttributeName: song_number
+            AttributeType: S
+          - AttributeName: search_artist
+            AttributeType: S
+          - AttributeName: search_title
+            AttributeType: S
+        KeySchema:
+          - AttributeName: song_number
+            KeyType: HASH
+        ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "{{DynamoDbIndexNameSearchTitleName}}"
+            KeySchema:
+              - AttributeName: search_title
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: "{{DynamoDbIndexNameSearchTitleArtistName}}"
+            KeySchema:
+              - AttributeName: search_title
+                KeyType: HASH
+              - AttributeName: search_artist
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+  #
+  ############################################
+  # DynamoDB Table - TitleWordCache
+  ############################################
+  #
+  - Name: DynamoDbTitleWordCache
+    Description: DynamoDb table for storing received messages
+    Resource:
+      Type: AWS::DynamoDB::Table
+      Allow: ReadWrite
+      Properties:
+        TableName: "{{DynamoDbTableCacheName}}"
+        AttributeDefinitions:
+          - AttributeName: word
+            AttributeType: S
+        KeySchema:
+          - AttributeName: word
+            KeyType: HASH
+        ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+  #
+  ######################
+  # SQS Queue
+  ######################
+  #
+  - Name: SqsSongQueue
+    Resource:
+      Type: AWS::SQS::Queue
+      Allow: Send
+      Properties:
+        FifoQueue: true
+        ReceiveMessageWaitTimeSeconds: 20
+  #
+  ######################
+  # Parameter store
+  ######################
+  #
+  - Name: DynamoDbStreamArn
+    Resource:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: "/{{tier}}/dynamodb/streamarn"
+        Type: String
+        Value:
+          Fn::GetAtt:
+            - DynamoDbSongs
+            - StreamArn
+  #
+  ######################
+  # Import DynamoDb Stream arn
+  ######################
+  #
+  - Name: DynamoDbSongsStreamArnPermission
+    Import: "/{{tier}}/dynamodb/streamarn"
+    Resource:
+      Type: AWS::DynamoDB::Table
+      Allow: Full
+  #
+  ############################################
+  # DynamodbTrigger - Lambda Event Mapping
+  ############################################
+  #
+  - Name: JukeboxCacheIndexLambdaTrigger
+    Resource:
+      Type: "AWS::Lambda::EventSourceMapping"
+      Properties:
+        BatchSize: 1
+        Enabled: true
+        StartingPosition: LATEST
+        EventSourceArn:
+          Fn::GetAtt:
+            - DynamoDbSongs
+            - StreamArn
+        FunctionName:
+          Ref: SonglistIndex
+
+Functions:
+
+  #
+  #########################
+  # Skill Request Intent
+  #########################
+  #
+#  - Name: SkillProxyRequest
+#    Description: Processes speaker request intnet
+#    Memory: 192
+#    Timeout: 30
+#    Environment:
+#      API_ENDPOINT: https://958pj335hl.execute-api.us-west-2.amazonaws.com/LATEST
+#    Sources:
+#      - Alexa: amzn1.ask.skill.71c43867-471c-4c66-b9c0-b2c577e1b10f
+#
+#  #
+#  #########################
+#  # Speaker Request Intent
+#  #########################
+#  #
+#  - Name: SpeakerRequest
+#    Description: Processes speaker request intnet
+#    Memory: 192
+#    Timeout: 30
+#    Sources:
+#      - Api: POST /jukebox-alexa/speaker-request
+#
+#  #
+#  #########################
+#  # Play Song Title Request Intent
+#  #########################
+#  #
+#  - Name: PlaySongTitleRequest
+#    Description: Processes play song request intent
+#    Memory: 192
+#    Timeout: 30
+#    Environment:
+#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
+#    Sources:
+#      - Api: POST /jukebox-alexa/song-title-reqeust
+#
+#  #
+#  #########################
+#  # Play Song Artist Request Intent
+#  #########################
+#  #
+#  - Name: PlaySongTitleArtistRequest
+#    Description: Processes play song title and artist request intent
+#    Memory: 192
+#    Timeout: 30
+#    Environment:
+#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
+#      INDEX_NAME_SEARCH_TITLE_ARTIST: indexNameSearchTitleArtist
+#    Sources:
+#      - Api: POST /jukebox-alexa/song-title-artist-request
+#
+#  #
+#  #########################
+#  # Play Number Request Intent
+#  #########################
+#  #
+#  - Name: PlaySongNumberRequest
+#    Description: Processes play song number request intent
+#    Memory: 192
+#    Timeout: 30
+#    Environment:
+#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
+#      INDEX_NAME_SEARCH_TITLE_ARTIST: indexNameSearchTitleArtist
+#    Sources:
+#      - Api: POST /jukebox-alexa/song-number-request
+
+  #
+  #########################
+  # Songlist Upload
+  #########################
+  #
+  - Name: SonglistUpload
+    Description: Processes the songs in the uploaded file
+    Memory: 192
+    Timeout: 30
+    Environment:
+      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
+    Sources:
+      - S3: S3JukeboxSongsCsv
+        Events:
+          - "s3:ObjectCreated:*"
+
+  #
+  #########################
+  # Songlist Index
+  #########################
+  #
+  - Name: SonglistIndex
+    Description: Processes the songs added/removed from the index
+    Memory: 192
+    Timeout: 30
+    Environment:
+      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
