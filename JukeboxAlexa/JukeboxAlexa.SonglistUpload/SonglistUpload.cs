@@ -12,26 +12,26 @@ namespace JukeboxAlexa.SonglistUpload {
     public class SonglistUpload {
 
         //--- Fields ---
-        public readonly IDynamodbDependencyProvider dynamodbProvider;
-        public readonly IS3DependencyProvider s3Provider;
-        public string bucketName;
-        public string keyName;
-        public IEnumerable<SongCsvModel> newSongs;
-        public IEnumerable<SongCsvModel> oldSongs;
-        public IEnumerable<SongCsvModel> songsToAdd;
-        public IEnumerable<SongCsvModel> songsToDelete;
+        public readonly IDynamodbDependencyProvider DynamodbProvider;
+        public readonly IS3DependencyProvider S3Provider;
+        public string BucketName;
+        public string KeyName;
+        public IEnumerable<SongCsvModel> NewSongs;
+        public IEnumerable<SongCsvModel> OldSongs;
+        public IEnumerable<SongCsvModel> SongsToAdd;
+        public IEnumerable<SongCsvModel> SongsToDelete;
 
         //--- Constructor ---
         public SonglistUpload(IDynamodbDependencyProvider awsDynmodbProvider, IS3DependencyProvider awsS3Provider) {
-            dynamodbProvider = awsDynmodbProvider;
-            s3Provider = awsS3Provider;
+            DynamodbProvider = awsDynmodbProvider;
+            S3Provider = awsS3Provider;
         }
 
         //--- Methods ---
         public async Task HandleRequest(string s3BucketName, string s3KeyName) {
-            bucketName = s3BucketName;
-            keyName = s3KeyName;
-            LambdaLogger.Log($"***INFO: bucket: {s3BucketName}; key: {keyName}");
+            BucketName = s3BucketName;
+            KeyName = s3KeyName;
+            LambdaLogger.Log($"***INFO: bucket: {s3BucketName}; key: {KeyName}");
             await ReadNewSongs();
             await ReadOldSongs();
             FilterSongsToAdd();
@@ -43,7 +43,7 @@ namespace JukeboxAlexa.SonglistUpload {
 
         public async Task ReadNewSongs() {
             var theseNewSongs = new List<SongCsvModel>();
-            var getObjectResponse = await s3Provider.GetSongsFromS3UploadAsync(bucketName, keyName);
+            var getObjectResponse = await S3Provider.GetSongsFromS3UploadAsync(BucketName, KeyName);
             var songRows = getObjectResponse.Split('\n');
             LambdaLogger.Log($"***INFO: new songs from file (songRows): {JsonConvert.SerializeObject(songRows)}");
             foreach (var songRow in songRows) {
@@ -61,12 +61,12 @@ namespace JukeboxAlexa.SonglistUpload {
                 theseNewSongs.Add(song);
             }
             LambdaLogger.Log($"***INFO: new songs filtered (theseNewSongs): {JsonConvert.SerializeObject(theseNewSongs)}");
-            newSongs = theseNewSongs;
+            NewSongs = theseNewSongs;
         }
 
         public async Task ReadOldSongs() {
             var theseExsitingSongs = new List<SongCsvModel>();
-            var rows = await dynamodbProvider.DynamoDbScanAsync();
+            var rows = await DynamodbProvider.DynamoDbScanAsync();
             LambdaLogger.Log($"***INFO: old songs from database (rows.Items): {JsonConvert.SerializeObject(rows.Items)}");
             foreach (var item in rows.Items) {
                 if (item.TryGetValue("artist", out var artist) && item.TryGetValue("song_number", out var number) && item.TryGetValue("title", out var title) && item.TryGetValue("search_title", out var searchTitle) && item.TryGetValue("search_artist", out var searchArtist)) {
@@ -81,14 +81,14 @@ namespace JukeboxAlexa.SonglistUpload {
                 }
             }
             LambdaLogger.Log($"***INFO: old songs filtered (theseExsitingSongs): {JsonConvert.SerializeObject(theseExsitingSongs)}");
-            oldSongs = theseExsitingSongs;
+            OldSongs = theseExsitingSongs;
         }
 
         public void FilterSongsToAdd() {
             var newSongsToAdd = new List<SongCsvModel>();
-            foreach (var newSong in newSongs) {
+            foreach (var newSong in NewSongs) {
                 var found = false;
-                foreach (var oldSong in oldSongs) {
+                foreach (var oldSong in OldSongs) {
                     if (newSong.SongNumber == oldSong.SongNumber && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
                         found = true;
                     }
@@ -98,14 +98,14 @@ namespace JukeboxAlexa.SonglistUpload {
                 }
             }
             LambdaLogger.Log($"***INFO: new songs marked for adding to database (newSongsToAdd): {JsonConvert.SerializeObject(newSongsToAdd)}");
-            songsToAdd = newSongsToAdd;
+            SongsToAdd = newSongsToAdd;
         }
 
         public void FilterSongsToDelete() {
             var oldSongsToDelete = new List<SongCsvModel>();
-            foreach (var oldSong in oldSongs) {
+            foreach (var oldSong in OldSongs) {
                 var found = false;
-                foreach (var newSong in newSongs) {
+                foreach (var newSong in NewSongs) {
                     if (newSong.SongNumber == oldSong.SongNumber && newSong.Artist == oldSong.Artist && newSong.Title == oldSong.Title) {
                         found = true;
                     }
@@ -115,14 +115,14 @@ namespace JukeboxAlexa.SonglistUpload {
                 }
             }
             LambdaLogger.Log($"***INFO: old songs marked for deleting from database (oldSongsToDelete): {JsonConvert.SerializeObject(oldSongsToDelete)}");
-            songsToDelete = oldSongsToDelete;
+            SongsToDelete = oldSongsToDelete;
         }
 
         public async Task DeleteSongsFromDatabase() {
             var batchDynamodbList = new List<List<WriteRequest>>();
             var dynamodbValues = new List<WriteRequest>();
             var batchCounter = 0;
-            foreach (var deleteSong in songsToDelete) {
+            foreach (var deleteSong in SongsToDelete) {
                 var dbRecord = new WriteRequest {
                     DeleteRequest = new DeleteRequest {
                         Key = new Dictionary<string, AttributeValue> {
@@ -134,14 +134,14 @@ namespace JukeboxAlexa.SonglistUpload {
                 };
                 dynamodbValues.Add(dbRecord);
                 batchCounter += 1;
-                if (batchCounter % 25 == 0 || batchCounter == songsToDelete.Count()) {
+                if (batchCounter % 25 == 0 || batchCounter == SongsToDelete.Count()) {
                     batchDynamodbList.Add(dynamodbValues);       
                     dynamodbValues = new List<WriteRequest>();
                 }
             }
             foreach (var dynamodbList in batchDynamodbList) {
                 LambdaLogger.Log($"***INFO: writing to delete from database (dynamodbList): {JsonConvert.SerializeObject(dynamodbList)}");
-                await dynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
+                await DynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
             }
         }
 
@@ -149,7 +149,7 @@ namespace JukeboxAlexa.SonglistUpload {
             var batchDynamodbList = new List<List<WriteRequest>>();
             var dynamodbValues = new List<WriteRequest>();
             var batchCounter = 0;
-            foreach (var addSong in songsToAdd) {
+            foreach (var addSong in SongsToAdd) {
                 var putRequest = new PutRequest {
                     Item = new Dictionary<string, AttributeValue> {
                         {
@@ -177,7 +177,7 @@ namespace JukeboxAlexa.SonglistUpload {
                 };
                 dynamodbValues.Add(new WriteRequest{ PutRequest = putRequest });
                 batchCounter += 1;
-                if (batchCounter % 25 == 0 || batchCounter == songsToAdd.Count()) {
+                if (batchCounter % 25 == 0 || batchCounter == SongsToAdd.Count()) {
                     batchDynamodbList.Add(new List<WriteRequest>(dynamodbValues));
                     LambdaLogger.Log($"***INFO: added to batchDynamodbList: {JsonConvert.SerializeObject(batchDynamodbList)}");
                     dynamodbValues = new List<WriteRequest>();
@@ -185,13 +185,13 @@ namespace JukeboxAlexa.SonglistUpload {
             }
             foreach (var dynamodbList in batchDynamodbList) {
                 LambdaLogger.Log($"***INFO: writing to add to database (dynamodbList): {JsonConvert.SerializeObject(dynamodbList)}");
-                await dynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
+                await DynamodbProvider.DynamoDbBatchWriteItemAsync(dynamodbList);
             }
         }
         
         public void UpdateSummary() {
-            LambdaLogger.Log($"Added {songsToAdd.Count()} Songs");    
-            LambdaLogger.Log($"Deleted {songsToDelete.Count()} Songs");    
+            LambdaLogger.Log($"Added {SongsToAdd.Count()} Songs");    
+            LambdaLogger.Log($"Deleted {SongsToDelete.Count()} Songs");    
         }
     }
 }

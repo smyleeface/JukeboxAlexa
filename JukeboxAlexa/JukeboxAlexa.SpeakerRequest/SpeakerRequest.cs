@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
@@ -40,7 +38,7 @@ namespace JukeboxAlexa.SpeakerRequest {
         }
 
         public override bool IsValidRequest() {
-            var isValid = SpeakerAction == "on" || SpeakerAction == "off";;
+            var isValid = SpeakerAction == "on" || SpeakerAction == "off";
             LambdaLogger.Log(isValid ? "*** INFO: Valid request" : "*** INFO: Invalid request");
             return isValid;
         }

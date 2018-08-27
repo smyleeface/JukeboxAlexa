@@ -14,14 +14,13 @@ namespace JukeboxAlexa.SpeakerRequest {
     public class Function : ICommonDependencyProvider {
         
         //--- Fields ---
-        private string _queueName;
         private readonly SpeakerRequest _speakerRequest;
 
         //--- Constructors ---
         public Function() {    
             var sqsClient = new AmazonSQSClient();
-            _queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
-            _speakerRequest = new SpeakerRequest(this, sqsClient, _queueName);
+            var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
+            _speakerRequest = new SpeakerRequest(this, sqsClient, queueName);
         }
 
         //--- FunctionHandler ---

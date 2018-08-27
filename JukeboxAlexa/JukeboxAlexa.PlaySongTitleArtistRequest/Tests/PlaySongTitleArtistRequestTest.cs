@@ -2,23 +2,19 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Alexa.NET;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
-using JukeboxAlexa.Library.TestFixture;
-using JukeboxAlexa.Library.Tests;
+using JukeboxAlexa.Library.TestFixtures;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
 
 namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
     public class PlaySongTitleArtistRequestTest {
-        public SongFixtures songFixtures = new SongFixtures();
+        public SongFixtures SongFixtures = new SongFixtures();
         
         [Fact]
         public void Play_song_artist_request__is_valid_request__valid() {
@@ -28,7 +24,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
 
             // Act
             var response = playSongArtistRequest.IsValidRequest();
@@ -46,7 +42,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = tempSongFixtures.song1;
+            playSongArtistRequest.SongRequested = tempSongFixtures.Song1;
             playSongArtistRequest.SongRequested.Artist = "";
 
             // Act
@@ -64,9 +60,9 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
             playSongArtistRequest.FoundSongs = new List<SongModel.Song> {
-                songFixtures.song1
+                SongFixtures.Song1
             };
 
             // Act
@@ -84,7 +80,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
             playSongArtistRequest.FoundSongs = new List<SongModel.Song>();
 
             // Act
@@ -102,11 +98,11 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
             playSongArtistRequest.FoundSongs = new List<SongModel.Song> {
-                songFixtures.song2,
-                songFixtures.song1,
-                songFixtures.song3
+                SongFixtures.Song2,
+                SongFixtures.Song1,
+                SongFixtures.Song3
             };
 
             // Act
@@ -181,14 +177,14 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
 
             // Arrange
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
-                songFixtures.song1
+                SongFixtures.Song1
             };
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             dynamodbProvider.Setup(x => x.DynamoDbFindSongsByTitleArtistAsync("I Will Wait", "Mumford & Sons")).Returns(Task.FromResult(foundDynamodbSongs));
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
 
 
             // Act
@@ -205,16 +201,16 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
 
             // Arrange
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
-                songFixtures.song1,
-                songFixtures.song2,
-                songFixtures.song3
+                SongFixtures.Song1,
+                SongFixtures.Song2,
+                SongFixtures.Song3
             };
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             dynamodbProvider.Setup(x => x.DynamoDbFindSongsByTitleArtistAsync("I Will Wait", "Mumford & Sons")).Returns(Task.FromResult(foundDynamodbSongs));
             var playSongArtistRequest = new PlaySongTitleArtistRequest(provider.Object, sqsClient.Object, "http://foo-bar", dynamodbProvider.Object);
-            playSongArtistRequest.SongRequested = songFixtures.song1;
+            playSongArtistRequest.SongRequested = SongFixtures.Song1;
 
 
             // Act
@@ -251,7 +247,6 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
                 DialogState = "STARTED",
                 Type = "PlaySongTitleArtistRequest"
             };
-            var skillResponse = ResponseBuilder.Tell("Sending song number 328");
             
             // mock dependency provider common
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -273,7 +268,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
             
             // mock dependency provider dynamodb
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
-                songFixtures.song1
+                SongFixtures.Song1
             };
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             dynamodbProvider.Setup(x => x.DynamoDbFindSongsByTitleArtistAsync("I Will Wait", "Mumford & Sons")).Returns(Task.FromResult(foundDynamodbSongs));

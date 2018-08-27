@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using Castle.Core.Internal;
@@ -15,8 +13,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
     public class PlaySongTitleRequest : AIntentRequest {
 
         //--- Fields ---
-        public readonly IDynamodbDependencyProvider dynamodbProvider;
-        public readonly ICommonDependencyProvider CommonProvider;
+        public readonly IDynamodbDependencyProvider DynamodbProvider;
         public SongModel.Song SongRequested;
         public IEnumerable<SongModel.Song> FoundSongs;
 
@@ -24,8 +21,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
         public PlaySongTitleRequest(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, string queueUrl, IDynamodbDependencyProvider awsDynmodbProvider) : base(provider, awsSqsClient, queueUrl) {
             SongRequested = new SongModel.Song();
             FoundSongs = new List<SongModel.Song>();
-            CommonProvider = provider;
-            dynamodbProvider = awsDynmodbProvider;
+            DynamodbProvider = awsDynmodbProvider;
         }
 
         //--- Methods ---
@@ -91,7 +87,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
 
         public async void FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
-            var foundDbSongs = (await dynamodbProvider.DynamoDbFindSongsByTitleAsync(SongRequested.Title)).ToList();
+            var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByTitleAsync(SongRequested.Title)).ToList();
             if (foundDbSongs.Count < 1) return;
             foreach (var foundSong in foundDbSongs) {
                 foundSongs.Add(foundSong);

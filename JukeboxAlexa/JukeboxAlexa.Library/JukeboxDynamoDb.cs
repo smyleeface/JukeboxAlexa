@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
-using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Lambda.Core;
 using Castle.Core.Internal;
 using JukeboxAlexa.Library.Model;
@@ -48,9 +46,9 @@ namespace JukeboxAlexa.Library {
             return parsedSongList;
         }
 
-        public async Task<IEnumerable<SongModel.Song>> FindSongsByNumberAsync(string trackNumber) {
-            LambdaLogger.Log($"*** INFO: FindSongsByNumber for `{trackNumber}`");
-            var queryRequest = QueryRequestNumber(trackNumber);                    
+        public async Task<IEnumerable<SongModel.Song>> FindSongsByNumberAsync(string songNumber) {
+            LambdaLogger.Log($"*** INFO: FindSongsByNumber for `{songNumber}`");
+            var queryRequest = QueryRequestNumber(songNumber);                    
             var queryResponse = await _dynamoClient.QueryAsync(queryRequest);
             LambdaLogger.Log($"*** INFO: queryResponse `{JsonConvert.SerializeObject(queryResponse)}`");
             var parsedSongList = ParseSongsFromDatabaseResponse(queryResponse);
@@ -139,6 +137,7 @@ namespace JukeboxAlexa.Library {
         }
 
         public async Task<UpdateItemResponse> UpdateItemAsync(Dictionary<string, AttributeValue> key, string updateExpression, IDictionary<string, AttributeValue> expressionAttributeValues) {
+            LambdaLogger.Log(updateExpression);
             var updateItemRequest = new UpdateItemRequest {
                 TableName = _songWordIndexTableName,
                 Key = key,
@@ -149,23 +148,6 @@ namespace JukeboxAlexa.Library {
                 updateItemRequest.ExpressionAttributeValues = new Dictionary<string, AttributeValue>(expressionAttributeValues);
             }
             return await _dynamoClient.UpdateItemAsync(updateItemRequest);
-        }
-        
-        public async Task<PutItemResponse> PutItemAsync(IDictionary<string, AttributeValue> key) {
-            var putItemRequest = new PutItemRequest {
-                TableName = _songWordIndexTableName,
-                Item = key.ToDictionary(x => x.Key, x => x.Value)
-            };
-            LambdaLogger.Log($"putItemRequest song: {JsonConvert.SerializeObject(putItemRequest)}");
-            return await _dynamoClient.PutItemAsync(putItemRequest);
-        }
-        
-        public async Task<DeleteItemResponse> DeleteItemAsync(IDictionary<string, AttributeValue> key) {
-            var putItemRequest = new DeleteItemRequest {
-                TableName = _songWordIndexTableName,
-                Key = key.ToDictionary(x => x.Key, x => x.Value)
-            };
-            return await _dynamoClient.DeleteItemAsync(putItemRequest);
         }
     }
 }

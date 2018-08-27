@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using Alexa.NET;
 using Alexa.NET.Response;
-using Amazon.SQS;
-using JukeboxAlexa.Library.TestFixture;
-using Moq;
 using Xunit;
 
 namespace JukeboxAlexa.Library.Tests {

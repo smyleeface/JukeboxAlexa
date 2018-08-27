@@ -18,7 +18,6 @@ namespace JukeboxAlexa.SonglistUpload {
     public class Function : IDynamodbDependencyProvider, IS3DependencyProvider  {
         
         //--- Fields ---
-        private string _queueName;
         private readonly SonglistUpload _songlistUpload;
         private readonly JukeboxDynamoDb _jukeboxDynamoDb;
         private readonly JukeboxS3 _jukeboxS3;
@@ -26,7 +25,6 @@ namespace JukeboxAlexa.SonglistUpload {
         
         //--- Constructors ---
         public Function() {
-            _queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
             var tableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBSONGS");
             var indexNameSearchTitle = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE");
             var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE_ARTIST");
@@ -39,11 +37,11 @@ namespace JukeboxAlexa.SonglistUpload {
         //--- FunctionHandler ---
         public async Task FunctionHandlerAsync(S3Event s3Event, ILambdaContext context) {
             LambdaLogger.Log($"*** INFO: PutObjectRequest: {JsonConvert.SerializeObject(s3Event)}");
-            var BucketName = s3Event.Records.FirstOrDefault().S3.Bucket.Name;
-            var KeyName = s3Event.Records.FirstOrDefault().S3.Object.Key;
+            var bucketName = s3Event.Records.FirstOrDefault().S3.Bucket.Name;
+            var keyName = s3Event.Records.FirstOrDefault().S3.Object.Key;
             
             // process request
-            await _songlistUpload.HandleRequest(BucketName, KeyName);
+            await _songlistUpload.HandleRequest(bucketName, keyName);
         }
         
         Task<IEnumerable<SongModel.Song>> IDynamodbDependencyProvider.DynamoDbFindSongsByTitleAsync(string title) => _jukeboxDynamoDb.FindSongsByTitleAsync(title);
