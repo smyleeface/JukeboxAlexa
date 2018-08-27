@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Lambda.Core;
+﻿using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
-using JukeboxAlexa.Library.Model;
-using Newtonsoft.Json;
 
 namespace JukeboxAlexa.Library {
     public class JukeboxS3 {

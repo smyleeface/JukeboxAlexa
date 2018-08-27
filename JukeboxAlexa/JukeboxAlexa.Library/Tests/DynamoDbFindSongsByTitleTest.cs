@@ -4,13 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
-using JukeboxAlexa.Library.TestFixture;
+using JukeboxAlexa.Library.TestFixtures;
 using Moq;
 using Xunit;
 
 namespace JukeboxAlexa.Library.Tests {
     public class DynamoDbFindSongsByTitleTest {
-        public SongFixtures songFixtures = new SongFixtures();
+        public SongFixtures SongFixtures = new SongFixtures();
 
         [Fact]
         public async void Find_songs_by_title__found_one_song() {
@@ -26,8 +26,8 @@ namespace JukeboxAlexa.Library.Tests {
                 }
             };
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == songFixtures.tableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == SongFixtures.TableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             
             // Act
             var parsedSongsList = (await jukeboxDynamoDb.FindSongsByTitleAsync("hello")).ToList();
@@ -57,8 +57,8 @@ namespace JukeboxAlexa.Library.Tests {
                 }
             };
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == songFixtures.tableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == SongFixtures.TableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             
             // Act
             var parsedSongsList = (await jukeboxDynamoDb.FindSongsByTitleAsync("hello")).ToList();
@@ -84,9 +84,9 @@ namespace JukeboxAlexa.Library.Tests {
                 Items = new List<Dictionary<string, AttributeValue>>()
             };
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == songFixtures.tableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
+            dynamodbClient.Setup(x => x.QueryAsync(It.Is<QueryRequest>(y => y.TableName == SongFixtures.TableName), new CancellationToken())).Returns(Task.FromResult(queryResponse));
 
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             
             // Act
             var parsedSongsList = await jukeboxDynamoDb.FindSongsByTitleAsync("helloooooo");
@@ -100,7 +100,7 @@ namespace JukeboxAlexa.Library.Tests {
            
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             
             // Act
             var query = jukeboxDynamoDb.QueryRequestTitle("foo-bar");

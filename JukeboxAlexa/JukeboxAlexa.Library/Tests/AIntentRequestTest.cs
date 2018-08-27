@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Alexa.NET;
-using Alexa.NET.Response;
+﻿using System.Threading;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using JukeboxAlexa.Library.Model;
-using JukeboxAlexa.Library.TestFixture;
+using JukeboxAlexa.Library.TestFixtures;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;

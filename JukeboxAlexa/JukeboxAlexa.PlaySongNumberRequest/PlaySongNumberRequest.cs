@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using Castle.Core.Internal;
@@ -15,8 +13,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
     public class PlaySongNumberRequest : AIntentRequest {
 
         //--- Fields ---
-        public readonly IDynamodbDependencyProvider dynamodbProvider;
-        public readonly ICommonDependencyProvider CommonProvider;
+        public readonly IDynamodbDependencyProvider DynamodbProvider;
         public SongModel.Song SongRequested;
         public IEnumerable<SongModel.Song> FoundSongs;
 
@@ -24,8 +21,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
         public PlaySongNumberRequest(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, string queueUrl, IDynamodbDependencyProvider awsDynmodbProvider) : base(provider, awsSqsClient, queueUrl) {
             SongRequested = new SongModel.Song();
             FoundSongs = new List<SongModel.Song>();
-            CommonProvider = provider;
-            dynamodbProvider = awsDynmodbProvider;
+            DynamodbProvider = awsDynmodbProvider;
         }
 
         //--- Methods ---
@@ -82,16 +78,16 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
         }
 
         public override void GetSongInfoRequested(Dictionary<string, Slot> intentSlots) {
-            var trackFound = intentSlots.TryGetValue("TrackNumber", out Slot trackRequested);
+            var trackFound = intentSlots.TryGetValue("SongNumber", out Slot trackRequested);
             if (trackFound) {
                 SongRequested.SongNumber = trackRequested.Value;
-                LambdaLogger.Log($"*** INFO: TrackNumber {trackRequested.Value}");
+                LambdaLogger.Log($"*** INFO: SongNumber {trackRequested.Value}");
             }
         }
 
         public async void FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
-            var foundDbSongs = (await dynamodbProvider.DynamoDbFindSongsByNumberAsync(SongRequested.SongNumber)).ToList();
+            var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByNumberAsync(SongRequested.SongNumber)).ToList();
             LambdaLogger.Log($"*** INFO: Dynamodb Response: {JsonConvert.SerializeObject(foundDbSongs)}");
             if (foundDbSongs.Count < 1) return;
             foreach (var foundSong in foundDbSongs) {

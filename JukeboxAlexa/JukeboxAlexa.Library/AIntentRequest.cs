@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Alexa.NET;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Castle.Core.Internal;
 using JukeboxAlexa.Library.Model;
-using JukeboxAlexa.Library;
 using Newtonsoft.Json;
 
 namespace JukeboxAlexa.Library {
@@ -19,12 +14,12 @@ namespace JukeboxAlexa.Library {
         
         // ----- Fields -----
         private string _queueUrl;
-        public readonly IAmazonSQS sqsClient;
+        private readonly IAmazonSQS _sqsClient;
         private readonly ICommonDependencyProvider _provider;
 
         public AIntentRequest(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, string queueUrl) {
             _provider = provider;
-            sqsClient = awsSqsClient;
+            _sqsClient = awsSqsClient;
             _queueUrl = queueUrl;
         }
         
@@ -55,7 +50,7 @@ namespace JukeboxAlexa.Library {
                     MessageBody = JsonConvert.SerializeObject(request)
                 };
                 LambdaLogger.Log($"Sending Sqs Message to Jukebox: {JsonConvert.SerializeObject(sendMessageRequest)}");
-                var sendMessageResponse = await sqsClient.SendMessageAsync(sendMessageRequest);
+                var sendMessageResponse = await _sqsClient.SendMessageAsync(sendMessageRequest);
                 return sendMessageResponse;
             }
             catch (Exception e) {

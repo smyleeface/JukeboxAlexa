@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
-using Alexa.NET.Response;
 using Amazon.DynamoDBv2;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
@@ -18,19 +15,18 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
     public class Function : ICommonDependencyProvider, IDynamodbDependencyProvider  {
         
         //--- Fields ---
-        private string _queueName;
         private readonly PlaySongTitleRequest _playSongRequest;
         private readonly JukeboxDynamoDb _jukeboxDynamoDb;
 
         //--- Constructors ---
         public Function() {
-            _queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
+            var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
             var tableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBSONGS");
             var indexNameSearchTitle = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE");
             var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE_ARTIST");
             var indexTableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBTITLEWORDCACHE");
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
-            _playSongRequest = new PlaySongTitleRequest(this, new AmazonSQSClient(), _queueName, this);
+            _playSongRequest = new PlaySongTitleRequest(this, new AmazonSQSClient(), queueName, this);
         }
 
         //--- FunctionHandler ---

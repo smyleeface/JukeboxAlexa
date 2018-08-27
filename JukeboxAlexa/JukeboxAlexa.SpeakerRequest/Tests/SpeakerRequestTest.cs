@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Alexa.NET;
 using Alexa.NET.Request;
-using Alexa.NET.Response;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;

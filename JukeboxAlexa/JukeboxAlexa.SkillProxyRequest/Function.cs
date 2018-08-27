@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Alexa.NET;
 using Alexa.NET.Request;
 using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
-using Amazon.DynamoDBv2;
-using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Castle.Core.Internal;
 using JukeboxAlexa.Library;

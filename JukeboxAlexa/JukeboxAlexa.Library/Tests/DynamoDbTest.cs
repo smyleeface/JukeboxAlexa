@@ -2,21 +2,21 @@
 using System.Linq;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
-using JukeboxAlexa.Library.TestFixture;
+using JukeboxAlexa.Library.TestFixtures;
 using Moq;
 using Xunit;
 
 namespace JukeboxAlexa.Library.Tests {
     public class DynamoDbTest {        
         
-        public SongFixtures songFixtures = new SongFixtures();
+        public SongFixtures SongFixtures = new SongFixtures();
         
         [Fact]
         public void Parse_songs_from_database_response__one_song() {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             var items = new List<Dictionary<string, AttributeValue>> {
                 {
                     new Dictionary<string, AttributeValue> {
@@ -44,8 +44,8 @@ namespace JukeboxAlexa.Library.Tests {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
-            var items = new List<Dictionary<string, AttributeValue>> {};
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
+            var items = new List<Dictionary<string, AttributeValue>>();
             var quesryResponse = new QueryResponse {
                 Items = items
             };
@@ -62,10 +62,10 @@ namespace JukeboxAlexa.Library.Tests {
             
             // Arrange
             var dynamodbClient = new Mock<IAmazonDynamoDB>(MockBehavior.Strict);
-            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, songFixtures.tableName, songFixtures.indexNameSearchTitle, songFixtures.indexNameSearchTitleArtist, songFixtures.tableName);
+            var jukeboxDynamoDb = new JukeboxDynamoDb(dynamodbClient.Object, SongFixtures.TableName, SongFixtures.IndexNameSearchTitle, SongFixtures.IndexNameSearchTitleArtist, SongFixtures.TableName);
             var items = new List<Dictionary<string, AttributeValue>> {
-                songFixtures.songAttribute2,
-                songFixtures.songAttribute3
+                SongFixtures.SongAttribute2,
+                SongFixtures.SongAttribute3
             };
             var queryResponse = new QueryResponse {
                 Items = items
@@ -75,7 +75,7 @@ namespace JukeboxAlexa.Library.Tests {
             var parsedSongsList = jukeboxDynamoDb.ParseSongsFromDatabaseResponse(queryResponse).ToList();
 
             // Assert
-            Assert.Contains(parsedSongsList, e => songFixtures.song2.Artist == e.Artist && songFixtures.song3.Artist == e.Artist);
+            Assert.Contains(parsedSongsList, e => SongFixtures.Song2.Artist == e.Artist && SongFixtures.Song3.Artist == e.Artist);
         }
     }
 }

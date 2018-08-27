@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
+﻿using Alexa.NET.Request;
 using Newtonsoft.Json;
 
 namespace JukeboxAlexa.Library.Model {
