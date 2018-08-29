@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+ls -la
+pwd
+
 for directory in ../JukeboxAlexa.*/ ; do
     echo "coverlet $directory"
     ./tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll --target dotnet --targetargs "test ${directory} --no-build" --format opencover
