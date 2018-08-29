@@ -2,6 +2,7 @@
 
 set -e
 
-dotnet restore JukeboxAlexa/
-dotnet build JukeboxAlexa/
-dotnet test JukeboxAlexa/
+cd JukeboxAlexa
+dotnet restore
+dotnet build
+dotnet test
