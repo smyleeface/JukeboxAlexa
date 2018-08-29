@@ -8,3 +8,5 @@ phases:
   build:
     commands:
       - cicd/10_build.sh
+      - cicd/20_tests.sh
+      - cicd/30_coverage.sh
