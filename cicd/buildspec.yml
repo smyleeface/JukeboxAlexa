@@ -3,8 +3,8 @@ phases:
 
   install:
     commands:
-      - cicd/99_git_diff.sh
+      - 99_git_diff.sh
 
   build:
     commands:
-      - cicd/10_build.sh
+      - 10_build.sh
