@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Alexa.NET" Version="1.4.2" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="1.1.3" />
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.3.0" />
     <PackageReference Include="Amazon.Lambda.TestUtilities" Version="1.0.0" />
@@ -23,10 +24,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JukeboxAlexa.Library\JukeboxAlexa.Library.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Amazon.Lambda.APIGatewayEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604">
-      <HintPath>..\..\..\..\..\.nuget\packages\amazon.lambda.apigatewayevents\1.1.3\lib\netstandard1.3\Amazon.Lambda.APIGatewayEvents.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
