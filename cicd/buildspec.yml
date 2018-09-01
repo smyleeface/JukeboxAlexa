@@ -3,10 +3,20 @@ phases:
 
   install:
     commands:
+      - yum install jq -y
       - dotnet tool install coveralls.net --tool-path tools
       - dotnet tool install coverlet.console --tool-path tools
 
+  pre-build:
+    commands:
+      - cicd/10_envvars.sh
+
   build:
     commands:
-      - cicd/20_tests.sh
+      - cicd/20_build_and_test.sh
       - cicd/30_coverage.sh
+
+  post_build:
+    commands:
+      - cicd/40_deploy.sh staging
+#      - cicd/40_deploy.sh production
