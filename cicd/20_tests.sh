@@ -42,3 +42,6 @@ dotnet build
 
 echo "***INFO: Testing solution"
 dotnet test
+
+echo "***INFO: Deploying"
+lash deploy --tier deve

@@ -3,7 +3,8 @@ phases:
 
   install:
     commands:
-      - cicd/99_git_diff.sh
+      - dotnet tool install coveralls.net --tool-path tools
+      - dotnet tool install coverlet.console --tool-path tools
 
   build:
     commands:
