@@ -44,4 +44,4 @@ echo "***INFO: Testing solution"
 dotnet test
 
 echo "***INFO: Deploying"
-lash deploy --tier deve
+lash deploy --tier dev
