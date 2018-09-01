@@ -5,8 +5,8 @@ Name: JukeboxAlexa
 Description: JukeboxAlexa Project
 
 Variables:
-  DynamoDbTableName: JukeboxSongs
-  DynamoDbTableCacheName: JukeboxSongWordCache
+  DynamoDbTableName: "{{tier}}JukeboxSongs"
+  DynamoDbTableCacheName: "{{tier}}JukeboxSongWordCache"
   DynamoDbIndexNameSearchTitleName: indexNameSearchTitle
   DynamoDbIndexNameSearchTitleArtistName: indexNameSearchTitleArtist
 
@@ -21,9 +21,9 @@ Parameters:
       Type: "AWS::S3::Bucket"
       Allow: ReadWrite
   #
-  ##########################
+  #############################
   # DynamoDB Index Permissions
-  ##########################
+  #############################
   #
   - Name: DynamoDbSongsTitleIndexPermission
     Value: "arn:aws:dynamodb:{{AwsRegion}}:{{AwsAccountId}}:table/{{DynamoDbTableName}}/index/{{DynamoDbIndexNameSearchTitleName}}"
@@ -118,9 +118,9 @@ Parameters:
         FifoQueue: true
         ReceiveMessageWaitTimeSeconds: 20
   #
-  ######################
-  # Parameter store
-  ######################
+  ###########################################################
+  # Parameter store - new deploys - comment out until 2nd run
+  ###########################################################
   #
   - Name: DynamoDbStreamArn
     Resource:
@@ -133,9 +133,9 @@ Parameters:
             - DynamoDbSongs
             - StreamArn
   #
-  ######################
-  # Import DynamoDb Stream arn
-  ######################
+  ######################################################################
+  # Import DynamoDb Stream arn - new deploys - comment out until 3rd run
+  ######################################################################
   #
   - Name: DynamoDbSongsStreamArnPermission
     Import: "/{{tier}}/dynamodb/streamarn"
@@ -143,9 +143,9 @@ Parameters:
       Type: AWS::DynamoDB::Table
       Allow: Full
   #
-  ############################################
-  # DynamodbTrigger - Lambda Event Mapping
-  ############################################
+  ##################################################################################
+  # DynamodbTrigger - Lambda Event Mapping - new deploys - comment out until 3rd run
+  ##################################################################################
   #
   - Name: JukeboxCacheIndexLambdaTrigger
     Resource:
