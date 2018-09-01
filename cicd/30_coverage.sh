@@ -12,8 +12,8 @@ coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-d
 
 for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
     echo "coverlet ${directory}"
-    coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll --output "${directory}/coverage.xml" --target dotnet --targetargs "test ./${directory} --no-build" --format opencover --exclude-by-file "**/obj/**"
+    tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll --output "${directory}/coverage.xml" --target dotnet --targetargs "test ./${directory} --no-build" --format opencover --exclude-by-file "**/obj/**"
     echo "uploading coverage"
-    csmacnz.Coveralls --commitId $CODEBUILD_SOURCE_VERSION --useRelativePaths --opencover -i ${directory}/coverage.xml --repoToken ${coverallsToken}
+    tools/csmacnz.Coveralls --commitId $CODEBUILD_SOURCE_VERSION --useRelativePaths --opencover -i ${directory}/coverage.xml --repoToken ${coverallsToken}
 done
 
