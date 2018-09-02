@@ -2,32 +2,36 @@
 
 set -e
 
-source cicd/10_envvars.sh
+if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
+    source cicd/10_envvars.sh
 
-for directory in ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.*/ ; do
+    coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 
-    echo "***INFO: coverlet ${directory}"
-    tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-        --output ${directory}coverage.xml \
-        --target /usr/bin/dotnet \
-        --targetargs "test ./${directory} --no-build" \
-        --format opencover \
-        --exclude-by-file "**/obj/**" \
-        --exclude-by-file "**/bin/**"
+    for directory in ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
-    echo "***INFO: uploading coverage"
-    tools/csmacnz.Coveralls \
-        --commitId ${GITSHA} \
-        --commitBranch "${GIT_BRANCH}" \
-        --commitAuthor "${GIT_AUTHOR_NAME}" \
-        --commitEmail "${GIT_AUTHOR_EMAIL}" \
-        --commitMessage "${GIT_COMMIT_MESSAGE}" \
-        --jobId "${CODEBUILD_BUILD_ID}" \
-        --useRelativePaths \
-        --opencover \
-        -i ${directory}coverage.xml \
-        --repoToken ${coverallsToken}
-done
+        ls -la ${directory}
 
+        echo "***INFO: coverlet ${directory}"
+        tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+            --output ${directory}coverage.xml \
+            --target /usr/bin/dotnet \
+            --targetargs "test ./${directory} --no-build" \
+            --format opencover \
+            --exclude-by-file "**/obj/**" \
+            --exclude-by-file "**/bin/**"
+
+        echo "***INFO: uploading coverage"
+        tools/csmacnz.Coveralls \
+            --commitId ${GITSHA} \
+            --commitBranch "${GIT_BRANCH}" \
+            --commitAuthor "${GIT_AUTHOR_NAME}" \
+            --commitEmail "${GIT_AUTHOR_EMAIL}" \
+            --commitMessage "${GIT_COMMIT_MESSAGE}" \
+            --jobId "${CODEBUILD_BUILD_ID}" \
+            --useRelativePaths \
+            --opencover \
+            -i ${directory}coverage.xml \
+            --repoToken ${coverallsToken}
+    done
+fi

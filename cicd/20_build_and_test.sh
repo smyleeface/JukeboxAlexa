@@ -2,15 +2,20 @@
 
 set -e
 
-source cicd/10_envvars.sh
+if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
+    source cicd/10_envvars.sh
 
-echo "***INFO: Restoring packages"
-dotnet restore
+    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
-echo "***INFO: Building packages"
-dotnet build
+    echo "***INFO: Restoring packages"
+    dotnet restore
 
-echo "***INFO: Testing solution"
-dotnet test
+    echo "***INFO: Building packages"
+    dotnet build
+
+    echo "***INFO: Testing solution"
+    dotnet test
+
+    ls -la ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.SonglistIndex/
+fi

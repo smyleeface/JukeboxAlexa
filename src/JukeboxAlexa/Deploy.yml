@@ -163,20 +163,6 @@ Parameters:
 
 Functions:
 
-  #
-  #########################
-  # Skill Request Intent
-  #########################
-  #
-#  - Name: SkillProxyRequest
-#    Description: Processes speaker request intnet
-#    Memory: 192
-#    Timeout: 30
-#    Environment:
-#      API_ENDPOINT: https://958pj335hl.execute-api.us-west-2.amazonaws.com/LATEST
-#    Sources:
-#      - Alexa: amzn1.ask.skill.71c43867-471c-4c66-b9c0-b2c577e1b10f
-#
 #  #
 #  #########################
 #  # Speaker Request Intent
@@ -232,6 +218,20 @@ Functions:
 #      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
 #    Sources:
 #      - Api: POST /jukebox-alexa/song-number-request
+#
+##
+##########################
+## Skill Request Intent
+#########################
+##
+#  - Name: SkillProxyRequest
+#    Description: Processes speaker request intnet
+#    Memory: 192
+#    Timeout: 30
+#    Environment:
+#      API_ENDPOINT: https://958pj335hl.execute-api.us-west-2.amazonaws.com/LATEST
+#    Sources:
+#      - Alexa: amzn1.ask.skill.71c43867-471c-4c66-b9c0-b2c577e1b10f
 
   #
   #########################
