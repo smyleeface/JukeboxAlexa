@@ -17,4 +17,5 @@ AWS_SECRET_ACCESS_KEY=echo ${credentials} | jq -r '.Credentials.SecretAccessKey'
 AWS_SESSION_TOKEN=echo ${credentials} | jq -r '.Credentials.SessionToken'
 
 echo "***INFO: Deploying to ${TIER}"
+cd ${CODEBUILD_SRC_DIR}/JukeboxAlexa
 lash deploy --tier ${TIER}
