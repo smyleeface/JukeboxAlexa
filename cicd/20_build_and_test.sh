@@ -4,7 +4,7 @@ set -e
 
 source cicd/10_envvars.sh
 
-cd ${CODEBUILD_SRC_DIR}/JukeboxAlexa
+cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
 echo "***INFO: Restoring packages"
 dotnet restore
