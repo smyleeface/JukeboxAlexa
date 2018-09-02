@@ -2,7 +2,7 @@
 
 set -e
 
-source 10_envvars.sh
+source cicd/10_envvars.sh
 
 TIER=$1
 CROSS_ACCOUNT_ROLE_NAME="CrossAccountRole-JukeboxAlexa"

@@ -2,7 +2,7 @@
 
 set -e
 
-source 10_envvars.sh
+source cicd/10_envvars.sh
 
 coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 

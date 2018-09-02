@@ -2,7 +2,7 @@
 
 set -e
 
-source 10_envvars.sh
+source cicd/10_envvars.sh
 
 cd ${CODEBUILD_SRC_DIR}/JukeboxAlexa
 
