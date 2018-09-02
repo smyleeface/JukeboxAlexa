@@ -27,7 +27,7 @@ for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
         --jobId "${CODEBUILD_BUILD_ID}" \
         --useRelativePaths \
         --opencover \
-        -i ${directory}/coverage.xml \
+        -i ${directory}coverage.xml \
         --repoToken ${coverallsToken}
 done
 
