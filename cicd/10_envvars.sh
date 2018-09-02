@@ -18,17 +18,17 @@ echo "CODEBUILD_SRC_DIR ${CODEBUILD_SRC_DIR}"
 echo "CODEBUILD_START_TIME ${CODEBUILD_START_TIME}"
 echo "HOME ${HOME}"
 
-GITSHA=$(git log -1 --format="%H")
+export GITSHA=$(git log -1 --format="%H")
 echo "GITSHA ${GITSHA}"
 
-GIT_BRANCH=$(git branch --list | sed -e 's/^*//' -e 's/"[space]//')
+export GIT_BRANCH=$(git branch --list | sed -e 's/^*//' -e 's/"[space]//')
 echo "GIT_BRANCH ${GIT_BRANCH}"
 
-GIT_AUTHOR_EMAIL=$(git log -1 --format="%aE")
+export GIT_AUTHOR_EMAIL=$(git log -1 --format="%aE")
 echo "GIT_AUTHOR_EMAIL ${GIT_AUTHOR_EMAIL}"
 
-GIT_AUTHOR_NAME=$(git log -1 --format="%aN")
+export GIT_AUTHOR_NAME=$(git log -1 --format="%aN")
 echo "GIT_AUTHOR_NAME ${GIT_AUTHOR_NAME}"
 
-GIT_COMMIT_MESSAGE=$(git log -1 --format="%B")
+export GIT_COMMIT_MESSAGE=$(git log -1 --format="%B")
 echo "GIT_COMMIT_MESSAGE ${GIT_COMMIT_MESSAGE}"
