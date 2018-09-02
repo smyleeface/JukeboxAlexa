@@ -6,7 +6,7 @@ source cicd/10_envvars.sh
 
 coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 
-for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
+for directory in ${CODEBUILD_SRC_DIR}/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
     echo "***INFO: coverlet ${directory}"
     tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
