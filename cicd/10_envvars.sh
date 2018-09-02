@@ -21,7 +21,7 @@ echo "HOME ${HOME}"
 export GITSHA=$(git log -1 --format="%H")
 echo "GITSHA ${GITSHA}"
 
-export GIT_BRANCH=$(git branch --contains ${GITSHA} | grep \* | sed -e 's/^*//')
+export GIT_BRANCH=$(git branch --contains ${GITSHA} | sed -n '2 p' | sed -e 's/^*//')
 echo "GIT_BRANCH ${GIT_BRANCH}"
 
 export GIT_AUTHOR_EMAIL=$(git log -1 --format="%aE")
