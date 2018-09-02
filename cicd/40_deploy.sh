@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
+set -e
+
+source 10_envvars.sh
+
 TIER=$1
 CROSS_ACCOUNT_ROLE_NAME="CrossAccountRole-JukeboxAlexa"
+
 
 if [[ "${TIER}" == "production" ]]; then
     ACCOUNT_ID=$(aws ssm get-parameter --name /dev/JukeboxAlexa/account/production  --with-decryption --query Parameter | jq -r '.Value')

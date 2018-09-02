@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
+source 10_envvars.sh
+
 cd ${CODEBUILD_SRC_DIR}/JukeboxAlexa
 
 echo "***INFO: Restoring packages"

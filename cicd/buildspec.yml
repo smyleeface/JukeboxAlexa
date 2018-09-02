@@ -7,10 +7,6 @@ phases:
       - dotnet tool install coveralls.net --tool-path tools
       - dotnet tool install coverlet.console --tool-path tools
 
-  pre_build:
-    commands:
-      - cicd/10_envvars.sh
-
   build:
     commands:
       - cicd/20_build_and_test.sh

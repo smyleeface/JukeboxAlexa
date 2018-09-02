@@ -2,7 +2,7 @@
 
 set -e
 
-echo "GITSHA ${GITSHA}"
+source 10_envvars.sh
 
 coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 
