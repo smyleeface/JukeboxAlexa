@@ -21,7 +21,7 @@ for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
     tools/csmacnz.Coveralls \
         --commitId ${GITSHA} \
         --commitBranch ${GIT_BRANCH} \
-        --commitAuthor ${GIT_AUTHO} \
+        --commitAuthor ${GIT_AUTHOR_NAME} \
         --commitEmail ${GIT_AUTHOR_EMAIL} \
         --commitMessage ${GIT_COMMIT_MESSAGE} \
         --jobId ${CODEBUILD_BUILD_ID} \
