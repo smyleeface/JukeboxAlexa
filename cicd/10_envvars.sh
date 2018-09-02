@@ -22,7 +22,7 @@ export GITSHA=$(git log -1 --format="%H")
 echo "GITSHA ${GITSHA}"
 
 git branch --list
-export GIT_BRANCH=$(git branch --contains ${GITSHA} | sed -e 's/^*//')
+export GIT_BRANCH=$(git branch --contains ${GITSHA} | grep \* | sed -e 's/^*//')
 echo "GIT_BRANCH ${GIT_BRANCH}"
 export GIT_BRANCH="feature-port-lambdasharp"
 
