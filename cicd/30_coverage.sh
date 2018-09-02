@@ -10,12 +10,12 @@ for directory in ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
     echo "***INFO: coverlet ${directory}"
     tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-        --output '${directory}/coverage.xml' \
+        --output ${directory}coverage.xml \
         --target /usr/bin/dotnet \
-        --targetargs 'test ./${directory} --no-build' \
+        --targetargs "test ./${directory} --no-build" \
         --format opencover \
-        --exclude-by-file '**/obj/**' \
-        --exclude-by-file '**/bin/**'
+        --exclude-by-file "**/obj/**" \
+        --exclude-by-file "**/bin/**"
 
     echo "***INFO: uploading coverage"
     tools/csmacnz.Coveralls \

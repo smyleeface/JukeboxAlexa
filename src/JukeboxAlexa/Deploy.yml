@@ -199,7 +199,7 @@ Functions:
 #    Memory: 192
 #    Timeout: 30
 #    Environment:
-#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
+#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
 #    Sources:
 #      - Api: POST /jukebox-alexa/song-title-reqeust
 #
@@ -213,8 +213,8 @@ Functions:
 #    Memory: 192
 #    Timeout: 30
 #    Environment:
-#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
-#      INDEX_NAME_SEARCH_TITLE_ARTIST: indexNameSearchTitleArtist
+#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+#      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
 #    Sources:
 #      - Api: POST /jukebox-alexa/song-title-artist-request
 #
@@ -228,8 +228,8 @@ Functions:
 #    Memory: 192
 #    Timeout: 30
 #    Environment:
-#      INDEX_NAME_SEARCH_TITLE: indexNameSearchTitle
-#      INDEX_NAME_SEARCH_TITLE_ARTIST: indexNameSearchTitleArtist
+#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+#      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
 #    Sources:
 #      - Api: POST /jukebox-alexa/song-number-request
 
