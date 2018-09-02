@@ -21,6 +21,8 @@ echo "HOME ${HOME}"
 export GITSHA=$(git log -1 --format="%H")
 echo "GITSHA ${GITSHA}"
 
+# TODO: git branch lookup is not accurate, might need a different setup to report results
+# -- write results to s3 and trigger lambda to send? -- then any project can use s3 bucket to send
 export GIT_BRANCH=$(git branch --contains ${GITSHA} | sed -n '2 p' | sed -e 's/^*//')
 echo "GIT_BRANCH ${GIT_BRANCH}"
 
