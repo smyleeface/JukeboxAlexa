@@ -21,8 +21,10 @@ echo "HOME ${HOME}"
 export GITSHA=$(git log -1 --format="%H")
 echo "GITSHA ${GITSHA}"
 
+git branch --list
 export GIT_BRANCH=$(git branch --list | grep \* | sed -e 's/^*//')
 echo "GIT_BRANCH ${GIT_BRANCH}"
+export GIT_BRANCH=feature-port-lambdasharp
 
 export GIT_AUTHOR_EMAIL=$(git log -1 --format="%aE")
 echo "GIT_AUTHOR_EMAIL ${GIT_AUTHOR_EMAIL}"
