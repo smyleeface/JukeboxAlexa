@@ -17,7 +17,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${directory}coverage.xml \
             --target /usr/bin/dotnet \
-            --targetargs "test ./${directory} --no-build" \
+            --targetargs "test ${directory} --no-build" \
             --format opencover \
             --exclude-by-file "**/obj/**" \
             --exclude-by-file "**/bin/**"
