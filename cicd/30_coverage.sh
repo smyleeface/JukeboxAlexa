@@ -9,16 +9,16 @@ coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-d
 for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
 
     echo "coverlet ${directory}"
-    tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-        --output "${directory}/coverage.xml" \
+    echo "tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        --output '${directory}/coverage.xml' \
         --target /usr/bin/dotnet \
-        --targetargs "test ./${directory} --no-build" \
+        --targetargs 'test ./${directory} --no-build' \
         --format opencover \
-        --exclude-by-file "**/obj/**" \
-        --exclude-by-file "**/bin/**"
+        --exclude-by-file '**/obj/**' \
+        --exclude-by-file '**/bin/**'"
 
     echo "uploading coverage"
-    tools/csmacnz.Coveralls \
+    echo "tools/csmacnz.Coveralls \
         --commitId ${GITSHA} \
         --commitBranch ${GIT_BRANCH} \
         --commitAuthor ${GIT_AUTHOR_NAME} \
@@ -28,6 +28,6 @@ for directory in JukeboxAlexa/JukeboxAlexa.*/ ; do
         --useRelativePaths \
         --opencover \
         -i ${directory}/coverage.xml \
-        --repoToken ${coverallsToken}
+        --repoToken ${coverallsToken}"
 done
 
