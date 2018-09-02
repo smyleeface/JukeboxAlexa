@@ -11,6 +11,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     for directory in ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
         ls -la ${directory}
+        ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 
         echo "***INFO: coverlet ${directory}"
         tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
@@ -20,6 +21,9 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --format opencover \
             --exclude-by-file "**/obj/**" \
             --exclude-by-file "**/bin/**"
+
+        ls -la ${directory}
+        ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 
         echo "***INFO: uploading coverage"
         tools/csmacnz.Coveralls \
