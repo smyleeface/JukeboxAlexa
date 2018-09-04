@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Alexa.NET;
 using Alexa.NET.Request;
@@ -9,30 +8,30 @@ using Amazon.Lambda.Core;
 using Castle.Core.Internal;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
+using MindTouch.LambdaSharp;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 namespace JukeboxAlexa.SkillProxyRequest
 {
-    public class Function {
+    public class Function : ALambdaFunction<SkillRequest, SkillResponse> {
         
         //--- Fields ---
-        private readonly HttpClient _httpClient;
-        private readonly string _endpoint;
-
-        //--- Constructors ---
-        public Function() {
-            _httpClient = new HttpClient(); 
-            _endpoint = Environment.GetEnvironmentVariable("API_ENDPOINT");
-        }
+        private HttpClient _httpClient;
+        private string _endpoint;
 
         //--- FunctionHandler ---
-        public async Task<SkillResponse> FunctionHandlerAsync(SkillRequest input, ILambdaContext context) {
+        public override Task InitializeAsync(LambdaConfig config) {
+            _httpClient = new HttpClient();
+            _endpoint = config.ReadText("ApiEndpoint");
+            return Task.CompletedTask;
+        }
+
+        public override async Task<SkillResponse> ProcessMessageAsync(SkillRequest skill, ILambdaContext context) {
+            LambdaLogger.Log($"*** INFO: Request input from user: {JsonConvert.SerializeObject(skill)}");
             
-            LambdaLogger.Log($"*** INFO: Request input from user: {JsonConvert.SerializeObject(input)}");
-            
-            var intentRequest = (IntentRequest) input.Request;
+            var intentRequest = (IntentRequest) skill.Request;
             var intentName = intentRequest.Intent.Name;
             var finalResponse = ResponseBuilder.Tell("Sorry I do not understand");
             var endpointPath = "";
