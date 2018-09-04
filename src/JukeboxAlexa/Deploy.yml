@@ -122,7 +122,7 @@ Parameters:
         FifoQueue: true
         ReceiveMessageWaitTimeSeconds: 20
 
-  #--------------------------------------------------------------------------------------
+  #1--------------------------------------------------------------------------------------
   #
   #############################################################################################
   # Parameter store - put stream arn in parameter store - new deploys comment out until 2nd run
@@ -139,7 +139,7 @@ Parameters:
             - DynamoDbSongs
             - StreamArn
 
-  #--------------------------------------------------------------------------------------
+  #2--------------------------------------------------------------------------------------
   #
   #############################################################################################################
   # Import DynamoDb Stream arn - get the stream arn to give permissions - new deploys comment out until 3rd run
@@ -168,14 +168,11 @@ Parameters:
             - StreamArn
         FunctionName:
           Ref: SonglistIndex
-
+  #4--------------------------------------------------------------------------------------
   #
   ######################################################################
   # Alexa Skill Id - comment out until 4th run
   ######################################################################
-  #
-  - Name: AlexaSkillId
-    Import: "/{{tier}}/JukeboxAlexa/alexa/skillid"
 
 
 #  # TODO: how do i get something like this?
@@ -208,7 +205,7 @@ Parameters:
               - ".amazonaws.com/"
               - Ref: ModuleRestApiStage
               - "/"
-
+  #5--------------------------------------------------------------------------------------
   - Name: ApiEndpoint
     Import: "/{{tier}}/JukeboxAlexa/api/endpoint"
 
@@ -248,7 +245,7 @@ Functions:
       INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
       INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
 
-  #--------------------------------------------------------------------------------------
+  #3--------------------------------------------------------------------------------------
 
   #
   #########################
@@ -305,13 +302,11 @@ Functions:
       INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
     Sources:
       - Api: POST /jukebox-alexa/song-number-request
-
-    #--------------------------------------------------------------------------------------
-#
-#########################
-# Skill Request Intent
-########################
-#
+  #
+  #########################
+  # Skill Request Intent
+  ########################
+  #
   - Name: SkillProxyRequest
     Description: Processes speaker request intnet
     Memory: 192
