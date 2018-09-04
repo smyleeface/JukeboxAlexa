@@ -11,6 +11,8 @@ Variables:
   DynamoDbIndexNameSearchTitleArtistName: indexNameSearchTitleArtist
 
 Parameters:
+# TODO: Cross Account Role for Deployment - cannot import account id parameter
+
   #
   ##########################
   # S3 CSV Song file upload
@@ -36,6 +38,7 @@ Parameters:
     Resource:
       Type: AWS::DynamoDB::Table
       Allow: ReadOnly
+
   #
   ##########################
   # DynamoDB Table - Songs
@@ -111,40 +114,45 @@ Parameters:
   ######################
   #
   - Name: SqsSongQueue
+    Export: "/{{tier}}/{{Module}}/Sqs/QueueUrl"
     Resource:
       Type: AWS::SQS::Queue
       Allow: Send
       Properties:
         FifoQueue: true
         ReceiveMessageWaitTimeSeconds: 20
+
+  #--------------------------------------------------------------------------------------
   #
-  ###########################################################
-  # Parameter store - new deploys - comment out until 2nd run
-  ###########################################################
+  #############################################################################################
+  # Parameter store - put stream arn in parameter store - new deploys comment out until 2nd run
+  #############################################################################################
   #
   - Name: DynamoDbStreamArn
     Resource:
       Type: AWS::SSM::Parameter
       Properties:
-        Name: "/{{tier}}/dynamodb/streamarn"
+        Name: "/{{tier}}/JukeboxAlexa/dynamodb/streamarn"
         Type: String
         Value:
           Fn::GetAtt:
             - DynamoDbSongs
             - StreamArn
+
+  #--------------------------------------------------------------------------------------
   #
-  ######################################################################
-  # Import DynamoDb Stream arn - new deploys - comment out until 3rd run
-  ######################################################################
+  #############################################################################################################
+  # Import DynamoDb Stream arn - get the stream arn to give permissions - new deploys comment out until 3rd run
+  #############################################################################################################
   #
   - Name: DynamoDbSongsStreamArnPermission
-    Import: "/{{tier}}/dynamodb/streamarn"
+    Import: "/{{tier}}/JukeboxAlexa/dynamodb/streamarn"
     Resource:
       Type: AWS::DynamoDB::Table
       Allow: Full
   #
   ##################################################################################
-  # DynamodbTrigger - Lambda Event Mapping - new deploys - comment out until 3rd run
+  # DynamodbTrigger - adds stream arn as lambda trigger - new deploys - comment out until 3rd run
   ##################################################################################
   #
   - Name: JukeboxCacheIndexLambdaTrigger
@@ -161,78 +169,55 @@ Parameters:
         FunctionName:
           Ref: SonglistIndex
 
-Functions:
+  #
+  ######################################################################
+  # Alexa Skill Id - comment out until 4th run
+  ######################################################################
+  #
+  - Name: AlexaSkillId
+    Import: "/{{tier}}/JukeboxAlexa/alexa/skillid"
 
-#  #
-#  #########################
-#  # Speaker Request Intent
-#  #########################
-#  #
-#  - Name: SpeakerRequest
-#    Description: Processes speaker request intnet
-#    Memory: 192
-#    Timeout: 30
-#    Sources:
-#      - Api: POST /jukebox-alexa/speaker-request
+
+#  # TODO: how do i get something like this?
+#  - Name: ApiEndpoint
+#    Value:
+#      Fn::Join:
+#        - ''
+#        - - "https://"
+#          - Ref: ModuleRestApi
+#          - ".execute-api."
+#          - "{{AwsRegion}}"
+#          - ".amazonaws.com/"
+#          - Ref: ModuleRestApiStage
+#          - "/"
+
+
+  - Name: ApiEndpointExport
+    Resource:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: "/{{tier}}/JukeboxAlexa/api/endpoint"
+        Type: String
+        Value:
+          Fn::Join:
+            - ''
+            - - "https://"
+              - Ref: ModuleRestApi
+              - ".execute-api."
+              - "{{AwsRegion}}"
+              - ".amazonaws.com/"
+              - Ref: ModuleRestApiStage
+              - "/"
+
+  - Name: ApiEndpoint
+    Import: "/{{tier}}/JukeboxAlexa/api/endpoint"
+
 #
-#  #
-#  #########################
-#  # Play Song Title Request Intent
-#  #########################
-#  #
-#  - Name: PlaySongTitleRequest
-#    Description: Processes play song request intent
-#    Memory: 192
-#    Timeout: 30
-#    Environment:
-#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
-#    Sources:
-#      - Api: POST /jukebox-alexa/song-title-reqeust
-#
-#  #
-#  #########################
-#  # Play Song Artist Request Intent
-#  #########################
-#  #
-#  - Name: PlaySongTitleArtistRequest
-#    Description: Processes play song title and artist request intent
-#    Memory: 192
-#    Timeout: 30
-#    Environment:
-#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
-#      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
-#    Sources:
-#      - Api: POST /jukebox-alexa/song-title-artist-request
-#
-#  #
-#  #########################
-#  # Play Number Request Intent
-#  #########################
-#  #
-#  - Name: PlaySongNumberRequest
-#    Description: Processes play song number request intent
-#    Memory: 192
-#    Timeout: 30
-#    Environment:
-#      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
-#      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
-#    Sources:
-#      - Api: POST /jukebox-alexa/song-number-request
-#
-##
-##########################
-## Skill Request Intent
 #########################
-##
-#  - Name: SkillProxyRequest
-#    Description: Processes speaker request intnet
-#    Memory: 192
-#    Timeout: 30
-#    Environment:
-#      API_ENDPOINT: https://958pj335hl.execute-api.us-west-2.amazonaws.com/LATEST
-#    Sources:
-#      - Alexa: amzn1.ask.skill.71c43867-471c-4c66-b9c0-b2c577e1b10f
-
+#        FUNCTIONS
+#########################
+#
+Functions:
   #
   #########################
   # Songlist Upload
@@ -262,3 +247,75 @@ Functions:
     Environment:
       INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
       INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
+
+  #--------------------------------------------------------------------------------------
+
+  #
+  #########################
+  # Speaker Request Intent  - comment out until 4th run (all api endpoints, but skillproxy)
+  #########################
+  #
+  - Name: SpeakerRequest
+    Description: Processes speaker request intnet
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Api: POST /jukebox-alexa/speaker-request
+
+  #
+  #########################
+  # Play Song Title Request Intent
+  #########################
+  #
+  - Name: PlaySongTitleRequest
+    Description: Processes play song request intent
+    Memory: 192
+    Timeout: 30
+    Environment:
+      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+    Sources:
+      - Api: POST /jukebox-alexa/song-title-reqeust
+
+  #
+  #########################
+  # Play Song Artist Request Intent
+  #########################
+  #
+  - Name: PlaySongTitleArtistRequest
+    Description: Processes play song title and artist request intent
+    Memory: 192
+    Timeout: 30
+    Environment:
+      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
+    Sources:
+      - Api: POST /jukebox-alexa/song-title-artist-request
+
+  #
+  #########################
+  # Play Number Request Intent
+  #########################
+  #
+  - Name: PlaySongNumberRequest
+    Description: Processes play song number request intent
+    Memory: 192
+    Timeout: 30
+    Environment:
+      INDEX_NAME_SEARCH_TITLE: "{{DynamoDbIndexNameSearchTitleName}}"
+      INDEX_NAME_SEARCH_TITLE_ARTIST: "{{DynamoDbIndexNameSearchTitleArtistName}}"
+    Sources:
+      - Api: POST /jukebox-alexa/song-number-request
+
+    #--------------------------------------------------------------------------------------
+#
+#########################
+# Skill Request Intent
+########################
+#
+  - Name: SkillProxyRequest
+    Description: Processes speaker request intnet
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Alexa: "*"
+
