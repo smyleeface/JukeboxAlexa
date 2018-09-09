@@ -48,7 +48,6 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
             var result = await function.HandleRequestAsync(apiGatewayRequest, new TestLambdaContext());
 
             // Assert
-            // TOOD: get the apigateway request & assert result
             Assert.Equal(200, result.StatusCode);
         }
         
