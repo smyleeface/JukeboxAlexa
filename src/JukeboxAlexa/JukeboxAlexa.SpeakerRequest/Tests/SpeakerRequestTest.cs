@@ -11,7 +11,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
     public class SpeakerRequestTest {
 
         [Fact]
-        public void Speaker_request__get_song_info_requested__found() {
+        public static void Speaker_request__get_song_info_requested__found() {
 
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -34,7 +34,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
         
         [Fact]
-        public void Speaker_request__get_song_info_requested__not_found() {
+        public static void Speaker_request__get_song_info_requested__not_found() {
 
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -57,7 +57,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
 
         [Fact]
-        public void Speaker_request__is_valid_request__true() {
+        public static void Speaker_request__is_valid_request__true() {
             
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -79,7 +79,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
 
         [Fact]
-        public void Speaker_request__is_valid_request__false() {
+        public static void Speaker_request__is_valid_request__false() {
             
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -96,7 +96,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
         
         [Fact]
-        public void Speaker_request__generate_message__valid() {
+        public static void Speaker_request__generate_message__valid() {
             
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -113,7 +113,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }        
         
         [Fact]
-        public void Speaker_request__generate_message__invalid() {
+        public static void Speaker_request__generate_message__invalid() {
             
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -131,7 +131,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
         
         [Fact]
-        public async Task Speaker_request__handle_request() {
+        public static async Task Speaker_request__handle_request() {
             
             // Arrange
             var customSkillRequest = new CustomSkillRequest {

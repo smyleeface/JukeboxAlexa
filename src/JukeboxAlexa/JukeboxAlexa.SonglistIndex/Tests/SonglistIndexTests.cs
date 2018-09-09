@@ -9,7 +9,7 @@ namespace JukeboxAlexa.SonglistIndex.Tests {
     public class SonglistIndexTests {
         
         [Fact]
-        public async Task Songlist_index__insert_songs__none_found() {
+        public static async Task Songlist_index__insert_songs__none_found() {
             
             // Arrange
             var record = new DynamoDBEvent.DynamodbStreamRecord {

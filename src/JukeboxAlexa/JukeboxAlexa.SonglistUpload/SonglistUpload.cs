@@ -32,12 +32,12 @@ namespace JukeboxAlexa.SonglistUpload {
             BucketName = s3BucketName;
             KeyName = s3KeyName;
             LambdaLogger.Log($"***INFO: bucket: {s3BucketName}; key: {KeyName}");
-            await ReadNewSongs();
-            await ReadOldSongs();
+            await ReadNewSongs().ConfigureAwait(false);
+            await ReadOldSongs().ConfigureAwait(false);
             FilterSongsToAdd();
             FilterSongsToDelete();
-            await DeleteSongsFromDatabase();
-            await AddSongsToDatabase();
+            await DeleteSongsFromDatabase().ConfigureAwait(false);
+            await AddSongsToDatabase().ConfigureAwait(false);
             UpdateSummary();
         }
 
@@ -47,16 +47,20 @@ namespace JukeboxAlexa.SonglistUpload {
             var songRows = getObjectResponse.Split('\n');
             LambdaLogger.Log($"***INFO: new songs from file (songRows): {JsonConvert.SerializeObject(songRows)}");
             foreach (var songRow in songRows) {
-                if (songRow.IsNullOrEmpty()) continue;
+                if (songRow.IsNullOrEmpty()) {
+                    continue;
+                }
                 var columns = songRow.Split(',');
                 var parseResult = Int32.TryParse(columns[0], out var songNumber);
-                if (!parseResult || columns[0].Length <= 0 || columns[2].Length <= 0) continue;
+                if (!parseResult || columns[0].Length <= 0 || columns[2].Length <= 0) {
+                    continue;
+                }
                 var song = new SongCsvModel {
                     Artist = columns[4],
                     SongNumber = $"{columns[0]}{columns[1]}",
                     Title = columns[3],
-                    SearchArtist = columns[4].ToLower(),
-                    SearchTitle = columns[3].ToLower()
+                    SearchArtist = columns[4].ToLowerInvariant(),
+                    SearchTitle = columns[3].ToLowerInvariant()
                 };
                 theseNewSongs.Add(song);
             }

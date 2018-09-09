@@ -68,8 +68,8 @@ namespace JukeboxAlexa.Library {
                 IndexName = _songIndexSearchTitleArtist,
                 KeyConditionExpression = "search_title = :v_song AND search_artist = :v_artist",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
-                    {":v_song", new AttributeValue { S = title.ToLower() }},
-                    {":v_artist", new AttributeValue { S = artist.ToLower() }}
+                    {":v_song", new AttributeValue { S = title.ToLowerInvariant() }},
+                    {":v_artist", new AttributeValue { S = artist.ToLowerInvariant() }}
                 }
             };
         }
@@ -80,7 +80,7 @@ namespace JukeboxAlexa.Library {
                 IndexName = _songIndexSearchTitle,
                 KeyConditionExpression = "search_title = :v_song",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
-                    {":v_song", new AttributeValue { S = title.ToLower() }}}
+                    {":v_song", new AttributeValue { S = title.ToLowerInvariant() }}}
             };
         }
         

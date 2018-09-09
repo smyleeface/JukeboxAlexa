@@ -45,7 +45,9 @@ namespace JukeboxAlexa.SpeakerRequest {
 
         public override void GetSongInfoRequested(Dictionary<string, Slot> intentSlots) {
             var options = intentSlots.TryGetValue("Options", out Slot speakerOption);
-            if (!options) return;
+            if (!options) {
+                return;
+            }
             SpeakerAction = speakerOption.Value;
             LambdaLogger.Log($"*** INFO: Speaker option {speakerOption.Value}");
         }

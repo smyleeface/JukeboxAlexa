@@ -10,7 +10,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
     public class SonglistUploadTests {
         
         [Fact]
-        public async Task Songlist_upload__read_new_songs__found() {
+        public static async Task Songlist_upload__read_new_songs__found() {
             
             // Arrange
             var returnedSongs = "3,19,Neon Trees,Animals,Neon Trees,3,19,,,,,,\n2,13,Trees,Animals,Trees,2,13,,,,,,\n1,04,Adelle,Hello,Adelle,1,04,,,,,,";
@@ -31,7 +31,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
 
         [Fact]
-        public async Task Songlist_upload__read_new_songs__found_with_empty_and_non_digit() {
+        public static async Task Songlist_upload__read_new_songs__found_with_empty_and_non_digit() {
             
             // Arrange
             var returnedSongs = "3,19,Neon Trees,Animals,Neon Trees,3,19,,,,,,\n,,,,,,,,,,,,\n2,13,Trees,Animals,Trees,2,13,,,,,,\ntwo,three,Trees,Animals,Trees,two,three,,,,,,\n1,04,Adelle,Hello,Adelle,1,04,,,,,,";
@@ -51,7 +51,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
 
         [Fact]
-        public async Task Songlist_upload__read_old_songs__found() {
+        public static async Task Songlist_upload__read_old_songs__found() {
             
             // Arrange
             var scanResults = new ScanResponse {
@@ -83,7 +83,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
 
         [Fact]
-        public async Task Songlist_upload__read_old_songs__none_found() {
+        public static async Task Songlist_upload__read_old_songs__none_found() {
             
             // Arrange
             var scanResults = new ScanResponse {
@@ -107,7 +107,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
         
         [Fact]
-        public void Songlist_upload__song_to_add__found_one() {
+        public static void Songlist_upload__song_to_add__found_one() {
             
             // Arrange
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
@@ -146,7 +146,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
 
 
         [Fact]
-        public void Songlist_upload__song_to_add__found_none() {
+        public static void Songlist_upload__song_to_add__found_none() {
 
             // Arrange
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
@@ -182,7 +182,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
         
         [Fact]
-        public void Songlist_upload__song_to_delete__found_one() {
+        public static void Songlist_upload__song_to_delete__found_one() {
             
             // Arrange
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
@@ -220,7 +220,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
 
         [Fact]
-        public void Songlist_upload__song_to_delete__found_none() {
+        public static void Songlist_upload__song_to_delete__found_none() {
             
             // Arrange
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
@@ -256,7 +256,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         }
 
         [Fact]
-        public async Task Songlist_upload__delete_song_from_database() {
+        public static async Task Songlist_upload__delete_song_from_database() {
 
             // Arrange
             var dynamodbValues = new List<WriteRequest>();

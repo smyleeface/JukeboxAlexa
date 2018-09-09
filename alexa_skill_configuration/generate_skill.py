@@ -29,30 +29,24 @@ class GenerateSkillJson(object):
         print("DONE")
 
     def add_track_numbers(self):
-        track_numbers = self._load_source_file(f'{self.current_path}/custom_type_TRACKNUMBER.txt')
+        track_numbers = self.load_source_file(f'{self.current_path}/custom_type_TRACKNUMBER.txt')
         track_numbers_json = self._populate_intent_type_template(track_numbers)
         self._add_to_skill_template(track_numbers_json, "TRACKNUMBER")
 
     def add_artists(self):
-        artists = self._load_source_file(f'{self.current_path}/custom_type_ARTISTS.txt')
+        artists = self.load_source_file(f'{self.current_path}/custom_type_ARTISTS.txt')
         artists_json = self._populate_intent_type_template(artists)
         self._add_to_skill_template(artists_json, "ARTISTS")
 
     def add_song_title(self):
-        song_title = self._load_source_file(f'{self.current_path}/custom_type_SONGTITLE.txt')
+        song_title = self.load_source_file(f'{self.current_path}/custom_type_SONGTITLE.txt')
         song_title_json = self._populate_intent_type_template(song_title)
         self._add_to_skill_template(song_title_json, "SONGTITLE")
 
     def add_speaker_request_options(self):
-        speaker_request_options = self._load_source_file(f'{self.current_path}/custom_type_SPEAKER_REQUEST_OPTIONS.txt')
+        speaker_request_options = self.load_source_file(f'{self.current_path}/custom_type_SPEAKER_REQUEST_OPTIONS.txt')
         speaker_request_options_json = self._populate_intent_type_template(speaker_request_options)
         self._add_to_skill_template(speaker_request_options_json, "SPEAKER_REQUEST_OPTIONS")
-
-    def _load_source_file(self, filename, output_format='json'):
-        with open(filename, 'r') as source_file:
-            if output_format == 'json':
-                return source_file.read().splitlines()
-        raise NotImplementedError(f'{output_format} is not a supported type')
 
     def _populate_intent_type_template(self, source_data):
         json_output = []
@@ -71,6 +65,13 @@ class GenerateSkillJson(object):
     def _write_to_file(self):
         with open(f'{self.current_path}/skill.json', 'w') as skill_json:
             skill_json.writelines(json.dumps(self.skill_template, indent=2))
+
+    @staticmethod
+    def load_source_file(filename, output_format='json'):
+        with open(filename, 'r') as source_file:
+            if output_format == 'json':
+                return source_file.read().splitlines()
+        raise NotImplementedError(f'{output_format} is not a supported type')
 
 
 if __name__ == '__main__':

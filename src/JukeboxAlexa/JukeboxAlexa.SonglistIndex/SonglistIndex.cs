@@ -50,7 +50,7 @@ namespace JukeboxAlexa.SonglistIndex {
             var splitSongTitle = title.S.Split(" ");
             foreach (var wordFromList in splitSongTitle) {
 
-                var word = wordFromList.ToLower();
+                var word = wordFromList.ToLowerInvariant();
                 
                 // key    
                 var recordKey = new Dictionary<string, AttributeValue> {
@@ -62,7 +62,7 @@ namespace JukeboxAlexa.SonglistIndex {
                 };
                 
                 // Find existing songs in database for that word
-                var existingSongsInDb = await GetExistingSongs(recordKey);
+                var existingSongsInDb = await GetExistingSongs(recordKey).ConfigureAwait(false);
                 LambdaLogger.Log($"EXISTING SONGS IN DATABASE: {JsonConvert.SerializeObject(existingSongsInDb)}");
                 
                 var songIndexInExistingSongs = GetIndexOfThisSong(existingSongsInDb, songItem);
@@ -71,12 +71,12 @@ namespace JukeboxAlexa.SonglistIndex {
                 switch (action) {
                 case "INSERT": {
                     LambdaLogger.Log($"INDEXING WORD: {word}");
-                    await InsertSong(existingSongsInDb, songIndexInExistingSongs, recordKey, songItem);
+                    await InsertSong(existingSongsInDb, songIndexInExistingSongs, recordKey, songItem).ConfigureAwait(false);
                 }
                 break;
                 case "REMOVE": {
                     LambdaLogger.Log($"INDEXING WORD: {word}");
-                    await DeleteSong(existingSongsInDb, songIndexInExistingSongs, recordKey);
+                    await DeleteSong(existingSongsInDb, songIndexInExistingSongs, recordKey).ConfigureAwait(false);
                 }
                 break;
                 }
@@ -92,17 +92,17 @@ namespace JukeboxAlexa.SonglistIndex {
             // no record for that word
             if (totalExistingSongs == 0) {
                 LambdaLogger.Log($"ADDING NEW ENTRY FOR SONG: {JsonConvert.SerializeObject(songToInsert)}");
-                await AddWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert);
+                await AddWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert).ConfigureAwait(false);
             }
             // existing record for that word and but song doesn't exist
             else if (totalExistingSongs > 0 && songIndexInExistingSongs == -1) {
                 LambdaLogger.Log($"INSERTING ENTRY FOR WORD: {JsonConvert.SerializeObject(songToInsert)}");
-                await InsertWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert, totalExistingSongs);                
+                await InsertWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert, totalExistingSongs).ConfigureAwait(false);                
             }
             // song found in list, update that item
             else if (totalExistingSongs > 0 && songIndexInExistingSongs >= 0) {
                 LambdaLogger.Log($"UPDATING ENTRY FOR WORD: {JsonConvert.SerializeObject(songToInsert)}");
-                await InsertWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert, songIndexInExistingSongs);
+                await InsertWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songToInsert, songIndexInExistingSongs).ConfigureAwait(false);
             }
         }
 
@@ -118,7 +118,7 @@ namespace JukeboxAlexa.SonglistIndex {
             // there are mutliple records for that word
             else if (totalExistingSongs >= 1 && songIndexInExistingSongs >= 0) {
                 LambdaLogger.Log($"REMOVING SONG FROM INDEX: {songIndexInExistingSongs}");
-                await RemoveWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songIndexInExistingSongs);
+                await RemoveWordSongs(key.ToDictionary(x => x.Key, x => x.Value), songIndexInExistingSongs).ConfigureAwait(false);
             }
         }
 
@@ -161,7 +161,9 @@ namespace JukeboxAlexa.SonglistIndex {
             var dbItems = await DynamodbProvider.DynamodbGetItemAsync(recordKey);
             LambdaLogger.Log($"dbItems: {JsonConvert.SerializeObject(dbItems)}");
             foreach (var dbItem in dbItems.Item) {
-                if (dbItem.Key != "songs") continue;
+                if (dbItem.Key != "songs") {
+                    continue;
+                }
                 foreach (var song in dbItem.Value.L) {
                     existingSongs.Add(JsonConvert.DeserializeObject<SongModel.Song>(song.S));
                 }

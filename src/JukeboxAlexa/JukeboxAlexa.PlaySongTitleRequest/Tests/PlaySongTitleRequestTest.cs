@@ -18,7 +18,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         public SongFixtures SongFixtures = new SongFixtures();
         
         [Fact]
-        public void Play_song_request__is_valid_request__valid() {
+        public static void Play_song_request__is_valid_request__valid() {
 
             // Arrange
             var tempSongFixtures = new SongFixtures();
@@ -38,7 +38,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         }
   
         [Fact]
-        public void Play_song_request__is_valid_request__invalid() {
+        public static void Play_song_request__is_valid_request__invalid() {
 
             // Arrange
             var tempSongFixtures = new SongFixtures();
@@ -118,7 +118,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         }
         
         [Fact]
-        public void Play_song_request__get_song_info_requested__found_all_slots() {
+        public static void Play_song_request__get_song_info_requested__found_all_slots() {
 
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -144,7 +144,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         }
 
         [Fact]
-        public void Play_song_request__get_song_info_requested__found_no_slots() {
+        public static void Play_song_request__get_song_info_requested__found_no_slots() {
 
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
