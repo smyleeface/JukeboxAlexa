@@ -13,7 +13,7 @@ namespace JukeboxAlexa.Library.Tests {
         public SongFixtures SongFixtures = new SongFixtures();
         
         [Fact]
-        public async void Find_songs_by_number__found_one_song() {
+        public async Task Find_songs_by_number__found_one_song() {
             
             // Arrange
             var queryResponse = new QueryResponse {
@@ -39,7 +39,7 @@ namespace JukeboxAlexa.Library.Tests {
         }
 
         [Fact]
-        public async void Find_songs_by_title_artist__not_found_artist() {
+        public async Task Find_songs_by_title_artist__not_found_artist() {
             
             // Arrange
             var queryResponse = new QueryResponse {

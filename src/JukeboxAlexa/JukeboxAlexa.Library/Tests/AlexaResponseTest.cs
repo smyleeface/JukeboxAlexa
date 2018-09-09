@@ -7,7 +7,7 @@ namespace JukeboxAlexa.Library.Tests {
     public class AlexaResponseTest {
                     
         [Fact]
-        public void Abstract_intent_request__generate_alexa_ask_response() {
+        public static void Abstract_intent_request__generate_alexa_ask_response() {
         
             // Arrange
             var speech = new SsmlOutputSpeech {
@@ -32,7 +32,7 @@ namespace JukeboxAlexa.Library.Tests {
         }
                     
         [Fact]
-        public void Abstract_intent_request__generate_alexa_tell_with_card_response() {
+        public static void Abstract_intent_request__generate_alexa_tell_with_card_response() {
         
             // Arrange
             var speechOutput = "<speak>foo-bar<break strength=\"x-strong\"/>I hope you have a good day.</speak>";

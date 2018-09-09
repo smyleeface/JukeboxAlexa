@@ -93,7 +93,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest {
             }
         }
 
-        public async void FindRequestedSong() {
+        public async Task FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
             var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByTitleArtistAsync(SongRequested.Title, SongRequested.Artist)).ToList();
             foreach (var foundSong in foundDbSongs) {

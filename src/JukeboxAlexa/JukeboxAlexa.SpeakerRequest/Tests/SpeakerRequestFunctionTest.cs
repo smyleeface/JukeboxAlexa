@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Alexa.NET.Request;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.TestUtilities;
@@ -15,7 +16,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
     public class SpeakerRequestFunctionTest {
 
         [Fact]
-        public async void Speaker_request__function() {
+        public static async Task Speaker_request__function() {
 
             // Arrange
             var intentRequest = new CustomSkillRequest {
@@ -52,7 +53,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
         }
         
         [Fact]
-        public async void Speaker_request__init() {
+        public static async Task Speaker_request__init() {
 
             // Arrange
             var function = new Function();

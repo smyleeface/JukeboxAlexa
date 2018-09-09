@@ -85,7 +85,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
             }
         }
 
-        public async void FindRequestedSong() {
+        public async Task FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
             var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByTitleAsync(SongRequested.Title)).ToList();
             if (foundDbSongs.Count < 1) return;

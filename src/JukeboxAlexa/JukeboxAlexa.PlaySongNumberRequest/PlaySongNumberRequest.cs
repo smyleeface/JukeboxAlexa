@@ -85,7 +85,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
             }
         }
 
-        public async void FindRequestedSong() {
+        public async Task FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
             var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByNumberAsync(SongRequested.SongNumber)).ToList();
             LambdaLogger.Log($"*** INFO: Dynamodb Response: {JsonConvert.SerializeObject(foundDbSongs)}");

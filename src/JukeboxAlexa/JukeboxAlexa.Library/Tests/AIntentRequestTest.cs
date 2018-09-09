@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using JukeboxAlexa.Library.Model;
@@ -11,7 +12,7 @@ namespace JukeboxAlexa.Library.Tests {
     public class AIntentRequestTest {
                     
         [Fact]
-        public void Abstract_intent_request__generate_sqs_request__valid() {
+        public static void Abstract_intent_request__generate_sqs_request__valid() {
         
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -28,7 +29,7 @@ namespace JukeboxAlexa.Library.Tests {
         }
     
         [Fact]
-        public void Abstract_intent_request__generate_sqs_request__invalid() {
+        public static void Abstract_intent_request__generate_sqs_request__invalid() {
         
             // Arrange
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
@@ -43,7 +44,7 @@ namespace JukeboxAlexa.Library.Tests {
         }
         
         [Fact]
-        public async void Abstract_intent_request__send_sqs_response__valid() {
+        public static async Task Abstract_intent_request__send_sqs_response__valid() {
 
             // Arrange
             var request = new JukeboxSqsRequest {
@@ -80,7 +81,7 @@ namespace JukeboxAlexa.Library.Tests {
         }
         
         [Fact]
-        public async void Abstract_intent_request__send_sqs_response__invalid() {
+        public static async Task Abstract_intent_request__send_sqs_response__invalid() {
 
             // Arrange
             var request = new JukeboxSqsRequest {
