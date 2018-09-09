@@ -32,12 +32,12 @@ namespace JukeboxAlexa.SonglistUpload {
             BucketName = s3BucketName;
             KeyName = s3KeyName;
             LambdaLogger.Log($"***INFO: bucket: {s3BucketName}; key: {KeyName}");
-            await ReadNewSongs();
-            await ReadOldSongs();
+            await ReadNewSongs().ConfigureAwait(false);
+            await ReadOldSongs().ConfigureAwait(false);
             FilterSongsToAdd();
             FilterSongsToDelete();
-            await DeleteSongsFromDatabase();
-            await AddSongsToDatabase();
+            await DeleteSongsFromDatabase().ConfigureAwait(false);
+            await AddSongsToDatabase().ConfigureAwait(false);
             UpdateSummary();
         }
 
