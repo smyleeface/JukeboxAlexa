@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace JukeboxAlexa.Library {
     public static class AlexaResponse {
         public static SkillResponse Generate(string responseType, string message) {
-            switch (responseType.ToLower()) {
+            switch (responseType.ToLowerInvariant()) {
                 case "ask": {
                     return GenerateAlexaAskResponse(message, new Dictionary<string, object>(), true);
                 }

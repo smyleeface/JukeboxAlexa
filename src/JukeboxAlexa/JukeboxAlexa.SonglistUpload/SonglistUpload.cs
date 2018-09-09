@@ -59,8 +59,8 @@ namespace JukeboxAlexa.SonglistUpload {
                     Artist = columns[4],
                     SongNumber = $"{columns[0]}{columns[1]}",
                     Title = columns[3],
-                    SearchArtist = columns[4].ToLower(),
-                    SearchTitle = columns[3].ToLower()
+                    SearchArtist = columns[4].ToLowerInvariant(),
+                    SearchTitle = columns[3].ToLowerInvariant()
                 };
                 theseNewSongs.Add(song);
             }

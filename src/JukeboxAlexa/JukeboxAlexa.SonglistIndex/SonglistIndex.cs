@@ -50,7 +50,7 @@ namespace JukeboxAlexa.SonglistIndex {
             var splitSongTitle = title.S.Split(" ");
             foreach (var wordFromList in splitSongTitle) {
 
-                var word = wordFromList.ToLower();
+                var word = wordFromList.ToLowerInvariant();
                 
                 // key    
                 var recordKey = new Dictionary<string, AttributeValue> {
