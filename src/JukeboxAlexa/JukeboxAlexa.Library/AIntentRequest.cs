@@ -42,7 +42,9 @@ namespace JukeboxAlexa.Library {
         public virtual async Task<SendMessageResponse> SendSqsRequest(JukeboxSqsRequest request, string requestType) {
             try {
 
-                if (request == null || _queueUrl.IsNullOrEmpty()) return null;
+                if (request == null || _queueUrl.IsNullOrEmpty()) {
+                    return null;
+                }
                 var sendMessageRequest = new SendMessageRequest {
                     QueueUrl = _queueUrl,
                     MessageGroupId = requestType,

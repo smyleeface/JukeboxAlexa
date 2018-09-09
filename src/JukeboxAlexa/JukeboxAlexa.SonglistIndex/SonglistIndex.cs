@@ -161,7 +161,9 @@ namespace JukeboxAlexa.SonglistIndex {
             var dbItems = await DynamodbProvider.DynamodbGetItemAsync(recordKey);
             LambdaLogger.Log($"dbItems: {JsonConvert.SerializeObject(dbItems)}");
             foreach (var dbItem in dbItems.Item) {
-                if (dbItem.Key != "songs") continue;
+                if (dbItem.Key != "songs") {
+                    continue;
+                }
                 foreach (var song in dbItem.Value.L) {
                     existingSongs.Add(JsonConvert.DeserializeObject<SongModel.Song>(song.S));
                 }

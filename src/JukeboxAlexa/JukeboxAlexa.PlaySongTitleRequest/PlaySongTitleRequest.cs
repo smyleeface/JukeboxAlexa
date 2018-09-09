@@ -66,7 +66,9 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
                 message = $"More than one song found for {SongRequested.Title}";
                 LambdaLogger.Log($"*** WARNING: {message}");
             }
-            if (FoundSongs.ToList().Count != 1) return message;
+            if (FoundSongs.ToList().Count != 1) {
+                return message;
+            }
             
             // found one song
             message = $"Sending song number {FoundSongs.ToList().FirstOrDefault().SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
@@ -88,7 +90,9 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
         public async Task FindRequestedSong() {
             var foundSongs = new List<SongModel.Song>();
             var foundDbSongs = (await DynamodbProvider.DynamoDbFindSongsByTitleAsync(SongRequested.Title)).ToList();
-            if (foundDbSongs.Count < 1) return;
+            if (foundDbSongs.Count < 1) {
+                return;
+            }
             foreach (var foundSong in foundDbSongs) {
                 foundSongs.Add(foundSong);
             }

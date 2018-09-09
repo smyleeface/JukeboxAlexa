@@ -67,7 +67,9 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest {
                 message = $"More than one song found for {SongRequested.Title} by {SongRequested.Artist}";
                 LambdaLogger.Log($"*** WARNING: {message}");
             }
-            if (FoundSongs.IsNullOrEmpty() || FoundSongs.ToList().Count != 1) return message;
+            if (FoundSongs.IsNullOrEmpty() || FoundSongs.ToList().Count != 1) {
+                return message;
+            }
             
             // found one song
             message = $"Sending song number {FoundSongs.ToList().FirstOrDefault().SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
