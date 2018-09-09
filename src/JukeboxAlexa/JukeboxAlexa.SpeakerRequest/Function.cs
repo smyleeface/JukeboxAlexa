@@ -6,31 +6,32 @@ using Amazon.Lambda.Core;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
+using MindTouch.LambdaSharp;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 namespace JukeboxAlexa.SpeakerRequest {
-    public class Function : ICommonDependencyProvider {
+    public class Function : ALambdaApiGatewayFunction, ICommonDependencyProvider {
         
         //--- Fields ---
-        private readonly SpeakerRequest _speakerRequest;
-
-        //--- Constructors ---
-        public Function() {    
+        public SpeakerRequest speakerRequest;
+        
+        //--- Methods ---
+        public override Task InitializeAsync(LambdaConfig config) {
             var sqsClient = new AmazonSQSClient();
             var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
-            _speakerRequest = new SpeakerRequest(this, sqsClient, queueName);
+            speakerRequest = new SpeakerRequest(this, sqsClient, queueName);
+            return Task.CompletedTask;
         }
-
-        //--- FunctionHandler ---
-        public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(APIGatewayProxyRequest inputRequest, ILambdaContext context) {
-            LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(inputRequest)}");
-            var input = JsonConvert.DeserializeObject<CustomSkillRequest>(inputRequest.Body);
+        
+        public override async Task<APIGatewayProxyResponse> HandleRequestAsync(APIGatewayProxyRequest request, ILambdaContext context) {
+            LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(request)}");
+            var input = JsonConvert.DeserializeObject<CustomSkillRequest>(request.Body);
             LambdaLogger.Log($"*** INFO: Request input from user: {input}");
     
             // process request
-            var requestResult = await _speakerRequest.HandleRequest(input);
+            var requestResult = await speakerRequest.HandleRequest(input);
             var response = new APIGatewayProxyResponse {
                 StatusCode = 200,
                 Body = JsonConvert.SerializeObject(requestResult),
