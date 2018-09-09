@@ -37,7 +37,6 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
             };
             Mock<ICommonDependencyProvider> provider = new Mock<ICommonDependencyProvider>(MockBehavior.Strict);
             Mock<IAmazonSQS> sqsClient = new Mock<IAmazonSQS>(MockBehavior.Strict);
-            var body = new Dictionary<string, string>();
             var apiGatewayRequest = new APIGatewayProxyRequest {
                 Body = JsonConvert.SerializeObject(intentRequest)
             };
