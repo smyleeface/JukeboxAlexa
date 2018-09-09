@@ -25,10 +25,10 @@ namespace JukeboxAlexa.SonglistUpload {
         
         //--- Constructors ---
         public Function() {
-            var tableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBSONGS");
+            var tableName = Environment.GetEnvironmentVariable("STR_DYNAMODBSONGS");
             var indexNameSearchTitle = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE");
             var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE_ARTIST");
-            var indexTableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBTITLEWORDCACHE");
+            var indexTableName = Environment.GetEnvironmentVariable("STR_DYNAMODBTITLEWORDCACHE");
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _jukeboxS3 = new JukeboxS3(new AmazonS3Client());
             _songlistUpload = new SonglistUpload(this, this);

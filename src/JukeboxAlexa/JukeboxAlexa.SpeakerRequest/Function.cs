@@ -20,7 +20,7 @@ namespace JukeboxAlexa.SpeakerRequest {
         //--- Methods ---
         public override Task InitializeAsync(LambdaConfig config) {
             var sqsClient = new AmazonSQSClient();
-            var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
+            var queueName = Environment.GetEnvironmentVariable("STR_SQSSONGQUEUE");
             speakerRequest = new SpeakerRequest(this, sqsClient, queueName);
             return Task.CompletedTask;
         }
