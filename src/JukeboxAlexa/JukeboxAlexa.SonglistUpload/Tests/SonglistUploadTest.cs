@@ -2,21 +2,24 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
+using Amazon.S3.Model;
 using JukeboxAlexa.Library.Model;
 using Moq;
 using Xunit;
 
 namespace JukeboxAlexa.SonglistUpload.Tests {
-    public class SonglistUploadTests {
+    public class SonglistUploadTest {
         
         [Fact]
         public static async Task Songlist_upload__read_new_songs__found() {
             
             // Arrange
-            var returnedSongs = "3,19,Neon Trees,Animals,Neon Trees,3,19,,,,,,\n2,13,Trees,Animals,Trees,2,13,,,,,,\n1,04,Adelle,Hello,Adelle,1,04,,,,,,";
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
-            s3Provider.Setup(x => x.GetSongsFromS3UploadAsync("foo", "bar")).Returns(Task.FromResult(returnedSongs));
+            s3Provider.Setup(x => x.S3GetObjectAsync("foo", "bar")).Returns(Task.FromResult(new GetObjectResponse {
+                BucketName = "foo",
+                Key = "bar"
+            }));
             var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object);
             songlistUpload.BucketName = "foo";
             songlistUpload.KeyName = "bar";
@@ -34,10 +37,12 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         public static async Task Songlist_upload__read_new_songs__found_with_empty_and_non_digit() {
             
             // Arrange
-            var returnedSongs = "3,19,Neon Trees,Animals,Neon Trees,3,19,,,,,,\n,,,,,,,,,,,,\n2,13,Trees,Animals,Trees,2,13,,,,,,\ntwo,three,Trees,Animals,Trees,two,three,,,,,,\n1,04,Adelle,Hello,Adelle,1,04,,,,,,";
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
-            s3Provider.Setup(x => x.GetSongsFromS3UploadAsync("foo", "bar")).Returns(Task.FromResult(returnedSongs));
+            s3Provider.Setup(x => x.S3GetObjectAsync("foo", "bar")).Returns(Task.FromResult(new GetObjectResponse {
+                BucketName = "foo",
+                Key = "bar"
+            }));
             var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object) {
                 BucketName = "foo",
                 KeyName = "bar"
@@ -298,5 +303,56 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             await songlistUpload.DeleteSongsFromDatabase();
         }
 
+        [Fact]
+        public static async Task Songlist_upload__add_songs_to_dataabase() {
+            
+            // Arrange
+            var dynamodbValues = new List<WriteRequest>();
+            var dbRecord = new WriteRequest {
+                PutRequest = new PutRequest {
+                    Item = new Dictionary<string, AttributeValue> {
+                        { "song_number", new AttributeValue {
+                            S = "124"
+                        }},
+                        { "search_artist", new AttributeValue {
+                            S = "foo-artist2"
+                        }},
+                        { "artist", new AttributeValue {
+                            S = "Foo-Artist2"
+                        }},
+                        { "search_title", new AttributeValue {
+                            S = "foo-title2"
+                        }},
+                        { "title", new AttributeValue {
+                            S = "Foo-Title2"
+                        }}
+                    }
+                }
+            };
+            dynamodbValues.Add(dbRecord);
+            Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
+            dynamodbProvider.Setup(x => x.DynamoDbBatchWriteItemAsync(It.Is<List<WriteRequest>>(y => 
+                y.FirstOrDefault().PutRequest.Item.ToList()[0].Value.S == "Foo-Title2" && 
+                y.FirstOrDefault().PutRequest.Item.ToList()[1].Value.S == "Foo-Artist2"
+                ))).Returns(Task.FromResult(new BatchWriteItemResponse()));
+            Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
+            var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object) {
+                BucketName = "foo",
+                KeyName = "bar",
+                SongsToAdd = new List<SongCsvModel> {
+                    new SongCsvModel {
+                        Artist = "Foo-Artist2",
+                        SearchArtist = "foo-artist2",
+                        SongNumber = "124",
+                        Title = "Foo-Title2",
+                        SearchTitle = "foo-title2"
+                    }
+                }
+            };
+            
+            // Act
+            // Assert
+            await songlistUpload.AddSongsToDatabase();
+        }
     }
 }

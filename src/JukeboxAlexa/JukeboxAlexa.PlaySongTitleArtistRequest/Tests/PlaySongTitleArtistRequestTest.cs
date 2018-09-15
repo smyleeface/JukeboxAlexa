@@ -197,7 +197,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
         }
         
         [Fact]
-        public void Play_song_artist_request__find_requested_song__found_multiple() {
+        public async void Play_song_artist_request__find_requested_song__found_multiple() {
 
             // Arrange
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
@@ -214,7 +214,7 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest.Tests {
 
 
             // Act
-            playSongArtistRequest.FindRequestedSong();
+            await playSongArtistRequest.FindRequestedSong();
 
             // Assert
             Assert.Equal("I Will Wait", playSongArtistRequest.FoundSongs.ToList().FirstOrDefault().Title);

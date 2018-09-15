@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -19,6 +20,14 @@ namespace JukeboxAlexa.Library {
                 BucketName = bucketName,
                 Key = keyName
             });
+        }
+
+        public string ReadS3Stream(Stream stream) {
+            var responseBody = "";
+            using (StreamReader reader = new StreamReader(stream)) {
+                responseBody = reader.ReadToEnd();
+            }
+            return responseBody;
         }
     }
 }
