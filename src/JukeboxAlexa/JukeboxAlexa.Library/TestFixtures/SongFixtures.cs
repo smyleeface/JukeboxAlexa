@@ -16,7 +16,7 @@ namespace JukeboxAlexa.Library.TestFixtures {
         };
         
         public Dictionary<string, AttributeValue> SongAttribute1 = new Dictionary<string, AttributeValue> {
-            {"track_number", new AttributeValue("328")},
+            {"song_number", new AttributeValue("328")},
             {"artist", new AttributeValue("Mumford & Sons")},
             {"search_artist", new AttributeValue("mumford & sons")},
             {"search_title", new AttributeValue("i will wait")},
@@ -30,7 +30,7 @@ namespace JukeboxAlexa.Library.TestFixtures {
         };
         
         public Dictionary<string, AttributeValue> SongAttribute2 = new Dictionary<string, AttributeValue> {
-            {"track_number", new AttributeValue("123")},
+            {"song_number", new AttributeValue("123")},
             {"artist", new AttributeValue("Lionel Ritche")},
             {"search_artist", new AttributeValue("lionel ritche")},
             {"search_title", new AttributeValue("hello")},
@@ -44,7 +44,7 @@ namespace JukeboxAlexa.Library.TestFixtures {
         };
         
         public Dictionary<string, AttributeValue> SongAttribute3 = new Dictionary<string, AttributeValue> {
-            {"track_number", new AttributeValue("456")},
+            {"song_number", new AttributeValue("456")},
             {"artist", new AttributeValue("Lionel Ritche")},
             {"search_artist", new AttributeValue("lionel ritche")},
             {"search_title", new AttributeValue("i just called")},
@@ -58,7 +58,7 @@ namespace JukeboxAlexa.Library.TestFixtures {
         };
 
         public Dictionary<string, AttributeValue> SongAttribute4 = new Dictionary<string, AttributeValue> {
-            {"track_number", new AttributeValue("789")},
+            {"song_number", new AttributeValue("789")},
             {"artist", new AttributeValue("Adele")},
             {"search_artist", new AttributeValue("adele")},
             {"search_title", new AttributeValue("hello")},

@@ -87,7 +87,7 @@ namespace JukeboxAlexa.Library {
         public QueryRequest QueryRequestNumber(string songNumber) {
             return new QueryRequest {
                 TableName = _songTableName,
-                KeyConditionExpression = "track_number = :v_number",
+                KeyConditionExpression = "song_number = :v_number",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
                     {":v_number", new AttributeValue { S = songNumber }}}
             };
@@ -108,7 +108,7 @@ namespace JukeboxAlexa.Library {
                             song.Artist = attributeValue;
                             break;
                         
-                        case "track_number":
+                        case "song_number":
                             song.SongNumber = attributeValue;
                             break;
                     }

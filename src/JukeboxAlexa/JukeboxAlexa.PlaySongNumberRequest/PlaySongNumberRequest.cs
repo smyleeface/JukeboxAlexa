@@ -73,7 +73,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
             }
             
             // found one song
-            message = $"Sending song number {FoundSongs.ToList().FirstOrDefault().SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
+            message = $"Sending song number {FoundSongs.ToList()[0].SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
             LambdaLogger.Log($"*** INFO: {message}");
 
             return message;

@@ -29,10 +29,6 @@
             {
               "name": "Title",
               "type": "SONGTITLE"
-            },
-            {
-              "name": "TrackNumber",
-              "type": "TRACKNUMBER"
             }
           ],
           "samples": [
@@ -59,13 +55,13 @@
           "name": "PlaySongNumberRequest",
           "slots": [
             {
-              "name": "TrackNumber",
-              "type": "TRACKNUMBER"
+              "name": "SongNumber",
+              "type": "AMAZON.NUMBER"
             }
           ],
           "samples": [
-            "send track number {TrackNumber}",
-            "send number {TrackNumber}"
+            "play song number {SongNumber}",
+            "play number {SongNumber}"
           ]
         },
         {
@@ -99,10 +95,6 @@
           "values": []
         },
         {
-          "name": "TRACKNUMBER",
-          "values": []
-        },
-        {
           "name": "SONGTITLE",
           "values": []
         },
@@ -125,30 +117,10 @@
               "confirmationRequired": false,
               "elicitationRequired": false,
               "prompts": {}
-            },
-            {
-              "name": "TrackNumber",
-              "type": "TRACKNUMBER",
-              "confirmationRequired": false,
-              "elicitationRequired": true,
-              "prompts": {
-                "elicitation": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber"
-              }
             }
           ]
         }
       ]
-    },
-    "prompts": [
-      {
-        "id": "Elicit.Intent-FindSongRequested.IntentSlot-SongNumber",
-        "variations": [
-          {
-            "type": "PlainText",
-            "value": "Please choose a song number"
-          }
-        ]
-      }
-    ]
+    }
   }
 }
