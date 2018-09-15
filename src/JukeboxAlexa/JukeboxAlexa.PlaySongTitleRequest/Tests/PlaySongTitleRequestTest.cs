@@ -170,7 +170,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         }
         
         [Fact]
-        public void Play_song_request__find_requested_song__found_one() {
+        public async void Play_song_request__find_requested_song__found_one() {
 
             // Arrange
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
@@ -185,7 +185,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
 
 
             // Act
-            playSongRequest.FindRequestedSong();
+            await playSongRequest.FindRequestedSong();
 
             // Assert
             Assert.Equal("I Will Wait", playSongRequest.FoundSongs.ToList().FirstOrDefault().Title);
@@ -194,7 +194,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
         }
         
         [Fact]
-        public void Play_song_request__find_requested_song__found_multiple() {
+        public async void Play_song_request__find_requested_song__found_multiple() {
 
             // Arrange
             IEnumerable<SongModel.Song> foundDynamodbSongs = new List<SongModel.Song> {
@@ -212,7 +212,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
 
 
             // Act
-            playSongRequest.FindRequestedSong();
+            await playSongRequest.FindRequestedSong();
 
             // Assert
             Assert.Equal("I Will Wait", playSongRequest.FoundSongs.ToList().FirstOrDefault().Title);

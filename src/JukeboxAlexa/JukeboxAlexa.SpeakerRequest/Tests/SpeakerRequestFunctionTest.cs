@@ -41,7 +41,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
                 Body = JsonConvert.SerializeObject(intentRequest)
             };
             var function = new Function {
-                speakerRequest = new SpeakerRequest(provider.Object, sqsClient.Object, "foobar")
+                SpeakerRequest = new SpeakerRequest(provider.Object, sqsClient.Object, "foobar")
             };
 
             // Act
@@ -62,7 +62,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
             await function.InitializeAsync(config);
 
             // Assert
-            Assert.IsType<SpeakerRequest>(function.speakerRequest);
+            Assert.IsType<SpeakerRequest>(function.SpeakerRequest);
         }
         
     }

@@ -32,7 +32,7 @@ namespace JukeboxAlexa.PlaySongNumberRequest {
             // lookup song title and artist
             GetSongInfoRequested(intentSlots);
             if (IsValidRequest()) {
-                FindRequestedSong();
+                await FindRequestedSong();
             }
 
             // generate sqs body and send to the queue

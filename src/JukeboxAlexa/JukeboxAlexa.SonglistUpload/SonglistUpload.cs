@@ -43,7 +43,7 @@ namespace JukeboxAlexa.SonglistUpload {
 
         public async Task ReadNewSongs() {
             var theseNewSongs = new List<SongCsvModel>();
-            var getObjectResponse = await S3Provider.GetSongsFromS3UploadAsync(BucketName, KeyName);
+            var getObjectResponse = await GetSongsFromS3UploadAsync(BucketName, KeyName);
             var songRows = getObjectResponse.Split('\n');
             LambdaLogger.Log($"***INFO: new songs from file (songRows): {JsonConvert.SerializeObject(songRows)}");
             foreach (var songRow in songRows) {
@@ -56,10 +56,10 @@ namespace JukeboxAlexa.SonglistUpload {
                     continue;
                 }
                 var song = new SongCsvModel {
-                    Artist = columns[4],
                     SongNumber = $"{columns[0]}{columns[1]}",
-                    Title = columns[3],
+                    Artist = columns[4],
                     SearchArtist = columns[4].ToLowerInvariant(),
+                    Title = columns[3],
                     SearchTitle = columns[3].ToLowerInvariant()
                 };
                 theseNewSongs.Add(song);
@@ -174,7 +174,7 @@ namespace JukeboxAlexa.SonglistUpload {
                             }
                         }, {
                             "search_artist", new AttributeValue {
-                                S = addSong.SearchTitle
+                                S = addSong.SearchArtist
                             }
                         }
                     }
@@ -196,6 +196,11 @@ namespace JukeboxAlexa.SonglistUpload {
         public void UpdateSummary() {
             LambdaLogger.Log($"Added {SongsToAdd.Count()} Songs");    
             LambdaLogger.Log($"Deleted {SongsToDelete.Count()} Songs");    
+        }
+
+        public async Task<string> GetSongsFromS3UploadAsync(string bucket, string key) {
+            var response = await S3Provider.S3GetObjectAsync(bucket, key);
+            return S3Provider.ReadS3Stream(response.ResponseStream);
         }
     }
 }

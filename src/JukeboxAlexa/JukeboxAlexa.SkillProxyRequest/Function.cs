@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Alexa.NET;
 using Alexa.NET.Request;
@@ -24,7 +25,7 @@ namespace JukeboxAlexa.SkillProxyRequest
         //--- FunctionHandler ---
         public override Task InitializeAsync(LambdaConfig config) {
             _httpClient = new HttpClient();
-            _endpoint = config.ReadText("ApiEndpoint");
+            _endpoint = Environment.GetEnvironmentVariable("STR_APIENDPOINT");
             return Task.CompletedTask;
         }
 

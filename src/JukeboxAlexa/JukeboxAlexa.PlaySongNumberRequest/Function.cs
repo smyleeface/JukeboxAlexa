@@ -21,11 +21,11 @@ namespace JukeboxAlexa.PlaySongNumberRequest
 
         //--- Constructors ---
         public Function() {
-            var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
-            var tableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBSONGS");
-            var indexNameSearchTitle = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE");
-            var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("INDEX_NAME_SEARCH_TITLE_ARTIST");
-            var indexTableName = Environment.GetEnvironmentVariable("STACK_DYNAMODBTITLEWORDCACHE");
+            var queueName = Environment.GetEnvironmentVariable("STR_SQSSONGQUEUE");
+            var tableName = Environment.GetEnvironmentVariable("STR_DYNAMODBSONGS");
+            var indexNameSearchTitle = Environment.GetEnvironmentVariable("STR_INDEXNAMESEARCHTITLE");
+            var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("STR_INDEXNAMESEARCHTITLEARTIST");
+            var indexTableName = Environment.GetEnvironmentVariable("STR_DYNAMODBTITLEWORDCACHE");
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _playSongRequest = new PlaySongNumberRequest(this, new AmazonSQSClient(), queueName, this);
         }

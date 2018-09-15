@@ -15,13 +15,13 @@ namespace JukeboxAlexa.SpeakerRequest {
     public class Function : ALambdaApiGatewayFunction, ICommonDependencyProvider {
         
         //--- Fields ---
-        public SpeakerRequest speakerRequest;
+        public SpeakerRequest SpeakerRequest;
         
         //--- Methods ---
         public override Task InitializeAsync(LambdaConfig config) {
             var sqsClient = new AmazonSQSClient();
-            var queueName = Environment.GetEnvironmentVariable("STACK_SQSSONGQUEUE");
-            speakerRequest = new SpeakerRequest(this, sqsClient, queueName);
+            var queueName = Environment.GetEnvironmentVariable("STR_SQSSONGQUEUE");
+            SpeakerRequest = new SpeakerRequest(this, sqsClient, queueName);
             return Task.CompletedTask;
         }
         
@@ -31,7 +31,7 @@ namespace JukeboxAlexa.SpeakerRequest {
             LambdaLogger.Log($"*** INFO: Request input from user: {input}");
     
             // process request
-            var requestResult = await speakerRequest.HandleRequest(input);
+            var requestResult = await SpeakerRequest.HandleRequest(input);
             var response = new APIGatewayProxyResponse {
                 StatusCode = 200,
                 Body = JsonConvert.SerializeObject(requestResult),
