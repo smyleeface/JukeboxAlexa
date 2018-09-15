@@ -20,7 +20,7 @@ namespace JukeboxAlexa.Library.Tests {
             var items = new List<Dictionary<string, AttributeValue>> {
                 {
                     new Dictionary<string, AttributeValue> {
-                        {"track_number", new AttributeValue {S = "123"}},
+                        {"song_number", new AttributeValue {S = "123"}},
                         {"artist", new AttributeValue {S = "Lionel Ritche"}},
                         {"title", new AttributeValue {S = "Hello"}}
                     }

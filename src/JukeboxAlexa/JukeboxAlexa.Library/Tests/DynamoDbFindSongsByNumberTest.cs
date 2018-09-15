@@ -19,7 +19,7 @@ namespace JukeboxAlexa.Library.Tests {
             var queryResponse = new QueryResponse {
                 Items = new List<Dictionary<string, AttributeValue>> {
                     new Dictionary<string, AttributeValue> {
-                        {"track_number", new AttributeValue {S = "123"}},
+                        {"song_number", new AttributeValue {S = "123"}},
                         {"artist", new AttributeValue {S = "Lionel Ritche"}},
                         {"title", new AttributeValue {S = "Hello"}}
                     }
@@ -67,7 +67,7 @@ namespace JukeboxAlexa.Library.Tests {
             var query = jukeboxDynamoDb.QueryRequestNumber("123");
 
             // Assert
-            Assert.Contains("track_number = :v_number", query.KeyConditionExpression);
+            Assert.Contains("song_number = :v_number", query.KeyConditionExpression);
             query.ExpressionAttributeValues.TryGetValue(":v_number", out AttributeValue vNumber);
             Assert.Contains("123", vNumber.S);
         }
