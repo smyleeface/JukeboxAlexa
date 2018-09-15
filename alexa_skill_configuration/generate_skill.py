@@ -21,17 +21,11 @@ class GenerateSkillJson(object):
         return values
 
     def generate(self):
-        self.add_track_numbers()
         self.add_artists()
         self.add_song_title()
         self.add_speaker_request_options()
         self._write_to_file()
         print("DONE")
-
-    def add_track_numbers(self):
-        track_numbers = self.load_source_file(f'{self.current_path}/custom_type_TRACKNUMBER.txt')
-        track_numbers_json = self._populate_intent_type_template(track_numbers)
-        self._add_to_skill_template(track_numbers_json, "TRACKNUMBER")
 
     def add_artists(self):
         artists = self.load_source_file(f'{self.current_path}/custom_type_ARTISTS.txt')
