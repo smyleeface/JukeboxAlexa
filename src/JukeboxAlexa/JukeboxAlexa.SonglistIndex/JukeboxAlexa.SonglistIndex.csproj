@@ -14,7 +14,6 @@
     <PackageReference Include="Amazon.Lambda.DynamoDBEvents" Version="1.0.1" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.5" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.21.1" />
-    <PackageReference Include="MindTouch.LambdaSharp" Version="0.2.0" />
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -25,5 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JukeboxAlexa.Library\JukeboxAlexa.Library.csproj" />
+    <ProjectReference Include="/Users/pattyr/Projects/SOURCES/LambdaSharpTool/src/MindTouch.LambdaSharp/MindTouch.LambdaSharp.csproj" />
   </ItemGroup>
 </Project>
