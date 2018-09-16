@@ -11,7 +11,7 @@ Variables:
 Parameters:
     #
     ##########################
-    # S3 CSV Song file upload
+    # Index names in env var
     ##########################
     #
   - Name: IndexNameSearchTitle
@@ -128,8 +128,6 @@ Functions:
     Timeout: 30
     Sources:
       - S3: S3JukeboxSongsCsv
-        Events:
-          - "s3:ObjectCreated:*"
   #
   #########################
   # Songlist Index
