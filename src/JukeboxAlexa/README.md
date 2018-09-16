@@ -14,3 +14,4 @@ lash deploy --tier devel --bootstrap --profile profilename
 
 `ERROR: No RegionEndpoint or ServiceURL configured`
 * aws credentials must include `region`
+
