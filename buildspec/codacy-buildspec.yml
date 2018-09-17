@@ -1,0 +1,10 @@
+version: 0.2
+phases:
+
+  install:
+    commands:
+      - pip install codacy-coverage
+
+  build:
+    commands:
+      - buildspec/codacy.sh

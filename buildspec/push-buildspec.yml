@@ -9,5 +9,5 @@ phases:
 
   build:
     commands:
-      - buildspec/20_build_and_test.sh
-      - buildspec/30_coverage.sh
+      - buildspec/push-build_and_test.sh
+      - buildspec/push-coverage_reports.sh

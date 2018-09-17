@@ -3,6 +3,6 @@ phases:
 
   build:
     commands:
-      - cicd/40_deploy.sh staging
+      - cicd/deploy.sh staging
       # if github branch master -- TIER == `production` else `staging`
 #      - cicd/40_deploy.sh production

@@ -4,7 +4,7 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-    source cicd/10_envvars.sh
+    source cicd/env_vars.sh
 
     # TODO: if github branch master -- TIER == `production` else `staging`
 
