@@ -1,0 +1,11 @@
+version: 0.2
+phases:
+
+  install:
+    commands:
+      - yum install jq -y
+      - dotnet tool install coveralls.net --tool-path tools
+
+  build:
+    commands:
+      - buildspec/31_coveralls.sh
