@@ -4,6 +4,7 @@ phases:
   install:
     commands:
       - yum install jq -y
+      - dotnet tool install coverlet.console --tool-path tools
       - dotnet tool install coveralls.net --tool-path tools
 
   build:
