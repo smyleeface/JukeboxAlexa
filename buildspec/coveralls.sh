@@ -17,7 +17,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     TOKEN=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 
-    for COVFILES in ${CODEBUILD_SRC_DIR}/coverage; do
+    for COVFILES in ${CODEBUILD_SRC_DIR}/coverage/*; do
         echo "***INFO: uploading coverage"
         echo ${COVFILES}
         ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
