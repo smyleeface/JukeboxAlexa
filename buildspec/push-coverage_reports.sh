@@ -4,6 +4,8 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
+    S3BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"
+
     source buildspec/env_vars.sh
     
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
