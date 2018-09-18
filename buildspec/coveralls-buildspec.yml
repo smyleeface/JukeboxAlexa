@@ -8,4 +8,4 @@ phases:
 
   build:
     commands:
-      - buildspec/31_coveralls.sh
+      - buildspec/coveralls.sh
