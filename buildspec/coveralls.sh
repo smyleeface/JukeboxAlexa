@@ -8,7 +8,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     S3_BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"
 
-    source cicd/env_vars.sh
+    source buildspec/env_vars.sh
 
     # download files from S3
     mkdir coverage
