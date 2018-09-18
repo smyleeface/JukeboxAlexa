@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
@@ -14,12 +15,15 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
         public static async Task Songlist_upload__read_new_songs__found() {
             
             // Arrange
+            var memoryStream = new MemoryStream();
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
             s3Provider.Setup(x => x.S3GetObjectAsync("foo", "bar")).Returns(Task.FromResult(new GetObjectResponse {
                 BucketName = "foo",
-                Key = "bar"
+                Key = "bar",
+                ResponseStream = memoryStream
             }));
+            s3Provider.Setup(x => x.ReadS3Stream(memoryStream)).Returns("Disc,Track#,Song,Artist,Disc,Track#,,,,,,\n3,05,Rihanna,Stay,Rihanna,3,05,,,,,,");
             var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object);
             songlistUpload.BucketName = "foo";
             songlistUpload.KeyName = "bar";
@@ -28,21 +32,24 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             await songlistUpload.ReadNewSongs();
             
             // Assert
-            Assert.Contains(songlistUpload.NewSongs, x => x.Artist == "Neon Trees");
-            Assert.Contains(songlistUpload.NewSongs, x => x.SearchArtist == "neon trees");
-            Assert.Contains(songlistUpload.NewSongs, x => x.SongNumber == "319");
+            Assert.Contains(songlistUpload.NewSongs, x => x.Artist == "Rihanna");
+            Assert.Contains(songlistUpload.NewSongs, x => x.SearchArtist == "rihanna");
+            Assert.Contains(songlistUpload.NewSongs, x => x.SongNumber == "305");
         }
 
         [Fact]
         public static async Task Songlist_upload__read_new_songs__found_with_empty_and_non_digit() {
             
             // Arrange
+            var memoryStream = new MemoryStream();
             Mock<IDynamodbDependencyProvider> dynamodbProvider = new Mock<IDynamodbDependencyProvider>(MockBehavior.Strict);
             Mock<IS3DependencyProvider> s3Provider = new Mock<IS3DependencyProvider>(MockBehavior.Strict);
             s3Provider.Setup(x => x.S3GetObjectAsync("foo", "bar")).Returns(Task.FromResult(new GetObjectResponse {
                 BucketName = "foo",
-                Key = "bar"
+                Key = "bar",
+                ResponseStream = memoryStream
             }));
+            s3Provider.Setup(x => x.ReadS3Stream(memoryStream)).Returns("Disc,Track#,Song,Artist,Disc,Track#,,,,,,\n3,05,Rihanna,Stay,Rihanna,3,05,,,,,,\n1,05,Neon Tress,Hello,Neon Trees,1,05,,,,,,");
             var songlistUpload = new SonglistUpload(dynamodbProvider.Object, s3Provider.Object) {
                 BucketName = "foo",
                 KeyName = "bar"
@@ -52,7 +59,7 @@ namespace JukeboxAlexa.SonglistUpload.Tests {
             await songlistUpload.ReadNewSongs();
             
             // Assert
-            Assert.Equal(3, songlistUpload.NewSongs.Count());
+            Assert.Equal(2, songlistUpload.NewSongs.Count());
         }
 
         [Fact]
