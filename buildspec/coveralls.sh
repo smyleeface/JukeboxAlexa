@@ -18,6 +18,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     dotnet test
 
     coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
+    codeCovToken=$(aws ssm get-parameter --name /general/codecov/token  --with-decryption --query  Parameter | jq -r '.Value')
 
     for directory in ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
@@ -37,7 +38,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         ls -la ${directory}
         ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 
-        echo "***INFO: uploading coverage"
+        echo "***INFO: uploading Coveralls"
         tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
@@ -49,6 +50,14 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --opencover \
             -i ${directory}coverage.xml \
             --repoToken ${coverallsToken}
+            
+        echo "***INFO: uploading CodeCov"
+        tools/codecov
+            -f "${directory}coverage.xml" \
+            -t ${codeCovToken} \
+            -B ${GIT_BRANCH} \
+            -C ${GITSHA} \
+            -b ${CODEBUILD_BUILD_ID}
     done
 
 #    S3_BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"

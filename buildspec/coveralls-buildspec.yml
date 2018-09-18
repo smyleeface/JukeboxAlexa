@@ -6,6 +6,8 @@ phases:
       - yum install jq -y
       - dotnet tool install coverlet.console --tool-path tools
       - dotnet tool install coveralls.net --tool-path tools
+      - curl -s https://codecov.io/bash > tools/codecov
+      - chmod +x tools/codecov
 
   build:
     commands:
