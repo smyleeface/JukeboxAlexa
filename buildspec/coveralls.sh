@@ -20,7 +20,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     for COVFILES in ./; do
         echo "***INFO: uploading coverage"
         echo ${COVFILES}
-        tools/csmacnz.Coveralls \
+        ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
             --commitAuthor "${GIT_AUTHOR_NAME}" \
