@@ -22,7 +22,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             COVERLET_OUTPUT=${BUILD_DIRECTORY}/coverage.xml
             
             echo "***INFO: coverlet ${COVERLET_OUTPUT}"
-            ${CODEBUILD_SRC_DIR}/tools/coverlet ${BUILD_DIRECTORY}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+            ${CODEBUILD_SRC_DIR}/tools/coverlet ${BUILD_DIRECTORY}/bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
                 --output ${COVERLET_OUTPUT} \
                 --target /usr/bin/dotnet \
                 --targetargs "test ${BUILD_DIRECTORY} --no-build" \
