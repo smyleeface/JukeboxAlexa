@@ -52,12 +52,18 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --repoToken ${coverallsToken}
             
         echo "***INFO: uploading CodeCov"
-        tools/codecov \
-            -f "${directory}coverage.xml" \
+        echo "tools/codecov \
+            -f ${directory}coverage.xml \
             -t ${codeCovToken} \
             -B ${GIT_BRANCH} \
             -C ${GITSHA} \
-            -b ${CODEBUILD_BUILD_ID}
+            -b ${CODEBUILD_BUILD_ID}"
+#        tools/codecov \
+#            -f "${directory}coverage.xml" \
+#            -t ${codeCovToken} \
+#            -B ${GIT_BRANCH} \
+#            -C ${GITSHA} \
+#            -b "${CODEBUILD_BUILD_ID}"
     done
 
 #    S3_BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"
