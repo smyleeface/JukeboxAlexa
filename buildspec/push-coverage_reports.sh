@@ -4,7 +4,7 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-    S3BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"
+    S3_BUCKET="dev-smyleegithubeventroutes-codecoveragereports-loog4breq9fw"
 
     source buildspec/env_vars.sh
     
