@@ -56,6 +56,6 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         name=JOB_ID,value=${JOB_ID},type=PLAINTEXT \
         name=GIT_AUTHOR_NAME,value=${GIT_AUTHOR_NAME},type=PLAINTEXT \
         name=GIT_AUTHOR_EMAIL,value=${GIT_AUTHOR_EMAIL},type=PLAINTEXT \
-        name=GIT_COMMIT_MESSAGE,value="${GIT_COMMIT_MESSAGE}",type=PLAINTEXT
+        name=GIT_COMMIT_MESSAGE,value=${GIT_COMMIT_MESSAGE},type=PLAINTEXT
 fi
 
