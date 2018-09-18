@@ -4,7 +4,7 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-    source cicd/env_vars.sh
+    source buildspec/env_vars.sh
     
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
