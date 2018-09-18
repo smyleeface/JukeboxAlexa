@@ -29,7 +29,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --jobId "${CODEBUILD_BUILD_ID}" \
             --useRelativePaths \
             --opencover \
-            -i ${COVFILES} \
+            -i ./${COVFILES} \
             --repoToken ${TOKEN}
     done
 fi
