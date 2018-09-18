@@ -19,8 +19,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         PROJECT_NAME=${directory##*/}
         COVERLET_OUTPUT=${directory}coverage-${PROJECT_NAME}.xml
         
-        echo "***INFO: coverlet ${directory}"
-        tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        echo "***INFO: coverlet ${COVERLET_OUTPUT}"
+        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${COVERLET_OUTPUT} \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
@@ -34,3 +34,4 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 #        aws s3 cp ${COVERLET_OUTPUT} s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA}/
     done
 fi
+
