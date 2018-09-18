@@ -6,6 +6,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     ls -la ${CODEBUILD_SRC_DIR}
 
+    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
+
     echo "***INFO: Restoring packages"
     dotnet restore
 
@@ -14,8 +16,6 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     echo "***INFO: Testing solution"
     dotnet test
-        
-    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
     coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
 
