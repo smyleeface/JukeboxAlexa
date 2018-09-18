@@ -49,7 +49,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         name=GIT_AUTHOR_EMAIL,value=${GIT_AUTHOR_EMAIL},type=PLAINTEXT \
         name=GIT_COMMIT_MESSAGE,value=${GIT_COMMIT_MESSAGE},type=PLAINTEXT"
         
-    aws codebuild start-build --project-name ${REPO##*/}-coveralls --source-version ${GIT_BRANCH} --environment-variables-override \
+    aws codebuild start-build --project-name ${REPO##*/}-coveralls --source-version /${REPO}/${GIT_BRANCH}/${GITSHA}/ --environment-variables-override \
         name=GITSHA,value=${GITSHA},type=PLAINTEXT \
         name=GIT_BRANCH,value=${GIT_BRANCH},type=PLAINTEXT \
         name=REPO,value=${REPO},type=PLAINTEXT \
