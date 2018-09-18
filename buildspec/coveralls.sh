@@ -21,7 +21,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         echo "***INFO: uploading coverage"
         echo ${COVFILES}
         ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
-            --basePath ${CODEBUILD_SRC_DIR}
+            --basePath ${CODEBUILD_SRC_DIR} \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
             --commitAuthor "${GIT_AUTHOR_NAME}" \
