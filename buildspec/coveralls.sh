@@ -24,8 +24,9 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         ls -la ${directory}
         ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 
+        cd ${CODEBUILD_SRC_DIR}
         echo "***INFO: coverlet ${directory}"
-        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${directory}coverage.xml \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
@@ -37,7 +38,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 
         echo "***INFO: uploading coverage"
-        ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
+        tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
             --commitAuthor "${GIT_AUTHOR_NAME}" \
