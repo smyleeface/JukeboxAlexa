@@ -12,6 +12,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     # download files from S3
     mkdir coverage
+    cd coverage
     aws s3 cp --recursive s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA} ./
 
     TOKEN=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
