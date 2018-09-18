@@ -52,7 +52,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --repoToken ${coverallsToken}
             
         echo "***INFO: uploading CodeCov"
-        tools/codecov
+        tools/codecov \
             -f "${directory}coverage.xml" \
             -t ${codeCovToken} \
             -B ${GIT_BRANCH} \
