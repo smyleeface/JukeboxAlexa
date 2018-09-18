@@ -34,8 +34,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 
             # upload report to s3
             
-            echo "${COVERLET_OUTPUT} s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA}/${PROJECT_NAME}/coverage.xml"
-    #        aws s3 cp ${COVERLET_OUTPUT} s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA}/${PROJECT_NAME}
+#            echo "${COVERLET_OUTPUT} s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA}/${PROJECT_NAME}/coverage.xml"
+            aws s3 cp ${COVERLET_OUTPUT} s3://${S3_BUCKET}/${REPO}/${GIT_BRANCH}/${GITSHA}/${PROJECT_NAME}/coverage.xml
         fi
     done
 fi
