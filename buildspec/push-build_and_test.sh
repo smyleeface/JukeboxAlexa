@@ -17,5 +17,4 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     echo "***INFO: Testing solution"
     dotnet test
 
-    ls -la ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.SonglistIndex/
 fi

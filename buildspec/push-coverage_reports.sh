@@ -15,38 +15,57 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
         cd ${CODEBUILD_SRC_DIR}
         echo "***INFO: coverlet ${directory}"
-        tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${directory}coverage.xml \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
             --format opencover \
             --exclude-by-file "**/obj/**" \
-            --exclude-by-file "**/bin/**"
+            --exclude-by-file "**/bin/**" \
+            --merge-with ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/coverage.json
 
-        ls -la ${directory}
-        ls -la ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
-
-        echo "***INFO: uploading Coveralls"
-        tools/csmacnz.Coveralls \
-            --commitId ${GITSHA} \
-            --commitBranch "${GIT_BRANCH}" \
-            --commitAuthor "${GIT_AUTHOR_NAME}" \
-            --commitEmail "${GIT_AUTHOR_EMAIL}" \
-            --commitMessage "${GIT_COMMIT_MESSAGE}" \
-            --jobId "${CODEBUILD_BUILD_ID}" \
-            --useRelativePaths \
-            --opencover \
-            -i ${directory}coverage.xml \
-            --repoToken ${coverallsToken}
-            
-        echo "***INFO: uploading CodeCov"
-        tools/codecov \
-            -f "${directory}coverage.xml" \
-            -t ${codeCovToken} \
-            -B ${GIT_BRANCH} \
-            -C ${GITSHA} \
-            -b "${CODEBUILD_BUILD_ID}"
+#        echo "***INFO: uploading Coveralls"
+#        ./tools/csmacnz.Coveralls \
+#            --commitId ${GITSHA} \
+#            --commitBranch "${GIT_BRANCH}" \
+#            --commitAuthor "${GIT_AUTHOR_NAME}" \
+#            --commitEmail "${GIT_AUTHOR_EMAIL}" \
+#            --commitMessage "${GIT_COMMIT_MESSAGE}" \
+#            --jobId "${CODEBUILD_BUILD_ID}" \
+#            --useRelativePaths \
+#            --opencover \
+#            -i ${directory}coverage.xml \
+#            --repoToken ${coverallsToken}
+#            
+#        echo "***INFO: uploading CodeCov"
+#        tools/codecov \
+#            -f "${directory}coverage.xml" \
+#            -t ${codeCovToken} \
+#            -B ${GIT_BRANCH} \
+#            -C ${GITSHA} \
+#            -b "${CODEBUILD_BUILD_ID}"
     done
+    
+    echo "***INFO: uploading Coveralls"
+    ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
+        --commitId ${GITSHA} \
+        --commitBranch "${GIT_BRANCH}" \
+        --commitAuthor "${GIT_AUTHOR_NAME}" \
+        --commitEmail "${GIT_AUTHOR_EMAIL}" \
+        --commitMessage "${GIT_COMMIT_MESSAGE}" \
+        --jobId "${CODEBUILD_BUILD_ID}" \
+        --useRelativePaths \
+        --opencover \
+        -i ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/coverage.json \
+        --repoToken ${coverallsToken}
+
+    echo "***INFO: uploading CodeCov"
+    ${CODEBUILD_SRC_DIR}/tools/codecov \
+        -f ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/coverage.json \
+        -t ${codeCovToken} \
+        -B ${GIT_BRANCH} \
+        -C ${GITSHA} \
+        -b "${CODEBUILD_BUILD_ID}"
 fi
 
 
