@@ -14,15 +14,24 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         echo "****DIRECTORY: ${directory}"
 
         cd ${CODEBUILD_SRC_DIR}
+        
         echo "***INFO: coverlet ${directory}"
         ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-            --output ${directory}coverage.xml \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
             --format opencover \
             --exclude-by-file "**/obj/**" \
             --exclude-by-file "**/bin/**" \
             --merge-with ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/coverage.json
+        
+#        echo "***INFO: coverlet ${directory}"
+#        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+#            --output ${directory}coverage.xml \
+#            --target /usr/bin/dotnet \
+#            --targetargs "test ${directory} --no-build" \
+#            --format opencover \
+#            --exclude-by-file "**/obj/**" \
+#            --exclude-by-file "**/bin/**" 
 
 #        echo "***INFO: uploading Coveralls"
 #        ./tools/csmacnz.Coveralls \
