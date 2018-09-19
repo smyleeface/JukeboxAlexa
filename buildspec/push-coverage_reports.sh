@@ -9,7 +9,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
     codeCovToken=$(aws ssm get-parameter --name /general/codecov/token  --with-decryption --query  Parameter | jq -r '.Value')
 
-    for directory in ./src/JukeboxAlexa.*/ ; do
+    for directory in ./src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
         echo "****DIRECTORY: ${directory}"
 
