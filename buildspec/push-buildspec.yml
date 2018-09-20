@@ -14,4 +14,4 @@ phases:
   build:
     commands:
       - buildspec/push-build_and_test.sh
-      - buildspec/push-coverage_reports.sh
+#      - buildspec/push-coverage_reports.sh
