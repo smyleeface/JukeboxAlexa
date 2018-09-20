@@ -1,5 +1,5 @@
 ![AWS Codebuild Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiaXlCTjg1bTFCMDlyRjhaWWRkT3BET0RsbVo5UEVXMkpxNnBMd0tvQk1SNEwzbnlSV2dCR0RTYTZyR2lWSmtLQnY5MndybzBWUFBHYUpyTFByNStCei9rPSIsIml2UGFyYW1ldGVyU3BlYyI6Im5MK2VLb0FQaGhjU21hTkkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=feature-trigger-event)
-[![Coverage Status](https://coveralls.io/repos/github/smyleeface/JukeboxAlexa/badge.svg)](https://coveralls.io/github/smyleeface/JukeboxAlexa)
+[![Coverage Status](https://coveralls.io/repos/github/smyleeface/JukeboxAlexa/badge.svg?branch=feature-trigger-event)](https://coveralls.io/github/smyleeface/JukeboxAlexa?branch=feature-trigger-event)
 [![CodeCov Status](https://codecov.io/gh/smyleeface/JukeboxAlexa/branch/feature-trigger-event/graph/badge.svg)](https://codecov.io/gh/smyleeface/JukeboxAlexa/branch/feature-trigger-event)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/718db1a14d7643de8ad8f4e035d961dc)](https://www.codacy.com/app/smyleeface/JukeboxAlexa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=smyleeface/JukeboxAlexa&amp;utm_campaign=Badge_Grade)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/smyleeface/jukeboxalexa)
