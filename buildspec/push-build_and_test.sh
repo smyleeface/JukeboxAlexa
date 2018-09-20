@@ -4,7 +4,10 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
-    source cicd/10_envvars.sh
+    source buildspec/env_vars.sh
+
+    ls -la ${CODEBUILD_SRC_DIR}
+    git status
 
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
@@ -17,5 +20,4 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     echo "***INFO: Testing solution"
     dotnet test
 
-    ls -la ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/JukeboxAlexa.SonglistIndex/
 fi
