@@ -6,6 +6,9 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     source buildspec/env_vars.sh
 
+    ls -la ${CODEBUILD_SRC_DIR}
+    git status
+
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
 
     echo "***INFO: Restoring packages"
