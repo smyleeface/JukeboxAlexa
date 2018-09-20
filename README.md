@@ -1,7 +1,8 @@
-![AWS Codebuild Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiWWFCOUZsUmhQVm1GTi9vVTNYa1lVZWhGeXl2ajM5S1Roa1l5VHFkUlByQ3R5bHBCdU1hZ3hMZ1c4cWZaOXlIWlVXYkJFanJuQVRxUlUzZis1RzRJV0hJPSIsIml2UGFyYW1ldGVyU3BlYyI6ImJBSjdvU2pRRnNncGlCR1IiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/smyleeface/jukebox_alexa/badge.svg)](https://coveralls.io/github/smyleeface/jukebox_alexa)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/718db1a14d7643de8ad8f4e035d961dc)](https://www.codacy.com/app/smyleeface/jukebox_alexa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=smyleeface/jukebox_alexa&amp;utm_campaign=Badge_Grade)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/smyleeface/jukebox-alexa)
+![AWS Codebuild Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiaXlCTjg1bTFCMDlyRjhaWWRkT3BET0RsbVo5UEVXMkpxNnBMd0tvQk1SNEwzbnlSV2dCR0RTYTZyR2lWSmtLQnY5MndybzBWUFBHYUpyTFByNStCei9rPSIsIml2UGFyYW1ldGVyU3BlYyI6Im5MK2VLb0FQaGhjU21hTkkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=feature-trigger-event)
+[![Coverage Status](https://coveralls.io/repos/github/smyleeface/JukeboxAlexa/badge.svg)](https://codecov.io/gh/smyleeface/JukeboxAlexa/branch/feature-trigger-event)
+[![CodeCov Status](https://codecov.io/gh/smyleeface/JukeboxAlexa/branch/feature-trigger-event/graph/badge.svg)](https://coveralls.io/github/smyleeface/JukeboxAlexa)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/718db1a14d7643de8ad8f4e035d961dc)](https://www.codacy.com/app/smyleeface/JukeboxAlexa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=smyleeface/JukeboxAlexa&amp;utm_campaign=Badge_Grade)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/smyleeface/jukeboxalexa)
 
 Alexa Jukebox
 =============
