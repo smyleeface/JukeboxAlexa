@@ -62,7 +62,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         # UPLOAD REPORT - CodeCov
         echo "***INFO: uploading CodeCov"
         tools/codecov \
-            -f ${directory}coverage.json \
+            -f ${directory}coverage-lcov.json \
             -t ${codeCovToken} \
             -B ${GIT_BRANCH} \
             -C ${GITSHA} \
