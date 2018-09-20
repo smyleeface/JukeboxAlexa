@@ -4,6 +4,11 @@ set -e
 
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
+    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
+    
+    echo "***INFO: Building packages"
+    dotnet build
+    
     cd ${CODEBUILD_SRC_DIR}
     
     coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
@@ -35,14 +40,14 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --exclude-by-file "**/obj/**" \
             --exclude-by-file "**/bin/**"  
 
-        # GENERATE REPORTS - cobertura
-        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-            --output ${directory}coverage-cobertura.xml \
-            --target /usr/bin/dotnet \
-            --targetargs "test ${directory} --no-build" \
-            --format cobertura \
-            --exclude-by-file "**/obj/**" \
-            --exclude-by-file "**/bin/**"
+#        # GENERATE REPORTS - cobertura
+#        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+#            --output ${directory}coverage-cobertura.xml \
+#            --target /usr/bin/dotnet \
+#            --targetargs "test ${directory} --no-build" \
+#            --format cobertura \
+#            --exclude-by-file "**/obj/**" \
+#            --exclude-by-file "**/bin/**"
 
         ############################
         # UPLOAD REPORT - Coveralls
@@ -68,13 +73,13 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             -C ${GITSHA} \
             -b ${directory}coverage-lcov.json
 
-        # UPLOAD REPORT - Codacy
-        echo "***INFO: uploading Codacy"
-        python-codacy-coverage \
-            -r ${directory}coverage-cobertura.xml \
-            -t ${codacyToken} \
-            -c ${GITSHA} \
-            -d ${CODEBUILD_SRC_DIR}
+#        # UPLOAD REPORT - Codacy
+#        echo "***INFO: uploading Codacy"
+#        python-codacy-coverage \
+#            -r ${directory}coverage-cobertura.xml \
+#            -t ${codacyToken} \
+#            -c ${GITSHA} \
+#            -d ${CODEBUILD_SRC_DIR}
     done
 fi
 
