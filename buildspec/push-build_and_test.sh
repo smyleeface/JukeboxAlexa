@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
+if [[ ${CODEBUILD_BUILD_SUCCEEDING} ] && [ ${GIT_BRANCH} -ne "master" ]]; then
 
     source buildspec/env_vars.sh
 

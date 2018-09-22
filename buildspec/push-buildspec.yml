@@ -3,15 +3,8 @@ phases:
 
   install:
     commands:
-    - yum install jq -y
-    - dotnet tool install coverlet.console --tool-path tools
-    - dotnet tool install coveralls.net --tool-path tools
-    - curl -s https://codecov.io/bash > tools/codecov
-    - chmod +x tools/codecov
-    - pip install codacy-coverage
     - git checkout -B ${GIT_BRANCH}
 
   build:
     commands:
       - buildspec/push-build_and_test.sh
-      - buildspec/pr-coverage_reports.sh
