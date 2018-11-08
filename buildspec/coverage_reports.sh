@@ -51,7 +51,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
         ############################
         # UPLOAD REPORT - Coveralls
-        echo "***INFO: uploading Coveralls" \
+        echo "***INFO: uploading Coveralls"
         ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
