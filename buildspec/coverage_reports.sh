@@ -62,7 +62,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --useRelativePaths \
             --opencover \
             -i ${directory}coverage-opencover.xml \
-            --repoToken ${coverallsToken}
+            --repoToken "${coverallsToken}"
 
         # UPLOAD REPORT - CodeCov
         echo "***INFO: uploading CodeCov"
