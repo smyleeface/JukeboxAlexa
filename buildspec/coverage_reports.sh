@@ -49,20 +49,20 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 #            --exclude-by-file "**/obj/**" \
 #            --exclude-by-file "**/bin/**"
 
-        ############################
-        # UPLOAD REPORT - Coveralls
-        echo "***INFO: uploading Coveralls"
-        ./tools/csmacnz.Coveralls \
-            --commitId ${GITSHA} \
-            --commitBranch "${GIT_BRANCH}" \
-            --commitAuthor "${GIT_AUTHOR_NAME}" \
-            --commitEmail "${GIT_AUTHOR_EMAIL}" \
-            --commitMessage "${GIT_COMMIT_MESSAGE}" \
-            --jobId "${CODEBUILD_BUILD_ID}" \
-            --useRelativePaths \
-            --opencover \
-            -i ${directory}coverage-opencover.xml \
-            --repoToken "${coverallsToken}"
+#        ############################
+#        # UPLOAD REPORT - Coveralls
+#        echo "***INFO: uploading Coveralls"
+#        ./tools/csmacnz.Coveralls \
+#            --commitId ${GITSHA} \
+#            --commitBranch "${GIT_BRANCH}" \
+#            --commitAuthor "${GIT_AUTHOR_NAME}" \
+#            --commitEmail "${GIT_AUTHOR_EMAIL}" \
+#            --commitMessage "${GIT_COMMIT_MESSAGE}" \
+#            --jobId "${CODEBUILD_BUILD_ID}" \
+#            --useRelativePaths \
+#            --opencover \
+#            -i ${directory}coverage-opencover.xml \
+#            --repoToken "${coverallsToken}" 
 
         # UPLOAD REPORT - CodeCov
         echo "***INFO: uploading CodeCov"
