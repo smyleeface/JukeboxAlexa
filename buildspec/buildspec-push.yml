@@ -6,7 +6,7 @@ phases:
       - yum install jq -y
       - dotnet tool install coverlet.console --tool-path tools
       - dotnet tool install coveralls.net --tool-path tools
-      - mkdir tools/codecov
+      - mkdir tools
       - curl -s https://codecov.io/bash > tools/codecov
       - chmod +x tools/codecov
       - pip install codacy-coverage 
