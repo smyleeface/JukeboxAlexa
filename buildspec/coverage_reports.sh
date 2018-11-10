@@ -58,6 +58,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --commitAuthor "${GIT_AUTHOR_NAME}" \
             --commitEmail "${GIT_AUTHOR_EMAIL}" \
             --commitMessage "${GIT_COMMIT_MESSAGE}" \
+            --jobId "${CODEBUILD_BUILD_ID}" \
             --useRelativePaths \
             --opencover \
             -i ${directory}coverage-opencover.xml \
