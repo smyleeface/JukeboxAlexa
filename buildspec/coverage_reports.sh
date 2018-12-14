@@ -52,7 +52,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         ############################
         # UPLOAD REPORT - Coveralls
         echo "***INFO: uploading Coveralls"
-        ./tools/csmacnz.Coveralls \
+        ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
             --commitAuthor "${GIT_AUTHOR_NAME}" \
@@ -62,11 +62,11 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --useRelativePaths \
             --opencover \
             -i ${directory}coverage-opencover.xml \
-            --repoToken ${coverallsToken}
+            --repoToken "${coverallsToken}" 
 
         # UPLOAD REPORT - CodeCov
         echo "***INFO: uploading CodeCov"
-        tools/codecov \
+        ${CODEBUILD_SRC_DIR}/tools/codecov \
             -f ${directory}coverage-lcov.json \
             -t ${codeCovToken} \
             -B ${GIT_BRANCH} \
