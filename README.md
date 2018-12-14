@@ -46,12 +46,12 @@ lash deploy --tier <TIER>
 
 ### Docker container
 
-Use the docker container at [smyleeface/lambdasharprunner](https://hub.docker.com/r/smyleeface/lambdasharprunner/)
+Use the docker container at [smyleeface/jukeboxalexa-lambdasharp](https://hub.docker.com/r/smyleeface/jukeboxalexa-lambdasharp/)
 
 ```bash
 cd <PROJECT/ROOT>
-docker pull smyleeface/lambdasharprunner
-docker run -it --rm --name lambdasharprunner -v $PWD:/project -v $HOME/.aws:/root/.aws smyleeface/lambdasharprunner:latest /bin/bash lash deploy --tier <TIER>
+docker pull smyleeface/lambdasharprunner:jukeboxalexa-custom-v0.3
+docker run -it --rm --name jukeboxalexa-lambdasharp -v $PWD:/project -v $HOME/.aws:/root/.aws smyleeface/lambdasharprunner:jukeboxalexa-custom-v0.3 /bin/bash lash deploy --tier <TIER>
 ```
 
 ## File Structure
