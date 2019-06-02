@@ -6,7 +6,8 @@ using Amazon.Lambda.Core;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
-using MindTouch.LambdaSharp;
+using LambdaSharp;
+using LambdaSharp.ApiGateway;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -25,9 +26,9 @@ namespace JukeboxAlexa.SpeakerRequest {
             return Task.CompletedTask;
         }
         
-        public override async Task<APIGatewayProxyResponse> HandleRequestAsync(APIGatewayProxyRequest request, ILambdaContext context) {
-            LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(request)}");
-            var input = JsonConvert.DeserializeObject<CustomSkillRequest>(request.Body);
+        public override async Task<APIGatewayProxyResponse> ProcessProxyRequestAsync(APIGatewayProxyRequest inputRequest) {
+            LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(inputRequest)}");
+            var input = JsonConvert.DeserializeObject<CustomSkillRequest>(inputRequest.Body);
             LambdaLogger.Log($"*** INFO: Request input from user: {input}");
     
             // process request

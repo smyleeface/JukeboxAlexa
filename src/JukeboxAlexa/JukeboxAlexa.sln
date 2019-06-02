@@ -1,22 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.Library", "JukeboxAlexa.Library\JukeboxAlexa.Library.csproj", "{4521E9B6-BAF7-46E8-B8B5-93007ADA4AFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySongNumberRequest", "PlaySongNumberRequest\PlaySongNumberRequest.csproj", "{5DDF492A-6FB8-424D-8C85-71DCCD051022}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.PlaySongNumberRequest", "JukeboxAlexa.PlaySongNumberRequest\JukeboxAlexa.PlaySongNumberRequest.csproj", "{0F792186-73A0-42E0-A2CA-37ED6C831C6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySongTitleRequest", "PlaySongTitleRequest\PlaySongTitleRequest.csproj", "{CFE14DAF-921C-4ADB-B275-FF0760FF3C32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.PlaySongTitleArtistRequest", "JukeboxAlexa.PlaySongTitleArtistRequest\JukeboxAlexa.PlaySongTitleArtistRequest.csproj", "{96FB6B72-9EF8-4315-9AD1-A52F82391B54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillProxyRequest", "SkillProxyRequest\SkillProxyRequest.csproj", "{02C9AA75-683A-4596-8D33-6A5C344B0A81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.PlaySongTitleRequest", "JukeboxAlexa.PlaySongTitleRequest\JukeboxAlexa.PlaySongTitleRequest.csproj", "{08954E20-8CE7-4BC5-9ABC-F791DE6E484B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonglistIndex", "SonglistIndex\SonglistIndex.csproj", "{681EEE05-1C1F-4714-AF83-1E7B8E9ABA42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.SpeakerRequest", "JukeboxAlexa.SpeakerRequest\JukeboxAlexa.SpeakerRequest.csproj", "{F674D1D1-EEB3-40A8-AD72-135AEDD1FF61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeakerRequest", "SpeakerRequest\SpeakerRequest.csproj", "{79F82D32-083D-4C9B-A111-7A2ED475A558}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.SkillProxyRequest", "JukeboxAlexa.SkillProxyRequest\JukeboxAlexa.SkillProxyRequest.csproj", "{9D2B0AA3-83F2-4989-B805-F5FF0268E52A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonglistUpload", "SonglistUpload\SonglistUpload.csproj", "{34A2FA9C-19D6-486A-B38D-4CC73684D0BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.SonglistUpload", "JukeboxAlexa.SonglistUpload\JukeboxAlexa.SonglistUpload.csproj", "{5A70301E-EA20-4ADF-9C84-36371528D454}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{16DCFA0B-E7E7-44BC-B218-1146B3E12590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JukeboxAlexa.SonglistIndex", "JukeboxAlexa.SonglistIndex\JukeboxAlexa.SonglistIndex.csproj", "{E93AD398-9C0C-4838-8B6D-9CA1775968E5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindTouch.LambdaSharp", "/Users/pattyr/Projects/SOURCES/LambdaSharpTool/src/MindTouch.LambdaSharp/MindTouch.LambdaSharp.csproj", "{104A576C-7D03-46D9-859C-5ABE2AA6747A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySongTitleArtistRequest", "PlaySongTitleArtistRequest\PlaySongTitleArtistRequest.csproj", "{E4681465-938F-4D9B-A2FE-CA2623702CE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,37 +26,37 @@ Global
 		{2A207E75-1315-4601-AB19-D6BF2EE5C5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A207E75-1315-4601-AB19-D6BF2EE5C5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A207E75-1315-4601-AB19-D6BF2EE5C5C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4521E9B6-BAF7-46E8-B8B5-93007ADA4AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4521E9B6-BAF7-46E8-B8B5-93007ADA4AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4521E9B6-BAF7-46E8-B8B5-93007ADA4AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4521E9B6-BAF7-46E8-B8B5-93007ADA4AFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F792186-73A0-42E0-A2CA-37ED6C831C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F792186-73A0-42E0-A2CA-37ED6C831C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F792186-73A0-42E0-A2CA-37ED6C831C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F792186-73A0-42E0-A2CA-37ED6C831C6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96FB6B72-9EF8-4315-9AD1-A52F82391B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96FB6B72-9EF8-4315-9AD1-A52F82391B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96FB6B72-9EF8-4315-9AD1-A52F82391B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96FB6B72-9EF8-4315-9AD1-A52F82391B54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08954E20-8CE7-4BC5-9ABC-F791DE6E484B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08954E20-8CE7-4BC5-9ABC-F791DE6E484B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08954E20-8CE7-4BC5-9ABC-F791DE6E484B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08954E20-8CE7-4BC5-9ABC-F791DE6E484B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F674D1D1-EEB3-40A8-AD72-135AEDD1FF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F674D1D1-EEB3-40A8-AD72-135AEDD1FF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F674D1D1-EEB3-40A8-AD72-135AEDD1FF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F674D1D1-EEB3-40A8-AD72-135AEDD1FF61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D2B0AA3-83F2-4989-B805-F5FF0268E52A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D2B0AA3-83F2-4989-B805-F5FF0268E52A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D2B0AA3-83F2-4989-B805-F5FF0268E52A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D2B0AA3-83F2-4989-B805-F5FF0268E52A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A70301E-EA20-4ADF-9C84-36371528D454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A70301E-EA20-4ADF-9C84-36371528D454}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A70301E-EA20-4ADF-9C84-36371528D454}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A70301E-EA20-4ADF-9C84-36371528D454}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E93AD398-9C0C-4838-8B6D-9CA1775968E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E93AD398-9C0C-4838-8B6D-9CA1775968E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E93AD398-9C0C-4838-8B6D-9CA1775968E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E93AD398-9C0C-4838-8B6D-9CA1775968E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DDF492A-6FB8-424D-8C85-71DCCD051022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DDF492A-6FB8-424D-8C85-71DCCD051022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DDF492A-6FB8-424D-8C85-71DCCD051022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDF492A-6FB8-424D-8C85-71DCCD051022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE14DAF-921C-4ADB-B275-FF0760FF3C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE14DAF-921C-4ADB-B275-FF0760FF3C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE14DAF-921C-4ADB-B275-FF0760FF3C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE14DAF-921C-4ADB-B275-FF0760FF3C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C9AA75-683A-4596-8D33-6A5C344B0A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C9AA75-683A-4596-8D33-6A5C344B0A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C9AA75-683A-4596-8D33-6A5C344B0A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C9AA75-683A-4596-8D33-6A5C344B0A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{681EEE05-1C1F-4714-AF83-1E7B8E9ABA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{681EEE05-1C1F-4714-AF83-1E7B8E9ABA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{681EEE05-1C1F-4714-AF83-1E7B8E9ABA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{681EEE05-1C1F-4714-AF83-1E7B8E9ABA42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F82D32-083D-4C9B-A111-7A2ED475A558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F82D32-083D-4C9B-A111-7A2ED475A558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F82D32-083D-4C9B-A111-7A2ED475A558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F82D32-083D-4C9B-A111-7A2ED475A558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A2FA9C-19D6-486A-B38D-4CC73684D0BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A2FA9C-19D6-486A-B38D-4CC73684D0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A2FA9C-19D6-486A-B38D-4CC73684D0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A2FA9C-19D6-486A-B38D-4CC73684D0BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16DCFA0B-E7E7-44BC-B218-1146B3E12590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16DCFA0B-E7E7-44BC-B218-1146B3E12590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16DCFA0B-E7E7-44BC-B218-1146B3E12590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16DCFA0B-E7E7-44BC-B218-1146B3E12590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4681465-938F-4D9B-A2FE-CA2623702CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4681465-938F-4D9B-A2FE-CA2623702CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4681465-938F-4D9B-A2FE-CA2623702CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4681465-938F-4D9B-A2FE-CA2623702CE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

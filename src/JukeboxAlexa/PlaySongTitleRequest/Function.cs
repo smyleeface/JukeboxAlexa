@@ -7,19 +7,21 @@ using Amazon.Lambda.Core;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
+using LambdaSharp;
+using LambdaSharp.ApiGateway;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 namespace JukeboxAlexa.PlaySongTitleRequest {
-    public class Function : ICommonDependencyProvider, IDynamodbDependencyProvider  {
+    public class Function : ALambdaApiGatewayFunction, ICommonDependencyProvider, IDynamodbDependencyProvider  {
         
         //--- Fields ---
-        private readonly PlaySongTitleRequest _playSongRequest;
-        private readonly JukeboxDynamoDb _jukeboxDynamoDb;
+        private PlaySongTitleRequest _playSongRequest;
+        private JukeboxDynamoDb _jukeboxDynamoDb;
 
         //--- Constructors ---
-        public Function() {
+        public override Task InitializeAsync(LambdaConfig config) {
             var queueName = Environment.GetEnvironmentVariable("STR_SQSSONGQUEUE");
             var tableName = Environment.GetEnvironmentVariable("STR_DYNAMODBSONGS");
             var indexNameSearchTitle = Environment.GetEnvironmentVariable("STR_INDEXNAMESEARCHTITLE");
@@ -27,10 +29,11 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
             var indexTableName = Environment.GetEnvironmentVariable("STR_DYNAMODBTITLEWORDCACHE");
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _playSongRequest = new PlaySongTitleRequest(this, new AmazonSQSClient(), queueName, this);
+            return Task.CompletedTask;
         }
 
         //--- FunctionHandler ---
-        public async Task<APIGatewayProxyResponse> FunctionHandlerAsync(APIGatewayProxyRequest inputRequest, ILambdaContext context) {
+        public override async Task<APIGatewayProxyResponse> ProcessProxyRequestAsync(APIGatewayProxyRequest inputRequest) {
             LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(inputRequest)}");
             var body = inputRequest.Body;
             LambdaLogger.Log($"*** INFO: API Request body from user: {body}");

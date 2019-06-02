@@ -6,8 +6,8 @@ using Amazon.Lambda.TestUtilities;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
-using MindTouch.LambdaSharp;
-using MindTouch.LambdaSharp.ConfigSource;
+using LambdaSharp;
+using LambdaSharp.ConfigSource;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
@@ -45,7 +45,7 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
             };
 
             // Act
-            var result = await function.HandleRequestAsync(apiGatewayRequest, new TestLambdaContext());
+            var result = await function.ProcessProxyRequestAsync(apiGatewayRequest);
 
             // Assert
             Assert.Equal(200, result.StatusCode);

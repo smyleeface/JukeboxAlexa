@@ -11,7 +11,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
-using MindTouch.LambdaSharp;
+using LambdaSharp;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -37,7 +37,7 @@ namespace JukeboxAlexa.SonglistUpload {
         }
 
         //--- FunctionHandler ---
-        public override async Task<string> ProcessMessageAsync(S3Event s3Event, ILambdaContext context) {
+        public override async Task<string> ProcessMessageAsync(S3Event s3Event) {
             LambdaLogger.Log($"*** INFO: PutObjectRequest: {JsonConvert.SerializeObject(s3Event)}");
             var bucketName = s3Event.Records.FirstOrDefault().S3.Bucket.Name;
             var keyName = s3Event.Records.FirstOrDefault().S3.Object.Key;

@@ -1,142 +1,133 @@
-Version: 0.3
+Module: JukeboxAlexa.Backend
+Version: 0.4
+Description: JukeboxAlexa Backend Functions
 
-Name: JukeboxAlexa
-
-Description: JukeboxAlexa Project
-
-Variables:
-  DynamoDbIndexNameSearchTitleName: indexNameSearchTitle
-  DynamoDbIndexNameSearchTitleArtistName: indexNameSearchTitleArtist
-
-Parameters:
-    #
-    ##########################
-    # Index names in env var
-    ##########################
-    #
-  - Name: IndexNameSearchTitle
+Items:
+  #
+  ##########################
+  # Index names in env var
+  ##########################
+  #
+  - Parameter: DynamoDbIndexNameSearchTitleName
     Description: Name of the index for searching the title
-    Value: "{{DynamoDbIndexNameSearchTitleName}}"
     
-  - Name: IndexNameSearchTitleArtist
+  - Parameter: DynamoDbIndexNameSearchTitleArtistName
     Description: Name of the index for searching the title and artist
-    Value: "{{DynamoDbIndexNameSearchTitleArtistName}}"
 
   #
   ##########################
   # S3 CSV Song file upload
   ##########################
   #
-  - Name: S3JukeboxSongsCsv
-    Resource:
-      Type: "AWS::S3::Bucket"
-      Allow: ReadWrite
+  - Resource: S3JukeboxSongsCsv
+    Type: "AWS::S3::Bucket"
+    Allow: ReadWrite
 
   #
   ##########################
   # DynamoDB Table - Songs
   ##########################
   #
-  - Name: DynamoDbSongs
+  - Resource: DynamoDbSongs
     Description: DynamoDb table for storing songs
-    Resource:
-      Type: AWS::DynamoDB::Table
-      Allow: ReadWrite
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: song_number
-            AttributeType: S
-          - AttributeName: search_artist
-            AttributeType: S
-          - AttributeName: search_title
-            AttributeType: S
-        KeySchema:
-          - AttributeName: song_number
-            KeyType: HASH
-        ProvisionedThroughput:
+    Type: AWS::DynamoDB::Table
+    Allow: ReadWrite
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: song_number
+          AttributeType: S
+        - AttributeName: search_artist
+          AttributeType: S
+        - AttributeName: search_title
+          AttributeType: S
+      KeySchema:
+        - AttributeName: song_number
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: !Sub "${DynamoDbIndexNameSearchTitleName}"
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
             ReadCapacityUnits: 1
             WriteCapacityUnits: 1
-        GlobalSecondaryIndexes:
-          - IndexName: "{{DynamoDbIndexNameSearchTitleName}}"
-            KeySchema:
-              - AttributeName: search_title
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-          - IndexName: "{{DynamoDbIndexNameSearchTitleArtistName}}"
-            KeySchema:
-              - AttributeName: search_title
-                KeyType: HASH
-              - AttributeName: search_artist
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-        StreamSpecification:
-          StreamViewType: NEW_AND_OLD_IMAGES
+        - IndexName: !Sub "${DynamoDbIndexNameSearchTitleArtistName}"
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+            - AttributeName: search_artist
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
   #
   ############################################
   # DynamoDB Table - TitleWordCache
   ############################################
   #
-  - Name: DynamoDbTitleWordCache
+  - Resource: DynamoDbTitleWordCache
     Description: DynamoDb table for storing received messages
-    Resource:
-      Type: AWS::DynamoDB::Table
-      Allow: ReadWrite
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: word
-            AttributeType: S
-        KeySchema:
-          - AttributeName: word
-            KeyType: HASH
-        ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
+    Type: AWS::DynamoDB::Table
+    Allow: ReadWrite
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: word
+          AttributeType: S
+      KeySchema:
+        - AttributeName: word
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
   #
   ######################
   # SQS Queue
   ######################
   #
-  - Name: SqsSongQueue
-    Resource:
-      Type: AWS::SQS::Queue
-      Allow: Send
-      Properties:
-        FifoQueue: true
-        ReceiveMessageWaitTimeSeconds: 20
-#
-#########################
-#        FUNCTIONS
-#########################
-#
-Functions:
+  - Resource: SqsSongQueue
+    Type: AWS::SQS::Queue
+    Allow: Send
+    Properties:
+      FifoQueue: true
+      ReceiveMessageWaitTimeSeconds: 20
+  #
+  #########################
+  #        FUNCTIONS
+  #########################
+  #
   #
   #########################
   # Songlist Upload
   #########################
   #
-  - Name: SonglistUpload
+  - Function: SonglistUpload
     Description: Processes the songs in the uploaded file
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
       - S3: S3JukeboxSongsCsv
+        Events:
+          - "s3:ObjectCreated:*"
   #
   #########################
   # Songlist Index
   #########################
   #
-  - Name: SonglistIndex
+  - Function: SonglistIndex
     Description: Processes the songs added/removed from the index
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
       - DynamoDB: DynamoDbSongs
         BatchSize: 1
@@ -145,10 +136,11 @@ Functions:
   # Speaker Request Intent
   #########################
   #
-  - Name: SpeakerRequest
+  - Function: SpeakerRequest
     Description: Processes speaker request intnet
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
       - Api: POST /jukebox-alexa/speaker-request
   #
@@ -156,10 +148,11 @@ Functions:
   # Play Song Title Request Intent
   #########################
   #
-  - Name: PlaySongTitleRequest
+  - Function: PlaySongTitleRequest
     Description: Processes play song request intent
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
       - Api: POST /jukebox-alexa/song-title-request
   #
@@ -167,10 +160,11 @@ Functions:
   # Play Song Artist Request Intent
   #########################
   #
-  - Name: PlaySongTitleArtistRequest
+  - Function: PlaySongTitleArtistRequest
     Description: Processes play song title and artist request intent
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
       - Api: POST /jukebox-alexa/song-title-artist-request
   #
@@ -178,22 +172,24 @@ Functions:
   # Play Number Request Intent
   #########################
   #
-  - Name: PlaySongNumberRequest
+  - Function: PlaySongNumberRequest
     Description: Processes play song number request intent
     Memory: 192
     Timeout: 30
+    Scope: all
     Sources:
-      - Api: POST /jukebox-alexa/song-number-request
+      - Api: POST:/jukebox-alexa/song-number-request
   #
   #########################
   # Skill Request Intent
   ########################
   #
-  - Name: SkillProxyRequest
+  - Function: SkillProxyRequest
     Description: Processes speaker request intnet
     Memory: 192
     Timeout: 30
     Environment:
-      APIENDPOINT: !Join ['', ["https://", !Ref ModuleRestApi, ".execute-api.", !Ref "AWS::Region", ".amazonaws.com/", !Ref ModuleRestApiStage]]
+      APIENDPOINT: !Sub ${Module::RestApi::Url}
+    Scope: all
     Sources:
       - Alexa: "*"

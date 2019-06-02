@@ -9,7 +9,7 @@ using Amazon.Lambda.Core;
 using Castle.Core.Internal;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;
-using MindTouch.LambdaSharp;
+using LambdaSharp;
 using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -29,7 +29,7 @@ namespace JukeboxAlexa.SkillProxyRequest
             return Task.CompletedTask;
         }
 
-        public override async Task<SkillResponse> ProcessMessageAsync(SkillRequest skill, ILambdaContext context) {
+        public override async Task<SkillResponse> ProcessMessageAsync(SkillRequest skill) {
             LambdaLogger.Log($"*** INFO: Request input from user: {JsonConvert.SerializeObject(skill)}");
             
             var intentRequest = (IntentRequest) skill.Request;
