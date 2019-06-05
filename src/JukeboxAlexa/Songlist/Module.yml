@@ -15,12 +15,16 @@ Items:
   - Parameter: DynamoDbIndexNameSearchTitleName
     Description: Name of the index for searching the title
     Default: indexNameSearchTitle
-    Scope: all
+    Scope: 
+      - all
+      - public
     
   - Parameter: DynamoDbIndexNameSearchTitleArtistName
     Description: Name of the index for searching the title and artist
     Default: indexNameSearchTitleArtist
-    Scope: all
+    Scope:
+      - all
+      - public
 #
 #  - Nested: SonglistRollbar
 #    Module: LambdaSharp.Core:0.6
@@ -48,7 +52,9 @@ Items:
     Description: DynamoDb table for storing songs
     Type: AWS::DynamoDB::Table
     Allow: ReadWrite
-    Scope: all
+    Scope:
+      - all
+      - public
     Properties:
       AttributeDefinitions:
         - AttributeName: song_number
@@ -95,7 +101,9 @@ Items:
     Description: DynamoDb table for storing received messages
     Type: AWS::DynamoDB::Table
     Allow: ReadWrite
-    Scope: all
+    Scope:
+      - all
+      - public
     Properties:
       AttributeDefinitions:
         - AttributeName: word
