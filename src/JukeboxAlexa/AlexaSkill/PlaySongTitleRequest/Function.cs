@@ -22,11 +22,11 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
 
         //--- Constructors ---
         public override Task InitializeAsync(LambdaConfig config) {
-            var queueName = Environment.GetEnvironmentVariable("STR_SQSSONGQUEUE");
-            var tableName = Environment.GetEnvironmentVariable("STR_DYNAMODBSONGS");
-            var indexNameSearchTitle = Environment.GetEnvironmentVariable("STR_INDEXNAMESEARCHTITLE");
-            var indexNameSearchTitleArtist = Environment.GetEnvironmentVariable("STR_INDEXNAMESEARCHTITLEARTIST");
-            var indexTableName = Environment.GetEnvironmentVariable("STR_DYNAMODBTITLEWORDCACHE");
+            var queueName = config.ReadText("SqsSongQueue");
+            var tableName = config.ReadText("DynamoDbSongs");
+            var indexNameSearchTitle = config.ReadText("DynamoDbIndexNameSearchTitleName");
+            var indexNameSearchTitleArtist = config.ReadText("DynamoDbIndexNameSearchTitleArtistName");
+            var indexTableName = config.ReadText("DynamoDbTitleWordCache");
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _playSongRequest = new PlaySongTitleRequest(this, new AmazonSQSClient(), queueName, this);
             return Task.CompletedTask;

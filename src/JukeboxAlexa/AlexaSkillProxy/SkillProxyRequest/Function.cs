@@ -25,7 +25,7 @@ namespace JukeboxAlexa.SkillProxyRequest
         //--- FunctionHandler ---
         public override Task InitializeAsync(LambdaConfig config) {
             _httpClient = new HttpClient();
-            _endpoint = Environment.GetEnvironmentVariable("STR_APIENDPOINT");
+            _endpoint = config.ReadText("AlexaSkillIntentApiEndpoint");
             return Task.CompletedTask;
         }
 
