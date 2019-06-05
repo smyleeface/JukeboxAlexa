@@ -1,0 +1,137 @@
+Module: JukeboxAlexa.Songlist
+Version: 0.1-DEV
+Description: JukeboxAlexa backend for managing the song list
+
+Secrets:
+  - alias/SmyleeDev
+
+Items:
+    
+  #
+  ##########################
+  # Index names in env var
+  ##########################
+  #
+  - Parameter: DynamoDbIndexNameSearchTitleName
+    Description: Name of the index for searching the title
+    Scope: all
+    
+  - Parameter: DynamoDbIndexNameSearchTitleArtistName
+    Description: Name of the index for searching the title and artist
+    Scope: all
+#
+#  - Nested: SonglistRollbar
+#    Module: LambdaSharp.Core:0.6
+#    Parameters:
+#      RollbarReadAccessToken: "AQICAHgV4F7JD1DwChzJANB4z5wxEXhp9LlpCHm1HLFM2FhScgGVzi7b1uAuTyWMWWlC6cKIAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM/y7a0RIea68sD4CjAgEQgDsjLSN6ci3VP0dncomczeYwxhWmixHVGhP6X3bdNFTRWQt683sft/o47G6G3ihFZ4nk8joX0V+3fVWrAA=="
+#      RollbarWriteAccessToken: "AQICAHgV4F7JD1DwChzJANB4z5wxEXhp9LlpCHm1HLFM2FhScgHTuEzjLhVVDCnHCxo8fzLDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMbiKuE2sSBtSAmUODAgEQgDtfDpU8ztneDFjAbvirU154D6ocq1ww97xSS2p/gQ0/AanvYr2odVWqWcsmDKno1N+Omx7dfEOQgSsvmA=="
+#      RollbarProjectPrefix: JukeboxAlexa-
+
+  #
+  ##########################
+  # S3 CSV Song file upload
+  ##########################
+  #
+  - Resource: S3JukeboxSongsCsv
+    Type: "AWS::S3::Bucket"
+    Allow: ReadOnly
+    Scope: SonglistUpload
+
+  #
+  ##########################
+  # DynamoDB Table - Songs
+  ##########################
+  #
+  - Resource: DynamoDbSongs
+    Description: DynamoDb table for storing songs
+    Type: AWS::DynamoDB::Table
+    Allow: ReadWrite
+    Scope: all
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: song_number
+          AttributeType: S
+        - AttributeName: search_artist
+          AttributeType: S
+        - AttributeName: search_title
+          AttributeType: S
+      KeySchema:
+        - AttributeName: song_number
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: !Sub "${DynamoDbIndexNameSearchTitleName}"
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: !Sub "${DynamoDbIndexNameSearchTitleArtistName}"
+          KeySchema:
+            - AttributeName: search_title
+              KeyType: HASH
+            - AttributeName: search_artist
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  #
+  ############################################
+  # DynamoDB Table - TitleWordCache
+  ############################################
+  #
+  - Resource: DynamoDbTitleWordCache
+    Description: DynamoDb table for storing received messages
+    Type: AWS::DynamoDB::Table
+    Allow: ReadWrite
+    Scope: all
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: word
+          AttributeType: S
+      KeySchema:
+        - AttributeName: word
+          KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+  #
+  #########################
+  #        FUNCTIONS
+  #########################
+  #
+  #
+  #########################
+  # Songlist Upload
+  #########################
+  #
+  - Function: SonglistUpload
+    Description: Processes the songs in the uploaded file
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - S3: S3JukeboxSongsCsv
+        Events:
+          - "s3:ObjectCreated:*"
+  #
+  #########################
+  # Songlist Index
+  #########################
+  #
+  - Function: SonglistIndex
+    Description: Processes the songs added/removed from the index
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - DynamoDB: DynamoDbSongs
+        BatchSize: 1
