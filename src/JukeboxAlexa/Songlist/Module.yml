@@ -14,10 +14,12 @@ Items:
   #
   - Parameter: DynamoDbIndexNameSearchTitleName
     Description: Name of the index for searching the title
+    Default: indexNameSearchTitle
     Scope: all
     
   - Parameter: DynamoDbIndexNameSearchTitleArtistName
     Description: Name of the index for searching the title and artist
+    Default: indexNameSearchTitleArtist
     Scope: all
 #
 #  - Nested: SonglistRollbar
