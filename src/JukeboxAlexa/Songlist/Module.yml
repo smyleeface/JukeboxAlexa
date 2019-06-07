@@ -2,6 +2,9 @@ Module: JukeboxAlexa.Songlist
 Version: 0.1-DEV
 Description: JukeboxAlexa backend for managing the song list
 
+Using:
+  - Module: LambdaSharp.S3.IO
+
 Secrets:
   - alias/SmyleeDev
 
@@ -25,13 +28,6 @@ Items:
     Scope:
       - all
       - public
-#
-#  - Nested: SonglistRollbar
-#    Module: LambdaSharp.Core:0.6
-#    Parameters:
-#      RollbarReadAccessToken: "AQICAHgV4F7JD1DwChzJANB4z5wxEXhp9LlpCHm1HLFM2FhScgGVzi7b1uAuTyWMWWlC6cKIAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM/y7a0RIea68sD4CjAgEQgDsjLSN6ci3VP0dncomczeYwxhWmixHVGhP6X3bdNFTRWQt683sft/o47G6G3ihFZ4nk8joX0V+3fVWrAA=="
-#      RollbarWriteAccessToken: "AQICAHgV4F7JD1DwChzJANB4z5wxEXhp9LlpCHm1HLFM2FhScgHTuEzjLhVVDCnHCxo8fzLDAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMbiKuE2sSBtSAmUODAgEQgDtfDpU8ztneDFjAbvirU154D6ocq1ww97xSS2p/gQ0/AanvYr2odVWqWcsmDKno1N+Omx7dfEOQgSsvmA=="
-#      RollbarProjectPrefix: JukeboxAlexa-
 
   #
   ##########################
@@ -42,6 +38,11 @@ Items:
     Type: "AWS::S3::Bucket"
     Allow: ReadOnly
     Scope: SonglistUpload
+
+  - Resource: S3JukeboxSongsCsvEmpty
+    Type: LambdaSharp::S3::EmptyBucket
+    Properties:
+      Bucket: !Ref S3JukeboxSongsCsv
 
   #
   ##########################
@@ -144,4 +145,4 @@ Items:
     Timeout: 30
     Sources:
       - DynamoDB: DynamoDbSongs
-        BatchSize: 1
+        BatchSize: 5

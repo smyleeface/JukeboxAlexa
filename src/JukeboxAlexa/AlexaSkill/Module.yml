@@ -67,7 +67,6 @@ Items:
     Timeout: 30
     Sources:
       - Api: POST:/jukebox-alexa/speaker-request
-        ApiKeyRequired: true
   #
   #########################
   # Play Song Title Request Intent
@@ -79,7 +78,6 @@ Items:
     Timeout: 30
     Sources:
       - Api: POST:/jukebox-alexa/song-title-request
-        ApiKeyRequired: true
   #
   #########################
   # Play Song Artist Request Intent
@@ -91,7 +89,6 @@ Items:
     Timeout: 30
     Sources:
       - Api: POST:/jukebox-alexa/song-title-artist-request
-        ApiKeyRequired: true
   #
   #########################
   # Play Number Request Intent
@@ -103,7 +100,6 @@ Items:
     Timeout: 30
     Sources:
       - Api: POST:/jukebox-alexa/song-number-request
-        ApiKeyRequired: true
 
   #
   #########################

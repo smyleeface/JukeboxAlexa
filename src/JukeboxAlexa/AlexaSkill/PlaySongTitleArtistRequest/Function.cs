@@ -23,10 +23,10 @@ namespace JukeboxAlexa.PlaySongTitleArtistRequest {
         //--- Constructors ---
         public override Task InitializeAsync(LambdaConfig config) {
             var queueName = config.ReadText("SqsSongQueue");
-            var tableName = config.ReadText("DynamoDbSongs");
+            var tableName = AwsConverters.ConvertDynamoDBArnToName(config.ReadText("DynamoDbSongs"));
             var indexNameSearchTitle = config.ReadText("DynamoDbIndexNameSearchTitleName");
             var indexNameSearchTitleArtist = config.ReadText("DynamoDbIndexNameSearchTitleArtistName");
-            var indexTableName = config.ReadText("DynamoDbTitleWordCache");
+            var indexTableName = AwsConverters.ConvertDynamoDBArnToName(config.ReadText("DynamoDbTitleWordCache"));
             _jukeboxDynamoDb = new JukeboxDynamoDb(new AmazonDynamoDBClient(), tableName, indexNameSearchTitle, indexNameSearchTitleArtist, indexTableName);
             _playSongArtistRequest = new PlaySongTitleArtistRequest(this, new AmazonSQSClient(), queueName, this);
             return Task.CompletedTask;

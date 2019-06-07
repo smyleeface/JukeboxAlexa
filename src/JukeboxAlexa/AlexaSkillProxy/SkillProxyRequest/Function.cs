@@ -35,7 +35,7 @@ namespace JukeboxAlexa.SkillProxyRequest
             var intentRequest = (IntentRequest) skill.Request;
             var intentName = intentRequest.Intent.Name;
             var finalResponse = ResponseBuilder.Tell("Sorry I do not understand");
-            var endpointPath = "";
+            string endpointPath;
             
             // create custom skill request
             var customSkillRequest = new CustomSkillRequest {
@@ -96,9 +96,11 @@ namespace JukeboxAlexa.SkillProxyRequest
                 // DEFAULT
                 //--------------------------
                 //
-                default:
+                default: {                    
                     LambdaLogger.Log($"**** INFO **** Intent: Unsupported");
+                    endpointPath = null;
                     break;
+                }
             }
 
             if (!endpointPath.IsNullOrEmpty()) {
