@@ -23,7 +23,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
         # GENERATE REPORTS - opencover
         echo "***INFO: coverlet ${directory}"
-        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${directory}coverage-opencover.xml \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
@@ -32,7 +32,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
             --exclude-by-file "**/bin/**"
 
         # GENERATE REPORTS - lcov
-        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+        /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
             --output ${directory}coverage-lcov.json \
             --target /usr/bin/dotnet \
             --targetargs "test ${directory} --no-build" \
@@ -52,7 +52,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         ############################
         # UPLOAD REPORT - Coveralls
         echo "***INFO: uploading Coveralls"
-        ${CODEBUILD_SRC_DIR}/tools/csmacnz.Coveralls \
+        /opt/tools/csmacnz.Coveralls \
             --commitId ${GITSHA} \
             --commitBranch "${GIT_BRANCH}" \
             --commitAuthor "${GIT_AUTHOR_NAME}" \
@@ -66,7 +66,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
         # UPLOAD REPORT - CodeCov
         echo "***INFO: uploading CodeCov"
-        ${CODEBUILD_SRC_DIR}/tools/codecov \
+        /opt/tools/codecov \
             -f ${directory}coverage-lcov.json \
             -t ${codeCovToken} \
             -B ${GIT_BRANCH} \
