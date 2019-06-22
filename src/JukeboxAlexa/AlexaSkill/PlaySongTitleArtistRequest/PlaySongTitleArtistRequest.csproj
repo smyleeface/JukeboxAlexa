@@ -13,7 +13,7 @@
     <PackageReference Include="Amazon.Lambda.TestUtilities" Version="1.0.0" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.5" />
     <PackageReference Include="AWSSDK.SQS" Version="3.3.100.14" />
-    <PackageReference Include="LambdaSharp" Version="0.6.0" />
+    <PackageReference Include="LambdaSharp" Version="0.6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
