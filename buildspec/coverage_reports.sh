@@ -11,9 +11,9 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     
     cd ${CODEBUILD_SRC_DIR}
     
-    coverallsToken=$(aws ssm get-parameter --name /general/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
-    codeCovToken=$(aws ssm get-parameter --name /general/codecov/token  --with-decryption --query  Parameter | jq -r '.Value')
-    codacyToken=$(aws ssm get-parameter --name /general/codacy/token  --with-decryption --query  Parameter | jq -r '.Value')
+    coverallsToken=$(aws ssm get-parameter --name /account/coveralls/token  --with-decryption --query  Parameter | jq -r '.Value')
+    codeCovToken=$(aws ssm get-parameter --name /account/codecov/token  --with-decryption --query  Parameter | jq -r '.Value')
+    codacyToken=$(aws ssm get-parameter --name /account/codacy/token  --with-decryption --query  Parameter | jq -r '.Value')
 
     for directory in ./src/JukeboxAlexa/JukeboxAlexa.*/ ; do
 
