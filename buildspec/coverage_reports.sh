@@ -15,7 +15,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     codeCovToken=$(aws ssm get-parameter --name /account/codecov/token  --with-decryption --query  Parameter | jq -r '.Value')
     codacyToken=$(aws ssm get-parameter --name /account/codacy/token  --with-decryption --query  Parameter | jq -r '.Value')
 
-    for directory in ./src/JukeboxAlexa/JukeboxAlexa.*/ ; do
+    for directory in ./src/JukeboxAlexa/*/*/ ; do
 
         echo "****PROCESSING DIRECTORY: ${directory}"
 
