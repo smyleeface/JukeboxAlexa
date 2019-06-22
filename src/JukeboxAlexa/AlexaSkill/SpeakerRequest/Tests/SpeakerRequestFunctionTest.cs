@@ -58,7 +58,9 @@ namespace JukeboxAlexa.SpeakerRequest.Tests {
             var function = new Function();
 
             // Act
-            var config = new LambdaConfig(new EmptyLambdaConfigSource());
+            var config = new LambdaConfig(new LambdaDictionarySource(new List<KeyValuePair<string, string>> {
+               new KeyValuePair<string, string>("/SqsSongQueue", "foobar")
+            }));
             await function.InitializeAsync(config);
 
             // Assert
