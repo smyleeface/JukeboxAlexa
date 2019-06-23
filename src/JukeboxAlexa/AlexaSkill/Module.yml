@@ -1,0 +1,112 @@
+Module: JukeboxAlexa.Skills
+Version: 0.4-DEV
+Description: JukeboxAlexa Backend Functions
+
+
+Items:
+  
+  #
+  ##########################
+  # Index names in env var
+  ##########################
+  #
+  - Import: DynamoDbIndexNameSearchTitleName
+    Module: JukeboxAlexa.Songlist::DynamoDbIndexNameSearchTitleName
+    Scope: all
+    
+  - Import: DynamoDbIndexNameSearchTitleArtistName
+    Module: JukeboxAlexa.Songlist::DynamoDbIndexNameSearchTitleArtistName
+    Scope: all
+
+  #
+  ##########################
+  # DynamoDB Table - Songs
+  ##########################
+  #
+  - Import: DynamoDbSongs
+    Module: JukeboxAlexa.Songlist::DynamoDbSongs
+    Description: DynamoDb table for storing songs
+    Type: AWS::DynamoDB::Table
+    Allow: ReadOnly
+    Scope: all
+
+  #
+  ############################################
+  # DynamoDB Table - TitleWordCache
+  ############################################
+  #
+  - Import: DynamoDbTitleWordCache
+    Module: JukeboxAlexa.Songlist::DynamoDbTitleWordCache
+    Type: AWS::DynamoDB::Table
+    Allow: ReadOnly
+    Scope: all
+  #
+  ######################
+  # SQS Queue
+  ######################
+  #
+  - Resource: SqsSongQueue
+    Type: AWS::SQS::Queue
+    Allow: Send
+    Scope: all
+    Properties:
+      FifoQueue: true
+      ReceiveMessageWaitTimeSeconds: 20
+  #
+  #########################
+  #        FUNCTIONS
+  #########################
+  #
+  #########################
+  # Speaker Request Intent
+  #########################
+  #
+  - Function: SpeakerRequest
+    Description: Processes speaker request intnet
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Api: POST:/jukebox-alexa/speaker-request
+  #
+  #########################
+  # Play Song Title Request Intent
+  #########################
+  #
+  - Function: PlaySongTitleRequest
+    Description: Processes play song request intent
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Api: POST:/jukebox-alexa/song-title-request
+  #
+  #########################
+  # Play Song Artist Request Intent
+  #########################
+  #
+  - Function: PlaySongTitleArtistRequest
+    Description: Processes play song title and artist request intent
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Api: POST:/jukebox-alexa/song-title-artist-request
+  #
+  #########################
+  # Play Number Request Intent
+  #########################
+  #
+  - Function: PlaySongNumberRequest
+    Description: Processes play song number request intent
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Api: POST:/jukebox-alexa/song-number-request
+
+  #
+  #########################
+  # Api endpoint
+  #########################
+  #
+  - Resource: AlexaSkillIntentApiEndpoint
+    Type: AWS::ApiGateway::RestApi
+    Value: !Ref Module::RestApi::Url
+    Scope: public

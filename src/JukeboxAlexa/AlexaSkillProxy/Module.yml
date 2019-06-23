@@ -1,0 +1,32 @@
+Module: JukeboxAlexa.SkillProxy
+Version: 0.4-DEV
+Description: JukeboxAlexa Proxy for Intents
+
+Secrets:
+  - alias/SmyleeDev
+
+Items:
+  
+  #
+  ##########################
+  # Alexa Skill
+  ##########################
+  #
+  - Parameter: AlexaSkillID
+    Default: "*"
+
+  - Import: AlexaSkillIntentApiEndpoint
+    Module: JukeboxAlexa.Skills::AlexaSkillIntentApiEndpoint
+    Scope: SkillProxyRequest
+
+  #
+  #########################
+  # Skill Request Intent
+  ########################
+  #
+  - Function: SkillProxyRequest
+    Description: Processes speaker request intnet
+    Memory: 192
+    Timeout: 30
+    Sources:
+      - Alexa: !Ref AlexaSkillID

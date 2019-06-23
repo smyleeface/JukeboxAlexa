@@ -1,14 +1,14 @@
 version: 0.2
 phases:
 
-  install:
-    commands:
-      - yum install jq -y
-      - dotnet tool install coverlet.console --tool-path tools
-      - dotnet tool install coveralls.net --tool-path tools
-      - curl -s https://codecov.io/bash > tools/codecov
-      - chmod +x tools/codecov
-      - pip install codacy-coverage 
+# NOTE (pattyr, 20190621): These are installed on the container
+#  install:
+#    commands:
+#      - dotnet tool install coverlet.console --tool-path tools
+#      - dotnet tool install coveralls.net --tool-path tools
+#      - curl -s https://codecov.io/bash > tools/codecov
+#      - chmod +x tools/codecov
+#      - pip install codacy-coverage
 
   build:
     commands:
