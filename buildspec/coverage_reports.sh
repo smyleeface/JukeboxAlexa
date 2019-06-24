@@ -31,7 +31,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --targetargs "test ${directory} --no-build" \
                 --format opencover \
                 --exclude-by-file "**/obj/**" \
-                --exclude-by-file "**/bin/**"
+                --exclude-by-file "**/bin/**" \
+                --exclude-by-file "**/*xunit*/**"
     
             # GENERATE REPORTS - lcov
             /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
@@ -40,7 +41,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --targetargs "test ${directory} --no-build" \
                 --format lcov \
                 --exclude-by-file "**/obj/**" \
-                --exclude-by-file "**/bin/**"  
+                --exclude-by-file "**/bin/**" \
+                --exclude-by-file "**/*xunit*/**"
     
     #        # GENERATE REPORTS - cobertura
     #        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
