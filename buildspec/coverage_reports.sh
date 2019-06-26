@@ -66,7 +66,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --jobId "${CODEBUILD_BUILD_ID}" \
                 --useRelativePaths \
                 --lcov \
-                -i ${directory}coverage-lcov.xml \
+                -i ${directory}coverage-lcov.json \
                 --repoToken "${coverallsToken}" 
     
             # UPLOAD REPORT - CodeCov
