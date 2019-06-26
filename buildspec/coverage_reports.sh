@@ -33,7 +33,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --exclude-by-file "**/obj/**" \
                 --exclude-by-file "**/bin/**" \
                 --exclude "[xunit*]*" \
-                --exclude "[Microsoft.NET.Test.Sdk.Program.cs]*"
+                --exclude "[.nuget]*"
     
             # GENERATE REPORTS - lcov
             /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
@@ -44,7 +44,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --exclude-by-file "**/obj/**" \
                 --exclude-by-file "**/bin/**" \
                 --exclude "[xunit*]*" \
-                --exclude "[Microsoft.NET.Test.Sdk.Program.cs]*"
+                --exclude "[.nuget]*"
     
     #        # GENERATE REPORTS - cobertura
     #        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
