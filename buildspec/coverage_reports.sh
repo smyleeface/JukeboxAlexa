@@ -23,17 +23,17 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     
             cd ${CODEBUILD_SRC_DIR}
     
-#            # GENERATE REPORTS - opencover
-#            echo "***INFO: coverlet ${directory}"
-#            /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
-#                --output ${directory}coverage-opencover.xml \
-#                --target /usr/bin/dotnet \
-#                --targetargs "test ${directory} --no-build" \
-#                --format opencover \
-#                --exclude-by-file "**/obj/**" \
-#                --exclude-by-file "**/bin/**" \
-#                --exclude "[xunit*]*" \
-#                --exclude-by-file "/root/.nuget/packages/microsoft.net.test.sdk/**"
+            # GENERATE REPORTS - opencover
+            echo "***INFO: coverlet ${directory}"
+            /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
+                --output ${directory}coverage-opencover.xml \
+                --target /usr/bin/dotnet \
+                --targetargs "test ${directory} --no-build" \
+                --format opencover \
+                --exclude-by-file "**/obj/**" \
+                --exclude-by-file "**/bin/**" \
+                --exclude "[xunit*]*" \
+                --exclude-by-file "/root/.nuget/packages/microsoft.net.test.sdk/**"
 
             # GENERATE REPORTS - lcov
             /opt/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
@@ -42,8 +42,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --targetargs "test ${directory} --no-build" \
                 --format lcov \
                 --exclude-by-file "**/obj/**" \
-                --exclude-by-file "**/bin/**" \
-                --exclude "[xunit*]*"
+                --exclude-by-file "**/bin/**"
     
     #        # GENERATE REPORTS - cobertura
     #        ${CODEBUILD_SRC_DIR}/tools/coverlet ${directory}bin/Debug/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll \
@@ -65,8 +64,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
                 --commitMessage "${GIT_COMMIT_MESSAGE}" \
                 --jobId "${CODEBUILD_BUILD_ID}" \
                 --useRelativePaths \
-                --lcov \
-                -i ${directory}coverage-lcov.json \
+                --opencover \
+                -i ${directory}coverage-opencover.xml \
                 --repoToken "${coverallsToken}" 
     
             # UPLOAD REPORT - CodeCov
