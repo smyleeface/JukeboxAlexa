@@ -5,7 +5,6 @@ set -e
 if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     source buildspec/env_vars.sh
-    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
     
     echo "CROSS_ACCOUNT_ROLE_ARN ${CROSS_ACCOUNT_ROLE_ARN}"
     
@@ -18,6 +17,6 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     export AWS_SESSION_TOKEN=$(echo ${credentials} | jq -r '.Credentials.SessionToken')
 
     echo "***INFO: Deploying to ${LAMBDASHARP_TIER}"
-    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
+    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/buildspec
     lash deploy --tier ${LAMBDASHARP_TIER}
 fi
