@@ -17,6 +17,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     export AWS_SESSION_TOKEN=$(echo ${credentials} | jq -r '.Credentials.SessionToken')
 
     echo "***INFO: Deploying to ${LAMBDASHARP_TIER}"
-    cd ${CODEBUILD_SRC_DIR}/buildspec
-    lash deploy --tier ${LAMBDASHARP_TIER}
+    cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/
+    lash deploy Songlist --tier ${LAMBDASHARP_TIER} && \
+    lash deploy AlexaSkill --tier ${LAMBDASHARP_TIER} && \
+    lash deploy AlexaSkillProxy --tier ${LAMBDASHARP_TIER}
 fi
