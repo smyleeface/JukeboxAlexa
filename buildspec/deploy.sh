@@ -19,5 +19,5 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     echo "***INFO: Deploying to ${LAMBDASHARP_TIER}"
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
-    dotnet lash deploy --tier ${LAMBDASHARP_TIER}
+    lash deploy --tier ${LAMBDASHARP_TIER}
 fi
