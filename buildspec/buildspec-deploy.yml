@@ -3,4 +3,4 @@ phases:
 
   build:
     commands:
-      - cicd/deploy.sh
+      - buildspec/deploy.sh
