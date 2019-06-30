@@ -7,6 +7,8 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     source buildspec/env_vars.sh
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa
     
+    echo "CROSS_ACCOUNT_ROLE_ARN ${CROSS_ACCOUNT_ROLE_ARN}"
+    
     # NOTE(pattyr, 20190728): LAMBDASHARP_TIER is included as an environment variable when triggering CodeBuild Project
     # NOTE(pattyr, 20190728): CROSS_ACCOUNT_ROLE_ARN is included as an environment variable in the CodeBuild Project
     echo "***INFO: Generating ${LAMBDASHARP_TIER} credentials"
