@@ -18,7 +18,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     echo "***INFO: Deploying to ${LAMBDASHARP_TIER}"
     cd ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/
-    lash deploy Songlist --tier ${LAMBDASHARP_TIER} --parameters Songlist/${LAMBDASHARP_TIER}Parameters.yml && \
-    lash deploy AlexaSkill --tier ${LAMBDASHARP_TIER} && \
-    lash deploy AlexaSkillProxy --tier ${LAMBDASHARP_TIER}
+    lash deploy ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/Songlist --tier ${LAMBDASHARP_TIER} --parameters ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/Songlist/${LAMBDASHARP_TIER}Parameters.yml
+#    lash deploy AlexaSkill --tier ${LAMBDASHARP_TIER} && \
+#    lash deploy AlexaSkillProxy --tier ${LAMBDASHARP_TIER}
 fi
