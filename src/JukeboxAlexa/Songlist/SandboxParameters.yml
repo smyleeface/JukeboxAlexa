@@ -1,2 +1,2 @@
 Secrets:
-  - alias/SmyleeDev
+  - arn:aws:kms:us-east-1:892750500233:key/37867d7b-b048-4cac-b769-244163cdabb6
