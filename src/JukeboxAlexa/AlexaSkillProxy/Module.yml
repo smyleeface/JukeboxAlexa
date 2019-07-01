@@ -2,9 +2,6 @@ Module: JukeboxAlexa.SkillProxy
 Version: 0.4-DEV
 Description: JukeboxAlexa Proxy for Intents
 
-Secrets:
-  - alias/SmyleeDev
-
 Items:
   
   #
