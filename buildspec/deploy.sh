@@ -30,10 +30,3 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     lash deploy ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/AlexaSkill --no-ansi --tier ${LAMBDASHARP_TIER}  --parameters ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/AlexaSkill/${LAMBDASHARP_TIER}Parameters.yml && \
     lash deploy ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/AlexaSkillProxy --no-ansi --tier ${LAMBDASHARP_TIER}  --parameters ${CODEBUILD_SRC_DIR}/src/JukeboxAlexa/AlexaSkillProxy/${LAMBDASHARP_TIER}Parameters.yml
 fi
-
-
-
-
-
-# TODO: getting the cross account roles on both sandbox and production, so when it's deployed it knows which tier to deploy to
-# fix account resources for sandbox, so it deploys to sandbox
