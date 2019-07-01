@@ -6,7 +6,6 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
 
     source buildspec/env_vars.sh
     
-    echo "CROSS_ACCOUNT_ROLE_ARN ${CROSS_ACCOUNT_ROLE_ARN}"
     
     # NOTE(pattyr, 20190728): LAMBDASHARP_TIER is included as an environment variable when triggering CodeBuild Project
     # NOTE(pattyr, 20190728): CROSS_ACCOUNT_ROLE_ARN is included as an environment variable in the CodeBuild Project
@@ -19,6 +18,7 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
         echo "Environment ${LAMBDASHARP_TIER} not supported"
         exit 0
     fi
+    echo "CROSS_ACCOUNT_ROLE_ARN ${CROSS_ACCOUNT_ROLE_ARN}"
     credentials=$(aws sts assume-role --role-arn "${CROSS_ACCOUNT_ROLE_ARN}" --role-session-name ${GITSHA})
     export AWS_ACCESS_KEY_ID=$(echo ${credentials} | jq -r '.Credentials.AccessKeyId')
     export AWS_SECRET_ACCESS_KEY=$(echo ${credentials} | jq -r '.Credentials.SecretAccessKey')
