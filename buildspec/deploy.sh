@@ -10,9 +10,9 @@ if [[ ${CODEBUILD_BUILD_SUCCEEDING} ]]; then
     # NOTE(pattyr, 20190728): LAMBDASHARP_TIER is included as an environment variable when triggering CodeBuild Project
     # NOTE(pattyr, 20190728): CROSS_ACCOUNT_ROLE_ARN is included as an environment variable in the CodeBuild Project
     echo "***INFO: Generating ${LAMBDASHARP_TIER} credentials"
-    if [[ "${LAMBDASHARP_TIER}" -eq "Production" ]]; then
+    if [[ "${LAMBDASHARP_TIER}" == "Production" ]]; then
         CROSS_ACCOUNT_ROLE_ARN=${PRODUCTION_CROSS_ACCOUNT_ROLE_ARN}
-    elif [[ "${LAMBDASHARP_TIER}" -eq "Sandbox" ]]; then
+    elif [[ "${LAMBDASHARP_TIER}" == "Sandbox" ]]; then
         CROSS_ACCOUNT_ROLE_ARN=${SANDBOX_CROSS_ACCOUNT_ROLE_ARN}
     else
         echo "Environment ${LAMBDASHARP_TIER} not supported"
