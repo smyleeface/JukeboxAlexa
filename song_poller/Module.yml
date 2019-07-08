@@ -1,0 +1,41 @@
+Module: JukeboxAlexa.SongPoller
+Version: 0.1-DEV
+Description: JukeboxAlexa Song Poller
+
+
+Items:
+
+  - Import: SqsSongQueue
+    Module: JukeboxAlexa.Skills
+    
+  - Variable: JukeboxRaspberryPiPolicyName
+    Value: !Sub "${DeploymentPrefix}JukeboxRaspberryPiPolicy"
+
+  ####### JukeboxRaspberryPiUser
+  # user
+  - Resource: JukeboxRaspberryPiUser
+    Type: AWS::IAM::User
+
+  # user access keys
+  - Resource: JukeboxRaspberryPiUserAccessKey
+    Type: AWS::IAM::AccessKey
+    DependsOn: JukeboxRaspberryPiUser
+    Properties:
+      UserName: !Ref JukeboxRaspberryPiUser
+
+  # policy
+  - Resource: JukeboxRaspberryPiPolicy
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - sqs:ListQueues
+            Resource:
+              - !Ref SqsSongQueue
+      PolicyName: !Ref JukeboxRaspberryPiPolicyName
+      Users:
+        - !Ref JukeboxRaspberryPiUser

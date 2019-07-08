@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -271,6 +272,45 @@ namespace JukeboxAlexa.PlaySongTitleRequest.Tests {
             
             // Assert
             Assert.Contains("Sending song number 328", response.Message); 
+        }
+
+        [Fact]
+        public async Task Play_song_request__sort() {
+            var foundDbSongs = new List<SongModel.Song> {
+                new SongModel.Song {
+                    Artist = "",
+                    Title = "What Doesn't Kill You (Stronger)",
+                    SongNumber = "109"
+                },
+                new SongModel.Song {
+                    Artist = "",
+                    Title = "Don't Want to Lose You Now",
+                    SongNumber = "225"
+                },
+                new SongModel.Song {
+                    Artist = "",
+                    Title = "You Can't Run From Love",
+                    SongNumber = "344"
+                },
+                new SongModel.Song {
+                    Artist = "",
+                    Title = "What Doesn't Kill You (Stronger)",
+                    SongNumber = "109"
+                },
+                new SongModel.Song {
+                    Artist = "",
+                    Title = "adfdfad",
+                    SongNumber = "100"
+                }
+            };
+            var rnd = new Random();
+            var shuffled = foundDbSongs.GroupBy(song => song.SongNumber)
+                        .Select(x => new {
+                            Count = x.Count(), 
+                            Song = x.FirstOrDefault()
+                        })
+                        .OrderBy(x => rnd.Next()).ToList();
+            Console.Write("hello");
         }
     }
 }

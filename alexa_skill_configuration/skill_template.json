@@ -28,7 +28,7 @@
           "slots": [
             {
               "name": "Title",
-              "type": "SONGTITLE"
+              "type": "AMAZON.MusicRecording"
             }
           ],
           "samples": [
@@ -40,11 +40,11 @@
           "slots": [
             {
               "name": "Title",
-              "type": "SONGTITLE"
+              "type": "AMAZON.MusicRecording"
             },
             {
               "name": "ArtistName",
-              "type": "ARTISTS"
+              "type": "AMAZON.Artist"
             }
           ],
           "samples": [
@@ -56,7 +56,7 @@
           "slots": [
             {
               "name": "SongNumber",
-              "type": "AMAZON.NUMBER"
+              "type": "SONG_NUMBER"
             }
           ],
           "samples": [
@@ -69,7 +69,7 @@
           "slots": [
             {
               "name": "Title",
-              "type": "SONGTITLE"
+              "type": "AMAZON.MusicRecording"
             }
           ],
           "samples": [
@@ -91,15 +91,11 @@
       ],
       "types": [
         {
-          "name": "ARTISTS",
-          "values": []
-        },
-        {
-          "name": "SONGTITLE",
-          "values": []
-        },
-        {
           "name": "SPEAKER_REQUEST_OPTIONS",
+          "values": []
+        },
+        {
+          "name": "SONG_NUMBER",
           "values": []
         }
       ]

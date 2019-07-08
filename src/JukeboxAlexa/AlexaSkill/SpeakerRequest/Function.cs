@@ -21,7 +21,7 @@ namespace JukeboxAlexa.SpeakerRequest {
         //--- Methods ---
         public override Task InitializeAsync(LambdaConfig config) {
             var sqsClient = new AmazonSQSClient();
-            var queueName = config.ReadText("SqsSongQueue");
+            var queueName = AwsConverters.ConvertQueueArnToUrl(config.ReadText("SqsSongQueue"));
             SpeakerRequest = new SpeakerRequest(this, sqsClient, queueName);
             return Task.CompletedTask;
         }
@@ -29,7 +29,7 @@ namespace JukeboxAlexa.SpeakerRequest {
         public override async Task<APIGatewayProxyResponse> ProcessProxyRequestAsync(APIGatewayProxyRequest inputRequest) {
             LambdaLogger.Log($"*** INFO: API Request input from user: {JsonConvert.SerializeObject(inputRequest)}");
             var input = JsonConvert.DeserializeObject<CustomSkillRequest>(inputRequest.Body);
-            LambdaLogger.Log($"*** INFO: Request input from user: {input}");
+            LambdaLogger.Log($"*** INFO: Request input from user: {JsonConvert.SerializeObject(input)}");
     
             // process request
             var requestResult = await SpeakerRequest.HandleRequest(input);
