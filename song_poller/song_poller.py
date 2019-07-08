@@ -127,12 +127,12 @@ class SongPoller(object):
         """
         song_id = message_body['key']
         for individual_number in song_id:
-            self.relay_selections[individual_number]()
             time.sleep(0.5)
+            self.relay_selections[individual_number]()
 
-    def get_speaker_request(self, song_number):
+    def get_speaker_request(self, message_body):
         """Gets the speaker request and processes"""
-        speaker_action = song_number
+        speaker_action = message_body['key']
         message_kargs = {
             'speaker_action': speaker_action
         }
