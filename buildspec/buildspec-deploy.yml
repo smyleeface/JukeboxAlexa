@@ -1,15 +1,6 @@
 version: 0.2
 phases:
 
-  install:
-    commands:
-      - yum install jq -y
-      - git clone https://github.com/smyleeface/LambdaSharpTool.git -b jukeboxalexa-custom-v0.3 ${CODEBUILD_SRC_DIR}/LambdaSharpTool
-      - export LAMBDASHARP=${CODEBUILD_SRC_DIR}/LambdaSharpTool
-      - alias lash="dotnet run -p $LAMBDASHARP/src/MindTouch.LambdaSharp.Tool/MindTouch.LambdaSharp.Tool.csproj --"
-
   build:
     commands:
-      - cicd/deploy.sh
-      # if github branch master -- TIER == `production` else `staging`
-#      - cicd/40_deploy.sh production
+      - buildspec/deploy.sh

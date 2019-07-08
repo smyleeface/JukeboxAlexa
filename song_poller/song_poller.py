@@ -9,15 +9,16 @@ from utility_modules import logger_output
 class SongPoller(object):
     def __init__(self, boto_session, gpio, logger=None):
         self.queue_speed = 1
-        self.queue_name_prefix = 'jukebox_request_queue.fifo'
+        self.queue_name_prefix = 'production-jukebox_request_queue.fifo'
         self.sqs_client = boto_session.client('sqs')
         self.gpio_pin_list = [2, 3, 4, 17, 27, 22, 10, 9, 11, 5, 6, 13, 19, 26, 21, 20]
         self.gpio = gpio
         self.logger = logger
         self.queue_url = None
         self.request_type_function_mapping = {
-            'GetSongRequested': self.get_song_requested,
-            'GetSongIdRequested': self.get_song_requested,
+            'PlaySongTitleRequest': self.get_song_requested,
+            'PlaySongTitleArtistRequest': self.get_song_requested,
+            'PlaySongNumberRequest': self.get_song_requested,
             'SpeakerRequest': self.get_speaker_request
         }
         relay = RelayModules(gpio=self.gpio, speaker=True, logger=self.logger)
@@ -100,7 +101,8 @@ class SongPoller(object):
             return self.sqs_client.receive_message(
                 QueueUrl=queue_url,
                 MaxNumberOfMessages=10,
-                VisibilityTimeout=30
+                VisibilityTimeout=30,
+                WaitTimeSeconds=20
             )
         except Exception as e:
             raise Exception('Issue with resolving the getting messages in {0}: {1}'.format(queue_url, e))
@@ -123,13 +125,13 @@ class SongPoller(object):
         """Parses the song id and sends each number individually.
         Sending the message body because different requests will parse differently
         """
-        song_id = message_body['parameters']['key']
+        song_id = message_body['key']
         for individual_number in song_id:
             self.relay_selections[individual_number]()
 
-    def get_speaker_request(self, message_body):
+    def get_speaker_request(self, song_number):
         """Gets the speaker request and processes"""
-        speaker_action = message_body['parameters']['key']
+        speaker_action = song_number
         message_kargs = {
             'speaker_action': speaker_action
         }

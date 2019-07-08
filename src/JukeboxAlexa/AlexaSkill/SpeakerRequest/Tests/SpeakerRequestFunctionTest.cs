@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Alexa.NET.Request;
 using Amazon.Lambda.APIGatewayEvents;
-using Amazon.Lambda.TestUtilities;
 using Amazon.SQS;
 using JukeboxAlexa.Library;
 using JukeboxAlexa.Library.Model;

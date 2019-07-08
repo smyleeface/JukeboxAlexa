@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.Lambda.S3Events;
-using Amazon.Lambda.TestUtilities;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;

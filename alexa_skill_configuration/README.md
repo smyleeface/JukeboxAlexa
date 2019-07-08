@@ -13,7 +13,8 @@ Alexa Skill Configuration
 
 ```bash
     cd alexa_skill_configuration
-    docker run --rm -it -v $PWD:/project jukebox_alexa_python python /project/generate_skill.py
+    docker pull python:3.6-slim
+    docker run --rm -it -v $PWD:/usr/src/app python:3.6-slim python /usr/src/app/generate_skill.py
 ```
 - The `alexa_skill_configuration` directory will contain a new file called `skill.json`.
 

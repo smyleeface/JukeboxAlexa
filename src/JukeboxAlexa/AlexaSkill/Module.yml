@@ -1,5 +1,5 @@
 Module: JukeboxAlexa.Skills
-Version: 0.4-DEV
+Version: 0.5-DEV
 Description: JukeboxAlexa Backend Functions
 
 
@@ -45,13 +45,20 @@ Items:
   # SQS Queue
   ######################
   #
+  - Variable: SqsSongQueueName
+    Value: !Sub "${DeploymentPrefixLowercase}jukebox_request_queue.fifo"
+      
   - Resource: SqsSongQueue
     Type: AWS::SQS::Queue
     Allow: Send
-    Scope: all
+    Scope:
+      - public
+      - all
     Properties:
+      QueueName: !Ref SqsSongQueueName
       FifoQueue: true
       ReceiveMessageWaitTimeSeconds: 20
+      
   #
   #########################
   #        FUNCTIONS

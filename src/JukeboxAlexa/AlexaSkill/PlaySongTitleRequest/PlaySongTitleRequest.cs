@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Alexa.NET.Request;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
 using Castle.Core.Internal;
@@ -19,8 +21,6 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
 
         //--- Constructor ---
         public PlaySongTitleRequest(ICommonDependencyProvider provider, IAmazonSQS awsSqsClient, string queueUrl, IDynamodbDependencyProvider awsDynmodbProvider) : base(provider, awsSqsClient, queueUrl) {
-            SongRequested = new SongModel.Song();
-            FoundSongs = new List<SongModel.Song>();
             DynamodbProvider = awsDynmodbProvider;
         }
 
@@ -28,6 +28,8 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
         public override async Task<CustomSkillResponse> HandleRequest(CustomSkillRequest customSkillRequest) {
             var intentSlots = customSkillRequest.Intent.Slots;
             var intentName = customSkillRequest.Intent.Name;
+            FoundSongs = new List<SongModel.Song>();
+            SongRequested = new SongModel.Song();
             
             // lookup song title and artist
             GetSongInfoRequested(intentSlots);
@@ -35,10 +37,20 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
                 await FindRequestedSong();
             }
 
+            // if no songs found, top matches
+            if (FoundSongs.ToList().Count == 0) {
+                await FindSimilarSongs();
+            }
+                
             // generate sqs body and send to the queue
             var generatedMessage = GenerateMessage();
-            var sqsReuqest = GenerateJukeboxSqsRequest(intentName, generatedMessage, "hello");
-            await SendSqsRequest(sqsReuqest, intentName);
+            if (FoundSongs.ToList().Count == 1) {
+                var sqsRequest = GenerateJukeboxSqsRequest(intentName, generatedMessage, FoundSongs.ToList().FirstOrDefault().SongNumber);
+                await SendSqsRequest(sqsRequest, intentName);
+            } else if (FoundSongs.ToList().Count > 1) {
+                generatedMessage += "Top 3 matches: ";
+                generatedMessage += FoundSongs.Aggregate(" ", (current, song) => current + $"Song {song.SongNumber} {song.Title} by {song.Artist}. ");
+            }
 
             // generate alexa response
             var customSkillResponse = new CustomSkillResponse {
@@ -56,24 +68,23 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
             var message = "Sorry I do not understand.";
 
             // Handle no song returned.
-            if (FoundSongs.IsNullOrEmpty()) {
+            if (FoundSongs.IsNullOrEmpty() || FoundSongs.ToList().Count < 0) {
                 message = $"No song found for {SongRequested.Title}";
                 LambdaLogger.Log($"*** WARNING: {message}");
             }
 
             // Handle more than one song returned. (i.e. same song title different artist.)
             if (FoundSongs.ToList().Count > 1) {
-                message = $"More than one song found for {SongRequested.Title}";
+                message = $"More than one song found for {SongRequested.Title}. ";
                 LambdaLogger.Log($"*** WARNING: {message}");
-            }
-            if (FoundSongs.ToList().Count != 1) {
-                return message;
             }
             
             // found one song
-            message = $"Sending song number {FoundSongs.ToList()[0].SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
-            LambdaLogger.Log($"*** INFO: {message}");
-
+            if (FoundSongs.ToList().Count == 1) {
+                message = $"Sending song number {FoundSongs.ToList()[0].SongNumber}, {FoundSongs.ToList()[0].Title} by {FoundSongs.ToList()[0].Artist}, to the jukebox.";
+                LambdaLogger.Log($"*** INFO: {message}");
+            }
+            
             return message;
         }
 
@@ -97,6 +108,41 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
                 foundSongs.Add(foundSong);
             }
             FoundSongs = foundSongs;
+        }
+
+        public async Task FindSimilarSongs() {
+            var listOfWords = SongRequested.Title.Split(" ")
+                .Select(word => 
+                    new Dictionary<string, AttributeValue> {
+                        ["word"] = new AttributeValue { S = word.ToLower() }
+                    }
+                ).ToList();
+            var foundDbSongs = new List<SongModel.Song>();
+            foreach (var word in listOfWords) {
+                var response = await DynamodbProvider.DynamoDbFindSimilarSongsAsync(word);
+                Console.WriteLine($"responseresponse {JsonConvert.SerializeObject(response)}");
+                if (!response.Item.IsNullOrEmpty()) {
+                    foreach (var songData in response.Item["songs"].L) {
+                        foundDbSongs.Add(JsonConvert.DeserializeObject<SongModel.Song>(songData.S));
+                    }
+                }
+            }
+            if (foundDbSongs.Count < 1) {
+                return;
+            }
+            var rnd = new Random();
+            var countOfDistinctSong = foundDbSongs.GroupBy(song => song.SongNumber)
+                                                  .Select(x => new {
+                                                      Count = x.Count(), 
+                                                      Song = x.FirstOrDefault()
+                                                  })
+                                                  .OrderBy(x => rnd.Next())
+                                                  .ToList()
+                                                  .OrderByDescending(x => x.Count)
+                                                  .Select(x => x.Song)
+                                                  .Take(3);
+            Console.WriteLine($"countOfDistinctSong {JsonConvert.SerializeObject(countOfDistinctSong)}");
+            FoundSongs = countOfDistinctSong;
         }
     }
 }

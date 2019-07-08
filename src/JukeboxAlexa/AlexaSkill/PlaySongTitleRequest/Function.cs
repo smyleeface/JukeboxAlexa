@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Amazon.SQS;
@@ -22,7 +23,7 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
 
         //--- Constructors ---
         public override Task InitializeAsync(LambdaConfig config) {
-            var queueName = config.ReadText("SqsSongQueue");
+            var queueName = AwsConverters.ConvertQueueArnToUrl(config.ReadText("SqsSongQueue"));
             var tableName = AwsConverters.ConvertDynamoDBArnToName(config.ReadText("DynamoDbSongs"));
             var indexNameSearchTitle = config.ReadText("DynamoDbIndexNameSearchTitleName");
             var indexNameSearchTitleArtist = config.ReadText("DynamoDbIndexNameSearchTitleArtistName");
@@ -54,5 +55,6 @@ namespace JukeboxAlexa.PlaySongTitleRequest {
         
         string ICommonDependencyProvider.DateNow() => new DateTime().ToUniversalTime().ToString("yy-MM-ddHH:mm:ss");
         Task<IEnumerable<SongModel.Song>> IDynamodbDependencyProvider.DynamoDbFindSongsByTitleAsync(string title) => _jukeboxDynamoDb.FindSongsByTitleAsync(title);
+        Task<GetItemResponse> IDynamodbDependencyProvider.DynamoDbFindSimilarSongsAsync(IDictionary<string, AttributeValue> key) => _jukeboxDynamoDb.GetItemAsync(key);
     }
 }

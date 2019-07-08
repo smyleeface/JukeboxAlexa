@@ -5,9 +5,6 @@ Description: JukeboxAlexa backend for managing the song list
 Using:
   - Module: LambdaSharp.S3.IO
 
-Secrets:
-  - alias/SmyleeDev
-
 Items:
     
   #

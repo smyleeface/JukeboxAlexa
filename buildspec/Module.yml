@@ -1,0 +1,168 @@
+Module: JukeboxAlexa.CICD
+Version: 0.1-DEV
+Description: JukeboxAlexa CI/CD
+
+Items:
+
+  - Resource: JukeboxAlexaCICDSnsTopicTriggerCF
+    Type: AWS::SNS::Topic
+
+  - Variable: GitHubRepo
+    Value: https://github.com/smyleeface/JukeboxAlexa.git
+
+  - Import: CodeBuilder
+    Module: Account.Resources
+    Description: ECR repository ARN for CodeBuilder
+
+  - Import: CodeBuilderRepoName
+    Module: Account.Resources
+    Description: ECR repository Name for CodeBuilder
+    
+  - Variable: CodeBuilderRepoUrl
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.us-east-1.amazonaws.com/${CodeBuilderRepoName}"
+    
+  - Parameter: KmsKeyId
+    Default: 37867d7b-b048-4cac-b769-244163cdabb6
+
+  ######################
+  # Service Permissions
+  ######################
+  - Resource: CodeBuildServiceRole
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: trust
+            Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action: sts:AssumeRole
+
+  - Resource: JukeboxAlexaCodeBuildServiceRolePolicy
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: '*'
+          -
+            Effect: Allow
+            Action:
+              - ssm:GetParameter*
+            Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/account/*'
+          -
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+            Resource: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/${KmsKeyId}'
+          -
+            Effect: Allow
+            Action:
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+              - ecr:DescribeImages
+              - ecr:GetAuthorizationToken
+              - ecr:DescribeRepositories
+              - ecr:ListImages
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetRepositoryPolicy
+            Resource: !Sub "${CodeBuilder}"
+          -
+            Effect: Allow
+            Action:
+              - sts:AssumeRole
+            Resource:
+              - !Sub "arn:aws:iam::${ProductionAccountNumber}:role/${ProductionCodeBuilderCrossAccountRoleName}"
+              - !Sub "arn:aws:iam::${SandboxAccountNumber}:role/${SandboxCodeBuilderCrossAccountRoleName}"
+      PolicyName: JukeboxAlexaCodeBuildServiceRolePolicy
+      Roles:
+        - !Ref JukeboxAlexaCodeBuildServiceRole
+
+  - Resource: JukeboxAlexaCodeBuildServiceRole
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Sid: trust
+            Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action: sts:AssumeRole
+
+  ##################
+  # Codebuild Push
+  ##################
+  - Resource: JukeboxAlexaCodeBuildPush
+    Type: AWS::CodeBuild::Project
+    DependsOn: JukeboxAlexaCodeBuildServiceRole
+    Properties:
+      Name: JukeboxAlexa-push
+      BadgeEnabled: True
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: !Sub "${CodeBuilderRepoUrl}"
+        Type: LINUX_CONTAINER
+      ServiceRole: !Ref JukeboxAlexaCodeBuildServiceRole
+      Source:
+        Auth:
+          Type: OAUTH
+          Resource: GITHUB
+        BuildSpec: buildspec/buildspec-push.yml
+        Location: !Sub "${GitHubRepo}"
+        Type: GITHUB
+
+  ####################################
+  # Code Build Deploy
+  ####################################
+  - Import: ProductionAccountNumber
+    Module: Account.Resources
+    
+  - Import: ProductionCodeBuilderCrossAccountRoleName
+    Module: Account.Resources
+    
+  - Import: SandboxAccountNumber
+    Module: Account.Resources
+    
+  - Import: SandboxCodeBuilderCrossAccountRoleName
+    Module: Account.Resources
+
+  - Resource: JukeboxAlexaCodeBuildDeploy
+    Type: AWS::CodeBuild::Project
+    DependsOn: JukeboxAlexaCodeBuildServiceRole
+    Properties:
+      Name: JukeboxAlexa-deploy
+      Artifacts:
+        Type: NO_ARTIFACTS
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: !Sub "${CodeBuilderRepoUrl}"
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: PRODUCTION_CROSS_ACCOUNT_ROLE_ARN
+            Type: PLAINTEXT
+            Value: !Sub "arn:aws:iam::${ProductionAccountNumber}:role/${ProductionCodeBuilderCrossAccountRoleName}"
+          - Name: SANDBOX_CROSS_ACCOUNT_ROLE_ARN
+            Type: PLAINTEXT
+            Value: !Sub "arn:aws:iam::${SandboxAccountNumber}:role/${SandboxCodeBuilderCrossAccountRoleName}"
+      ServiceRole: !Ref JukeboxAlexaCodeBuildServiceRole
+      Source:
+        Auth:
+          Type: OAUTH
+          Resource: GITHUB
+        BuildSpec: buildspec/buildspec-deploy.yml
+        Location: !Sub "${GitHubRepo}"
+        Type: GITHUB
